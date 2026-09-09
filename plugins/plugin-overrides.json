@@ -1,0 +1,6 @@
+{
+    "_comment": "Per-plugin overrides for delivery scenarios. Set enabled:false to exclude a plugin (source plugins are tree-shaken at build time; bundle plugins are simply not fetched). Adding a plugin requires NO entry here - drop the folder into plugins/ and it is auto-discovered. All bundled source plugins are enabled in this baseline; plugin bundle artifacts (portal/public/plugins/) are built per-plugin and are not stored in this repository.",
+    "demo-showcase": { "enabled": true },
+    "execution-center": { "enabled": true },
+    "hello-portal": { "enabled": true }
+}

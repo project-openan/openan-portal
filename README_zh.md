@@ -8,6 +8,10 @@
 任意 Web 页面都可以作为**插件**集成进来 —— 写一个 `plugin.manifest.js`,
 在 `plugins.config.js` 里加一行,页面就出现在 Portal 中。
 
+> **要实现一个插件?** 请从 [`plugins/hello-portal/`](./plugins/hello-portal/) 开始 ——
+> 它是插件契约的**参考实现**。复制该目录作为起点:它演示了如何声明菜单、路由与
+> i18n,如何通过 `usePortalContext()` 读取框架服务,以及如何以独立模式运行。
+
 ## 工作原理
 
 ```
@@ -110,16 +114,21 @@ openan-website/                             ← 本仓库(仅框架)
 │           ├── error_boundary/index.jsx    ← 插件路由错误隔离
 │           └── loading.jsx
 │
-└── plugins/
-    └── hello-portal/                       ← Mock 插件(框架验证用)
-        ├── package.json                    ← @openan-plugins/hello-portal
-        ├── plugin.manifest.js
-        └── src/
-            ├── index.jsx                   ← 使用 usePortalContext() (auth/theme/i18n/api)
-            ├── standalone.jsx              ← 独立模式入口
-            └── locales/
-                ├── en.json
-                └── zh.json
+└── plugins/                                ← 插件目录(自动发现)
+    ├── plugin-overrides.json               ← 按交付场景启用/禁用插件
+    ├── hello-portal/                       ← 参考实现插件 —— 新插件以此为起点
+    │   ├── package.json                    ← @openan-plugins/hello-portal
+    │   ├── plugin.manifest.js              ← 插件定义(菜单/路由/i18n/独立模式)
+    │   └── src/
+    │       ├── index.jsx                   ← 使用 usePortalContext() (auth/theme/i18n/api)
+    │       ├── standalone.jsx              ← 独立模式入口
+    │       └── locales/
+    │           ├── en.json
+    │           └── zh.json
+    ├── registry-center/                    ← 注册中心插件
+    ├── orchestration-center/               ← 编排中心插件
+    ├── execution-center/                   ← 执行中心插件
+    └── demo-showcase/                      ← 演示大厅插件(3D 虚拟展厅)
 ```
 
 ## 插件规范

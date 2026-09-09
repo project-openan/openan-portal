@@ -16,6 +16,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@openan-plugins/demo-showcase": "*",
+    "@openan-plugins/execution-center": "*",
+    "@openan-plugins/hello-portal": "*",
     "@openan/portal-sdk": "*",
     "axios": "^1.16.0",
     "framer-motion": "^12.38.0",
