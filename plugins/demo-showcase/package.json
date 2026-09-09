@@ -1,0 +1,22 @@
+{
+  "name": "@openan-plugins/demo-showcase",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.jsx",
+    "./plugin.manifest": "./plugin.manifest.js",
+    "./plugin.manifest.js": "./plugin.manifest.js"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.1"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
+  }
+}

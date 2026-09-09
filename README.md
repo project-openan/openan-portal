@@ -9,6 +9,11 @@ An independent, reusable frontend framework. It provides a Portal shell
 can be integrated as a **plugin** — write a `plugin.manifest.js`, add one line
 to `plugins.config.js`, and the page appears in the Portal.
 
+> **Implementing a plugin?** Start from [`plugins/hello-portal/`](./plugins/hello-portal/) —
+> the reference implementation of the plugin contract. Copy the folder as a
+> starting point: it shows how to declare menus, routes, and i18n, how to read
+> framework services via `usePortalContext()`, and how to run standalone.
+
 ## How It Works
 
 ```
@@ -81,6 +86,16 @@ openan-website/                             ← THIS REPO (framework only)
 │           ├── plugin-context.js           ← .js shim re-export (no JSX)
 │           ├── config-loader.js            ← loadEnabledPlugins() — async, tree-shakes disabled
 │           └── standalone.jsx              ← MockPortal for standalone plugin dev
+│
+├── plugins/                                ← Plugin directory (auto-discovered)
+│   ├── plugin-overrides.json               ← Per-delivery enable/disable
+│   ├── hello-portal/                       ← REFERENCE PLUGIN — copy as a starting point
+│   │   ├── plugin.manifest.js              ← Plugin definition (menu/routes/i18n/standalone)
+│   │   └── src/                            ← View component + locales + standalone entry
+│   ├── registry-center/                    ← Registry Center plugin
+│   ├── orchestration-center/               ← Orchestration Center plugin
+│   ├── execution-center/                   ← Execution Center plugin
+│   └── demo-showcase/                      ← Demo Showcase plugin (3D virtual showroom)
 │
 ├── portal/                                 ← @openan/portal
 │   ├── package.json                        ← exports: PortalApp + style.css
