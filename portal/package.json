@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@openan-plugins/demo-showcase": "*",
+    "@openan-plugins/execution-center": "*",
     "@openan-plugins/hello-portal": "*",
     "@openan-plugins/registry-center": "*",
     "@openan/portal-sdk": "*",
