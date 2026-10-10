@@ -89,6 +89,31 @@ function openanPluginDiscovery() {
 
 export default defineConfig({
     base: '/',
+    preview: {
+        port: 4173,
+        proxy: {
+            '/api/orchestrate': {
+                target: process.env.BACKEND_URL || 'http://127.0.0.1:5001',
+                changeOrigin: true, secure: false,
+                rewrite: (p) => p.replace(/^\/api\/orchestrate/, ''),
+            },
+            '/api/registry': {
+                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
+                changeOrigin: true, secure: false,
+                rewrite: (p) => p.replace(/^\/api\/registry/, ''),
+            },
+            '/api/registry-center': {
+                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
+                changeOrigin: true, secure: false,
+                rewrite: (p) => p.replace(/^\/api\/registry-center/, ''),
+            },
+            '/api/ontology': {
+                target: process.env.ONTOLOGY_URL || 'http://127.0.0.1:8787',
+                changeOrigin: true, secure: false,
+                rewrite: (p) => p.replace(/^\/api\/ontology/, ''),
+            },
+        },
+    },
     server: {
         port: 3003,
         fs: { allow: [workspaceRoot] },
@@ -102,6 +127,16 @@ export default defineConfig({
                 target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
                 changeOrigin: true, secure: false,
                 rewrite: (p) => p.replace(/^\/api\/registry/, ''),
+            },
+            '/api/registry-center': {
+                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
+                changeOrigin: true, secure: false,
+                rewrite: (p) => p.replace(/^\/api\/registry-center/, ''),
+            },
+            '/api/ontology': {
+                target: process.env.ONTOLOGY_URL || 'http://127.0.0.1:8787',
+                changeOrigin: true, secure: false,
+                rewrite: (p) => p.replace(/^\/api\/ontology/, ''),
             },
         },
     },

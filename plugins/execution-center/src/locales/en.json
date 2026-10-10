@@ -90,6 +90,21 @@
     "filter_tags": "Tags",
     "summary_title": "Execution Summary",
     "summary_placeholder": "Summary content coming soon",
-    "summary_hint": "Waiting for backend API integration"
+    "summary_hint": "Waiting for backend API integration",
+    "total_executions": "Total Executions",
+    "workflows_involved": "Workflows",
+    "success_rate": "Success Rate",
+    "stat_rank": "Rank",
+    "stat_workflow": "Workflow",
+    "stat_count": "Executions",
+    "stat_share": "Share",
+    "stat_month": "Month",
+    "stat_total": "Total",
+    "report_meta": "Data source: execution records API · Collected: {{time}} · {{count}} records",
+    "frequency_sub": "{{total}} executions across {{workflows}} workflows; table shows Top {{n}} by execution count",
+    "status_sub": "Success {{success}} · Failed {{failed}} · Running {{running}}, {{total}} in total",
+    "trend_sub": "Monthly executions of {{workflow}} (last 12 months)",
+    "peak_month": " · Peak month {{month}} with {{count}} executions",
+    "report_footer": "Methodology: statistics based on workflow execution records; status distribution by record status field; monthly trend grouped by execution start time"
   }
 }

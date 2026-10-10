@@ -15,18 +15,29 @@
 //    License for the specific language governing permissions and limitations
 //    under the License.
 
-import { createRoot } from 'react-dom/client';
-import { MockPortal } from '@openan/portal-sdk/standalone';
-import HelloPortal from './index.jsx';
+import { Layers } from 'lucide-react';
 
-/**
- * Standalone mode entry — runs this plugin in isolation without the full
- * Portal shell, using MockPortal to provide a minimal PortalContext.
- *
- * Run: npm -w @openan-plugins/hello-portal run dev
- */
-createRoot(document.getElementById('root')).render(
-    <MockPortal>
-        <HelloPortal />
-    </MockPortal>
-);
+export default {
+    id: 'skill-center',
+    name: 'Skill Center',
+    version: '0.1.0',
+    menu: [{
+        id: 'skills',
+        labelKey: 'skill-center:skills.title',
+        icon: Layers,
+        order: 6,
+        route: '/skills',
+    }],
+    routes: [{
+        path: '/skills',
+        component: () => import('./src/index.jsx'),
+        menuId: 'skills',
+    }],
+    i18n: {
+        namespace: 'skill-center',
+        resources: {
+            en: () => import('./src/locales/en.json'),
+            zh: () => import('./src/locales/zh.json'),
+        },
+    },
+};

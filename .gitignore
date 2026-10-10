@@ -5,3 +5,4 @@ dist/
 stats.html
 *.log
 tsconfig.tsbuildinfo
+portal/public/

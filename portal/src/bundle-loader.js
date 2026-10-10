@@ -77,10 +77,37 @@ function injectScript(src) {
     });
 }
 
-async function fetchJson(url) {
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`Failed to fetch ${url}: ${resp.status}`);
-    return resp.json();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Fetch with one retry — a transient failure (e.g. a redeploy happening while
+// the page loads) must not silently drop a plugin for the whole session.
+async function fetchJson(url, attempts = 2) {
+    let lastErr;
+    for (let i = 0; i < attempts; i++) {
+        try {
+            const resp = await fetch(url, { cache: 'no-store' });
+            if (!resp.ok) throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+            return await resp.json();
+        } catch (err) {
+            lastErr = err;
+            if (i < attempts - 1) await sleep(800);
+        }
+    }
+    throw lastErr;
+}
+
+async function loadScriptRetry(src, attempts = 2) {
+    let lastErr;
+    for (let i = 0; i < attempts; i++) {
+        try {
+            await injectScript(src);
+            return;
+        } catch (err) {
+            lastErr = err;
+            if (i < attempts - 1) await sleep(800);
+        }
+    }
+    throw lastErr;
 }
 
 /**
@@ -199,7 +226,7 @@ export async function loadPluginBundle(entryCfg) {
 
     // 3. Load the js bundle (UMD → sets a global)
     const globalKey = `__OPENAN_PLUGIN__${manifest.id.replace(/-/g, '_')}`;
-    await injectScript(`${base}/${manifest.entry || 'index.js'}`);
+    await loadScriptRetry(`${base}/${manifest.entry || 'index.js'}`);
 
     // 4. Read the global the bundle exposed
     const bundle = window[globalKey];
