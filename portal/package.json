@@ -19,6 +19,7 @@
     "@openan-plugins/demo-showcase": "*",
     "@openan-plugins/execution-center": "*",
     "@openan-plugins/hello-portal": "*",
+    "@openan-plugins/orchestration-center": "*",
     "@openan-plugins/registry-center": "*",
     "@openan/portal-sdk": "*",
     "axios": "^1.16.0",
