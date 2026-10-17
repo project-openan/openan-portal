@@ -23,7 +23,7 @@ import { Sun, Moon } from 'lucide-react';
 
 export default function Login() {
     const { t } = useTranslation();
-    const { login } = useAuth();
+    const { login, passwordChanged } = useAuth();
     const { isDark, toggle } = useTheme();
 
     const [username, setUsername] = useState('');
@@ -72,6 +72,7 @@ export default function Login() {
                     <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 text-center">
                         {t('login.title')}
                     </h2>
+                    {passwordChanged && <p role="status" className="text-sm text-green-600">{t('password_change.relogin')}</p>}
                     <input
                         type="text"
                         value={username}

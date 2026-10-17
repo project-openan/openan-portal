@@ -1,0 +1,7 @@
+[
+  { "id": "registry-center", "mode": "bundle", "entry": "/plugins/registry-center", "enabled": true },
+  { "id": "orchestration-center", "mode": "bundle", "entry": "/plugins/orchestration-center", "enabled": true },
+  { "id": "observation-center", "mode": "bundle", "entry": "/plugins/observation-center", "enabled": true },
+  { "id": "virtual-showroom", "mode": "bundle", "entry": "/plugins/virtual-showroom", "enabled": true },
+  { "id": "an-ontology", "mode": "bundle", "entry": "/plugins/an-ontology", "enabled": true }
+]

@@ -16,7 +16,7 @@
 //    under the License.
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import api, { authCheck, login as apiLogin, logout as apiLogout } from '../service/api.js';
+import api, { authCheck, login as apiLogin, logout as apiLogout, changePassword as apiChangePassword } from '../service/api.js';
 
 const AuthContext = createContext(null);
 
@@ -24,6 +24,14 @@ export function AuthProvider({ children }) {
     const [authState, setAuthState] = useState('checking');
     const [authRequired, setAuthRequired] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+    const [role, setRole] = useState(null);
+    const [passwordChanged, setPasswordChanged] = useState(false);
+
+    const clearIdentity = useCallback(() => {
+        setCurrentUser(null);
+        setRole(null);
+        setAuthState('unauthenticated');
+    }, []);
 
     const checkAuth = useCallback(async () => {
         try {
@@ -31,15 +39,16 @@ export function AuthProvider({ children }) {
             if (data.auth_required === false || data.authenticated === true) {
                 setAuthRequired(data.auth_required !== false);
                 setCurrentUser(data.username || null);
-                setAuthState('authenticated');
+                setRole(data.role || null);
+                setAuthState(data.must_change_password ? 'password-change-required' : 'authenticated');
             } else {
                 setAuthRequired(true);
-                setAuthState('unauthenticated');
+                clearIdentity();
             }
         } catch {
-            setAuthState('unauthenticated');
+            clearIdentity();
         }
-    }, []);
+    }, [clearIdentity]);
 
     useEffect(() => {
         checkAuth();
@@ -47,16 +56,23 @@ export function AuthProvider({ children }) {
 
     // Listen for auth-expired events dispatched by the axios interceptor
     useEffect(() => {
-        const handleExpired = () => setAuthState('unauthenticated');
+        const handleExpired = clearIdentity;
+        const handlePasswordChange = () => setAuthState('password-change-required');
         window.addEventListener('auth-expired', handleExpired);
-        return () => window.removeEventListener('auth-expired', handleExpired);
-    }, []);
+        window.addEventListener('auth-password-change-required', handlePasswordChange);
+        return () => {
+            window.removeEventListener('auth-expired', handleExpired);
+            window.removeEventListener('auth-password-change-required', handlePasswordChange);
+        };
+    }, [clearIdentity]);
 
     const login = useCallback(async (username, password) => {
         const data = await apiLogin(username, password);
         setAuthRequired(true);
         setCurrentUser(data.username || username);
-        setAuthState('authenticated');
+        setRole(data.role || null);
+        setPasswordChanged(false);
+        setAuthState(data.must_change_password ? 'password-change-required' : 'authenticated');
         return data;
     }, []);
 
@@ -64,20 +80,30 @@ export function AuthProvider({ children }) {
         try {
             await apiLogout();
         } finally {
-            setAuthState('unauthenticated');
-            setCurrentUser(null);
+            clearIdentity();
         }
-    }, []);
+    }, [clearIdentity]);
+
+    const changePassword = useCallback(async (oldPassword, newPassword) => {
+        await apiChangePassword(oldPassword, newPassword);
+        // The backend revokes all user sessions after a successful change.
+        clearIdentity();
+        setPasswordChanged(true);
+    }, [clearIdentity]);
 
     const value = {
         authState,
         authRequired,
         currentUser,
+        role,
+        passwordChanged,
+        mustChangePassword: authState === 'password-change-required',
         isAuthenticated: authState === 'authenticated',
         isChecking: authState === 'checking',
         login,
         logout,
         checkAuth,
+        changePassword,
         api,
     };
 

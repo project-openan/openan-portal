@@ -45,9 +45,9 @@
  * @property {MenuItem[]}  menu     — Menu items to register in Portal navigation
  * @property {PluginRoute[]} routes  — Routes to register in Portal router
  * @property {PluginI18n} [i18n]     — Plugin-specific i18n resources
- * @property {(ctx: import('./plugin-context.js').PortalContextValue) => void|Promise<void>} [onInit]    — Called once after registration
- * @property {() => void} [onActivate]   — Called when the plugin becomes the active view
- * @property {() => void} [onDeactivate] — Called when the plugin leaves the active view
+ * Lifecycle and resources belong to the React component (useEffect cleanup).
+ * Menus/routes are declarative; imperative registration and manifest hooks
+ * are deliberately unsupported, rather than silently ignored.
  * @property {{ enabled: boolean, entry: string }} [standalone] — Standalone mode config
  */
 
@@ -64,6 +64,9 @@ export function validateManifest(manifest) {
     if (!manifest || typeof manifest !== 'object') {
         throw new Error('Plugin manifest must be an object');
     }
+    for (const hook of ['onInit', 'onActivate', 'onDeactivate']) {
+        if (manifest[hook] !== undefined) errors.push(`${hook} is unsupported; use React component effects`);
+    }
     if (!manifest.id || typeof manifest.id !== 'string') {
         errors.push('manifest.id is required (string)');
     }
@@ -77,14 +80,25 @@ export function validateManifest(manifest) {
         errors.push('manifest.routes must be an array');
     } else {
         manifest.routes.forEach((r, i) => {
-            if (!r.path) errors.push(`manifest.routes[${i}].path is required`);
-            if (typeof r.component !== 'function') {
+            if (typeof r?.path !== 'string' || !r.path.startsWith('/')) errors.push(`manifest.routes[${i}].path must be absolute`);
+            if (typeof r?.component !== 'function') {
                 errors.push(`manifest.routes[${i}].component must be a lazy-import function`);
             }
         });
     }
     if (manifest.menu && !Array.isArray(manifest.menu)) {
         errors.push('manifest.menu must be an array if present');
+    }
+    if (manifest.backend !== undefined && (typeof manifest.backend?.gateway !== 'string' ||
+        !/^(\/|https?:\/\/)/.test(manifest.backend.gateway))) {
+        errors.push('backend.gateway must be an absolute URL or same-origin path');
+    }
+    if (Array.isArray(manifest.menu)) {
+        for (const item of manifest.menu) {
+            if (!item?.id || typeof item.labelKey !== 'string' || typeof item.route !== 'string' || !item.route.startsWith('/')) {
+                errors.push('menu entries require id, labelKey and absolute route');
+            }
+        }
     }
     if (manifest.i18n) {
         if (!manifest.i18n.namespace) {

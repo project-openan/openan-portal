@@ -28,6 +28,7 @@ import Header from './components/header/index.jsx';
 import { ErrorBoundary } from './components/error_boundary/index.jsx';
 import Loading from './components/loading.jsx';
 import Login from './auth/Login.jsx';
+import ChangePassword from './auth/ChangePassword.jsx';
 import PluginManager from './components/plugin_manager/index.jsx';
 import api, { createApi } from './service/api.js';
 
@@ -55,6 +56,7 @@ function PortalShell({ pluginsConfig }) {
     const navigate = useNavigate();
 
     const [plugins, setPlugins] = useState(null);
+    const [pluginErrors, setPluginErrors] = useState([]);
     const [showPluginManager, setShowPluginManager] = useState(false);
     const [disabledIds, setDisabledIds] = useState(() => {
         try {
@@ -66,7 +68,10 @@ function PortalShell({ pluginsConfig }) {
     });
 
     useEffect(() => {
+        let active = true;
         async function loadAllPlugins() {
+            const errors = [];
+            const onError = (id, error) => errors.push({ id, message: error.message || 'Plugin load failed' });
             // Split by loading mode. Bundle plugins honor the per-delivery
             // `enabled` flag (parity with source plugins, which are filtered
             // by loadEnabledPlugins in @openan/portal-sdk). Entries without
@@ -77,16 +82,18 @@ function PortalShell({ pluginsConfig }) {
             );
 
             // 1. SOURCE plugins — compiled by Portal's Vite at build time
-            const sourceManifests = await loadEnabledPlugins({ plugins: sourceEntries });
+            const sourceManifests = await loadEnabledPlugins({ plugins: sourceEntries }, { onError });
 
             // 2. BUNDLE plugins — local artifacts or remote http, loaded via <script>
             const bundleManifests = await Promise.all(
                 bundleEntries.map(async (entry) => {
                     try {
-                        const manifest = await loadPluginBundle(entry);
+                        const manifest = validateManifest(await loadPluginBundle(entry));
+                        if (manifest.id !== entry.id) throw new Error('Configured plugin id does not match its manifest');
                         return manifest;
                     } catch (err) {
                         console.error(`[Portal] Failed to load bundled plugin "${entry.id}" (${entry._loadMode || 'bundle'}):`, err);
+                        onError(entry.id, err);
                         return null;
                     }
                 })
@@ -95,16 +102,26 @@ function PortalShell({ pluginsConfig }) {
             const all = [...sourceManifests, ...bundleManifests.filter(Boolean)]
                 .sort((a, b) => (a.menu?.[0]?.order ?? 999) - (b.menu?.[0]?.order ?? 999));
 
-            await Promise.all(
-                all.filter((p) => p.i18n).map((p) => loadPluginI18n(p.i18n))
-            );
-            setPlugins(all);
+            const ids = new Set();
+            const paths = new Set();
+            const ready = [];
+            for (const plugin of all) {
+                try {
+                    if (ids.has(plugin.id) || plugin.routes.some(r => paths.has(r.path))) throw new Error('Duplicate plugin id or route');
+                    if (plugin.i18n) await loadPluginI18n(plugin.i18n);
+                    ids.add(plugin.id);
+                    plugin.routes.forEach(r => paths.add(r.path));
+                    ready.push(plugin);
+                } catch (error) { onError(plugin.id, error); }
+            }
+            if (active) { setPlugins(ready); setPluginErrors(errors); }
         }
 
         loadAllPlugins().catch((err) => {
             console.error('[Portal] Failed to load plugins:', err);
-            setPlugins([]);
+            if (active) { setPlugins([]); setPluginErrors([{ id: 'portal', message: err.message }]); }
         });
+        return () => { active = false; };
     }, [pluginsConfig]);
 
     const togglePlugin = useCallback((id) => {
@@ -112,7 +129,8 @@ function PortalShell({ pluginsConfig }) {
             const next = new Set(prev);
             if (next.has(id)) next.delete(id);
             else next.add(id);
-            localStorage.setItem(DISABLED_KEY, JSON.stringify([...next]));
+            try { localStorage.setItem(DISABLED_KEY, JSON.stringify([...next])); }
+            catch { console.warn('[Portal] Plugin preference could not be persisted'); }
             return next;
         });
     }, []);
@@ -137,10 +155,11 @@ function PortalShell({ pluginsConfig }) {
     const portalCtx = useMemo(() => ({
         auth: {
             user: auth.currentUser,
-            role: auth.authRequired ? 'user' : null,
+            role: auth.role,
             isAuthenticated: auth.isAuthenticated,
             login: auth.login,
             logout: auth.logout,
+            check: auth.checkAuth,
         },
         theme: {
             isDark: theme.isDark,
@@ -150,41 +169,35 @@ function PortalShell({ pluginsConfig }) {
         i18n,
         navigate,
         router: { location, navigate },
-        registerMenu: () => {},
-        registerRoute: () => {},
     }), [auth, theme, i18n, navigate, location]);
 
-    // Set global context for Module Federation bridge — remote plugins
-    // load their own copy of @openan/portal-sdk, which has a different
-    // React Context instance. Setting window.__OPENAN_PORTAL_CONTEXT__
-    // here (before render) ensures remote plugins can always read it.
-    if (typeof window !== 'undefined') {
-        window.__OPENAN_PORTAL_CONTEXT__ = portalCtx;
-    }
+    // Stable per-plugin clients, built before rendering route elements.
+    const pluginApis = useMemo(() => new Map((plugins || []).map(plugin =>
+        [plugin.id, plugin.backend?.gateway ? createApi(plugin.backend.gateway) : api]
+    )), [plugins]);
 
-    // Cache per-plugin API instances (keyed by gateway path)
-    const pluginApiCache = useMemo(() => new Map(), []);
-    const getPluginApi = useCallback((plugin) => {
-        const gateway = plugin.backend?.gateway;
-        if (!gateway) return api;
-        if (!pluginApiCache.has(gateway)) {
-            pluginApiCache.set(gateway, createApi(gateway));
-        }
-        return pluginApiCache.get(gateway);
-    }, [pluginApiCache]);
-
-    if (auth.isChecking || !plugins) {
+    if (auth.isChecking) {
         return <Loading />;
     }
 
+    if (auth.mustChangePassword) return <ChangePassword />;
     if (!auth.isAuthenticated) {
         return <Login />;
     }
+
+    if (!plugins) return <Loading />;
+
+    const manager = showPluginManager && <PluginManager plugins={plugins} disabledIds={disabledIds}
+        onToggle={togglePlugin} onClose={() => setShowPluginManager(false)} />;
+    const failures = pluginErrors.length > 0 && <div role="alert" className="p-3 text-sm bg-amber-50 text-amber-900">
+        {t('portal.plugin_failed')} {pluginErrors.map(error => `${error.id}: ${error.message}`).join('; ')}
+    </div>;
 
     if (routes.length === 0) {
         return (
             <div className="h-screen flex items-center justify-center bg-zinc-50 dark:bg-[#09090B]">
                 <div className="text-center">
+                    {failures}
                     <p className="text-zinc-400 text-sm mb-4">{t('portal.no_plugins')}</p>
                     <button
                         onClick={() => setShowPluginManager(true)}
@@ -193,14 +206,10 @@ function PortalShell({ pluginsConfig }) {
                         {t('plugin_manager.title')}
                     </button>
                 </div>
+                {manager}
             </div>
         );
     }
-
-    // If current route is disabled, redirect to first visible route
-    const currentRouteValid = routes.some((r) =>
-        location.pathname === r.path || location.pathname.startsWith(r.path + '/')
-    );
 
     return (
         <PluginRegistryProvider plugins={visiblePlugins}>
@@ -210,18 +219,19 @@ function PortalShell({ pluginsConfig }) {
                         disabledIds={disabledIds}
                         onManagePlugins={() => setShowPluginManager(true)}
                     />
+                    {failures}
                     <main className="flex-1 min-h-0 relative overflow-hidden">
                         <Routes>
                             {routes.map((r) => {
                                 const plugin = visiblePlugins.find((p) => p.id === r.pluginId);
-                                const pluginApi = getPluginApi(plugin);
+                                const pluginApi = pluginApis.get(plugin.id);
                                 return (
                                     <Route
                                         key={r.path}
                                         path={r.path}
                                         element={
                                             <PortalProvider value={{ ...portalCtx, api: pluginApi }}>
-                                                <ErrorBoundary>
+                                                <ErrorBoundary key={`${r.pluginId}:${r.path}`}>
                                                     <Suspense
                                                         fallback={
                                                             <div className="h-full flex items-center justify-center text-zinc-400 text-sm animate-pulse">
@@ -240,20 +250,13 @@ function PortalShell({ pluginsConfig }) {
                             <Route
                                 path="*"
                                 element={
-                                    currentRouteValid ? null : <Navigate to={routes[0].path} />
+                                    <Navigate replace to={routes[0].path} />
                                 }
                             />
                         </Routes>
                     </main>
                 </div>
-                {showPluginManager && (
-                    <PluginManager
-                        plugins={plugins}
-                        disabledIds={disabledIds}
-                        onToggle={togglePlugin}
-                        onClose={() => setShowPluginManager(false)}
-                    />
-                )}
+                {manager}
         </PluginRegistryProvider>
     );
 }

@@ -33,30 +33,35 @@ import { validateManifest } from './plugin-manifest.js';
  * @param {{ plugins: Array<{ id: string, enabled: boolean, manifest: () => Promise<{ default: import('./plugin-manifest.js').PluginManifest }> }}> }} config
  * @returns {Promise<import('./plugin-manifest.js').PluginManifest[]>} — validated manifests, sorted by first menu item order
  */
-export async function loadEnabledPlugins(config) {
+export async function loadEnabledPlugins(config, { onError = (id, error) => console.error(`[Portal] Plugin ${id}:`, error) } = {}) {
     if (!config || !Array.isArray(config.plugins)) {
         return [];
     }
 
-    const enabled = config.plugins.filter((p) => p.enabled);
+    const enabled = config.plugins.filter((p) => p.enabled !== false);
     if (enabled.length === 0) {
         return [];
     }
 
-    const modules = await Promise.all(
+    const manifests = (await Promise.all(
         enabled.map(async (p) => {
-            if (typeof p.manifest !== 'function') {
-                throw new Error(
-                    `Plugin "${p.id}" has no manifest loader. ` +
-                    'Expected: { manifest: () => import("...") }'
-                );
+            try {
+                if (typeof p.manifest !== 'function') {
+                    throw new Error(
+                        `Plugin "${p.id}" has no manifest loader. ` +
+                        'Expected: { manifest: () => import("...") }'
+                    );
+                }
+                const mod = await p.manifest();
+                const manifest = validateManifest(mod.default || mod);
+                if (manifest.id !== p.id) throw new Error('Configured plugin id does not match its manifest');
+                return manifest;
+            } catch (error) {
+                onError(p.id, error);
+                return null;
             }
-            const mod = await p.manifest();
-            return mod.default || mod;
         })
-    );
-
-    const manifests = modules.map(validateManifest);
+    )).filter(Boolean);
 
     // Sort by the first menu item's order for stable navigation layout
     manifests.sort((a, b) => {

@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
     CheckCircle2,
+    StopCircle,
     XCircle,
     Loader,
     Clock,
@@ -160,6 +161,7 @@ const StepStatusMap = {
     running:   { icon: Loader,       color: 'text-blue-500',    dot: 'bg-blue-500 animate-pulse' },
     completed: { icon: CheckCircle2, color: 'text-emerald-500', dot: 'bg-emerald-500' },
     failed:    { icon: XCircle,      color: 'text-rose-500',    dot: 'bg-rose-500' },
+    cancelled: { icon: StopCircle,   color: 'text-amber-500',   dot: 'bg-amber-500' },
 };
 
 function formatDuration(startTime, endTime) {
@@ -552,15 +554,16 @@ const StepPhase = React.memo(({ step, isDark }) => {
 const WorkflowHeader = React.memo(({ events, steps, isRunning }) => {
     const startEvent = events.find(e => e.type === 'start');
     const completeEvent = events.find(e => e.type === 'complete');
-    const errorEvent = events.find(e => e.type === 'error');
+    const errorEvent = events.find(e => e.type === 'error' || e.type === 'dispatch_error');
+    const cancelledEvent = events.find(e => e.type === 'cancelled');
     const wfName = startEvent?.data?.workflow || '';
     const totalSteps = startEvent?.data?.steps || 0;
     const completedSteps = steps.filter(s => s.status === 'completed').length;
     const failedSteps = steps.filter(s => s.status === 'failed').length;
     const startTime = startEvent?.timestamp;
-    const endTime = completeEvent?.timestamp || errorEvent?.timestamp;
+    const endTime = completeEvent?.timestamp || errorEvent?.timestamp || cancelledEvent?.timestamp;
     const duration = formatDuration(startTime, endTime);
-    const overallStatus = errorEvent ? 'failed' : completeEvent ? 'completed' : isRunning ? 'running' : 'pending';
+    const overallStatus = cancelledEvent ? 'cancelled' : errorEvent ? 'failed' : completeEvent ? 'completed' : isRunning ? 'running' : 'pending';
     const statusInfo = StepStatusMap[overallStatus] || StepStatusMap.pending;
     const StatusIcon = statusInfo.icon;
     const progress = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
@@ -580,7 +583,7 @@ const WorkflowHeader = React.memo(({ events, steps, isRunning }) => {
                     <div className="text-sm font-semibold text-zinc-900 dark:text-white truncate">{wfName || 'Workflow Execution'}</div>
                     <div className="flex items-center gap-2 mt-0.5">
                         <span className={`text-xs font-medium ${statusInfo.color}`}>
-                            {overallStatus === 'running' ? '执行中' : overallStatus === 'completed' ? '已完成' : overallStatus === 'failed' ? '失败' : '等待中'}
+                            {overallStatus === 'running' ? '执行中' : overallStatus === 'completed' ? '已完成' : overallStatus === 'failed' ? '失败' : overallStatus === 'cancelled' ? '已取消' : '等待中'}
                         </span>
                         {totalSteps > 0 && (
                             <span className="text-xs text-zinc-400">

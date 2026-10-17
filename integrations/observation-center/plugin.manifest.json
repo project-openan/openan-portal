@@ -1,0 +1,10 @@
+{
+  "id": "observation-center",
+  "name": "Observation Center",
+  "version": "0.1.0",
+  "entry": "index.js",
+  "css": "index.css",
+  "backend": { "gateway": "/api/observe" },
+  "menu": [{ "id": "observation-center", "labelKey": "Observation Center", "route": "/observation", "order": 40 }],
+  "routes": [{ "path": "/observation", "menuId": "observation-center" }]
+}

@@ -13,6 +13,10 @@
     "dev": "node scripts/dev-all.js",
     "dev:portal": "npm -w portal run dev",
     "build": "npm -w portal run build",
+    "build:release": "npm run plugins:validate && npm run build",
+    "plugins:install": "node scripts/plugin-artifacts.mjs install",
+    "integrations:build": "node scripts/build-integrations.mjs",
+    "plugins:validate": "node scripts/plugin-artifacts.mjs validate",
     "lint": "eslint .",
     "test": "vitest run"
   },
@@ -20,6 +24,7 @@
     "@eslint/js": "^9.5.0",
     "eslint": "9.26.0",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^15.0.0"
   },

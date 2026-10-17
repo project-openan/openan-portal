@@ -1,0 +1,16 @@
+.openan-integration { padding: 24px; color: #182234; background: #f6f8fc; min-height: 100%; box-sizing: border-box; }
+.openan-integration[data-dark="true"] { color: #e3eaf5; background: #121b2c; }
+.openan-integration header, .openan-integration .integration-toolbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.openan-integration h1 { font-size: 22px; font-weight: 650; margin: 0; }
+.openan-integration h2 { font-size: 17px; font-weight: 600; margin: 16px 0; }
+.openan-integration p { margin: 10px 0; }
+.openan-integration button, .openan-integration select { padding: 7px 12px; border: 1px solid #8b9ab2; border-radius: 6px; background: transparent; color: inherit; }
+.openan-integration button:disabled { opacity: .5; cursor: wait; }
+.openan-integration button:focus-visible, .openan-integration a:focus-visible { outline: 2px solid #527fff; outline-offset: 2px; }
+.openan-integration .integration-panel { border: 1px solid #8b9ab24d; border-radius: 10px; padding: 16px; margin-bottom: 16px; overflow: auto; }
+.openan-integration table { border-collapse: collapse; width: 100%; font-size: 14px; text-align: left; }
+.openan-integration td, .openan-integration th { padding: 10px; border-bottom: 1px solid #8b9ab24d; vertical-align: top; overflow-wrap: anywhere; }
+.openan-integration .integration-error { border-left: 4px solid #d54444; padding: 12px; background: #d544441a; white-space: pre-wrap; }
+.openan-integration a { color: #5486f9; text-decoration: underline; }
+.openan-integration pre { max-height: 360px; max-width: 100%; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.openan-integration iframe { display: block; width: 100%; height: max(650px, calc(100vh - 230px)); border: 1px solid #8b9ab24d; border-radius: 8px; background: #fff; }

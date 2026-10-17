@@ -184,16 +184,6 @@ const PropertyPanel = ({ selectedElement, nodes, edges, setPhenomenon, setNodes,
         }
     };
 
-    if (!activeElement) {
-        return (
-            <div className={`w-80 h-full flex flex-col items-center justify-center p-8 text-center transition-colors ${theme.emptyBg}`}>
-                <div className={`w-12 h-12 rounded-full mb-4 flex items-center justify-center ${isDark ? 'bg-zinc-900 text-zinc-700' : 'bg-zinc-200 text-zinc-400'}`}>
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" /></svg>
-                </div>
-                <p className={`text-sm font-medium ${isDark ? 'text-zinc-500' : 'text-zinc-500'}`}>{t('workflow.panel.empty')}</p>
-            </div>
-        );
-    }
     const renderValue = (val) => {
         if (typeof val === 'object' && val !== null) {
             return (
@@ -204,8 +194,8 @@ const PropertyPanel = ({ selectedElement, nodes, edges, setPhenomenon, setNodes,
         }
         return <span className="font-medium">{String(val)}</span>;
     };
-    const isNode = !('source' in activeElement);
-    const data = activeElement.data || {};
+    const isNode = activeElement && !('source' in activeElement);
+    const data = activeElement?.data || {};
 
     const allStepNames = useMemo(() => {
         return nodes
@@ -215,7 +205,7 @@ const PropertyPanel = ({ selectedElement, nodes, edges, setPhenomenon, setNodes,
 
     const downstreamIds = useMemo(() => {
         const descendants = new Set();
-        const queue = [activeElement.id];
+        const queue = activeElement ? [activeElement.id] : [];
         while (queue.length > 0) {
             const current = queue.shift();
             for (const edge of edges) {
@@ -226,21 +216,21 @@ const PropertyPanel = ({ selectedElement, nodes, edges, setPhenomenon, setNodes,
             }
         }
         return descendants;
-    }, [activeElement.id, edges]);
+    }, [activeElement, edges]);
 
     const directPredecessorIds = useMemo(() => {
         const preds = new Set();
         for (const edge of edges) {
-            if (edge.target === activeElement.id) {
+            if (edge.target === activeElement?.id) {
                 preds.add(edge.source);
             }
         }
         return preds;
-    }, [activeElement.id, edges]);
+    }, [activeElement, edges]);
 
     const allPredecessorIds = useMemo(() => {
         const ancestors = new Set();
-        const queue = [activeElement.id];
+        const queue = activeElement ? [activeElement.id] : [];
         while (queue.length > 0) {
             const current = queue.shift();
             for (const edge of edges) {
@@ -251,13 +241,13 @@ const PropertyPanel = ({ selectedElement, nodes, edges, setPhenomenon, setNodes,
             }
         }
         return ancestors;
-    }, [activeElement.id, edges]);
+    }, [activeElement, edges]);
 
     const eligibleStepNames = useMemo(() => {
         return allStepNames.filter(s =>
-            s.id !== activeElement.id && !downstreamIds.has(s.id)
+            s.id !== activeElement?.id && !downstreamIds.has(s.id)
         );
-    }, [allStepNames, activeElement.id, downstreamIds]);
+    }, [allStepNames, activeElement, downstreamIds]);
 
     const isStarMode = data.context_from && data.context_from[0] === '*';
 
@@ -275,6 +265,18 @@ const PropertyPanel = ({ selectedElement, nodes, edges, setPhenomenon, setNodes,
         }
         return eligibleStepNames;
     }, [eligibleStepNames, isStarMode, allPredecessorIds]);
+
+    // All hooks must run even when selection is cleared or changes to an edge.
+    if (!activeElement) {
+        return (
+            <div className={`w-80 h-full flex flex-col items-center justify-center p-8 text-center transition-colors ${theme.emptyBg}`}>
+                <div className={`w-12 h-12 rounded-full mb-4 flex items-center justify-center ${isDark ? 'bg-zinc-900 text-zinc-700' : 'bg-zinc-200 text-zinc-400'}`}>
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" /></svg>
+                </div>
+                <p className="text-sm font-medium text-zinc-500">{t('workflow.panel.empty')}</p>
+            </div>
+        );
+    }
 
     const toggleContextFrom = (stepName) => {
         let current = Array.isArray(data.context_from) ? [...data.context_from] : [];

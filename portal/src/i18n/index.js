@@ -20,11 +20,13 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './base-en.json';
 import zh from './base-zh.json';
+import workflowEn from '../../../packages/shared-workflow/src/locales/en.json';
+import workflowZh from '../../../packages/shared-workflow/src/locales/zh.json';
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
     resources: {
-        en: { translation: en },
-        zh: { translation: zh },
+        en: { translation: { ...workflowEn, ...en } },
+        zh: { translation: { ...workflowZh, ...zh } },
     },
     fallbackLng: 'en',
     detection: {

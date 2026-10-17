@@ -2,6 +2,8 @@
 
 > **版本**: 1.0 · **日期**: 2026-08 · **适用**: openan-website Portal 框架
 
+> 当前交付命令与约束见 [集成契约](Portal-Integration-Contract.md)。默认 bundle 启用清单已集中到 `portal/bundled-plugins.json`；下文 demo-showcase 是模板示例，不是当前仓库自带目录。
+
 ---
 
 ## 1. 方案概述
@@ -92,9 +94,9 @@ React/react-dom 必须 **external**(由 Portal 提供,避免多实例):
 build: {
     lib: { entry: 'src/index.jsx', name: '__OPENAN_PLUGIN__demo_showcase', formats: ['umd'] },
     rollupOptions: {
-        external: ['react', 'react-dom', 'react-dom/client'],
+        external: ['react', 'react-dom', 'react-dom/client', 'react-i18next', '@openan/portal-sdk'],
         output: {
-            globals: { react: 'React', 'react-dom': 'ReactDOM' },
+            globals: { react: 'React', 'react-dom': 'ReactDOM', 'react-dom/client': 'ReactDOM', 'react-i18next': 'ReactI18next', '@openan/portal-sdk': 'OpenANPortalSDK' },
             assetFileNames: 'index.css',
         },
     },
@@ -178,9 +180,9 @@ export default defineConfig({
             fileName: () => 'index.js',
         },
         rollupOptions: {
-            external: ['react', 'react-dom', 'react-dom/client'],
+            external: ['react', 'react-dom', 'react-dom/client', 'react-i18next', '@openan/portal-sdk'],
             output: {
-                globals: { react: 'React', 'react-dom': 'ReactDOM', 'react-dom/client': 'ReactDOM' },
+                globals: { react: 'React', 'react-dom': 'ReactDOM', 'react-dom/client': 'ReactDOM', 'react-i18next': 'ReactI18next', '@openan/portal-sdk': 'OpenANPortalSDK' },
                 assetFileNames: 'index.css',
             },
         },
@@ -393,7 +395,9 @@ node ../../node_modules/vite/bin/vite.js --port 3003
 # 浏览器 http://localhost:3003 → 导航栏出现 bundle 插件
 ```
 
-## 9. 已验证状态
+## 9. 历史模板验证记录
+
+以下是该方案最初的演示验证，不代表当前 main 或任何当前交付包已完成验收；当前版本须执行 `build:release` 和集成契约中的测试。
 
 | 验证项 | 结果 |
 |--------|------|

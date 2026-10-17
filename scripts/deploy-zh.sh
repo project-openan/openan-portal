@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ============================================================================
 # OpenAN Portal 一键部署脚本（中文版）
 #
@@ -17,6 +17,8 @@ WEB_ROOT="${1:-/OpenA2A-T/openan-portal-frontend}"
 PORT1="${2:-9003}"
 PORT2="${3:-3003}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/deploy-common.sh"
+validate_deploy_args
 TARBALL="$SCRIPT_DIR/openan-portal-dist.tar.gz"
 NGINX_CONF_SRC="$SCRIPT_DIR/openan-portal.nginx.conf"
 NGINX_CONF_DST="/etc/nginx/conf.d/openan-portal.conf"
@@ -57,7 +59,7 @@ if [ ! -f "$NGINX_CONF_SRC" ]; then
     exit 1
 fi
 echo "== 3/5 安装 nginx 配置 (listen $PORT1 / $PORT2) =="
-sed -e "s/__PORT1__/$PORT1/g" -e "s/__PORT2__/$PORT2/g" "$NGINX_CONF_SRC" > "$NGINX_CONF_DST"
+render_nginx > "$NGINX_CONF_DST"
 echo "   已写入: $NGINX_CONF_DST"
 
 # ---------------- 4/5 校验并重载 ----------------
@@ -78,11 +80,7 @@ JS=$(grep -oE '/assets/index-[^"]+\.js' "$WEB_ROOT/index.html" | head -1)
 CODE=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT1$JS" 2>/dev/null || echo ERR)
 echo "   主包 $JS -> $CODE"
 [ "$CODE" = "200" ] || FAIL=1
-for plugin in orchestration-center registry-center observation-center virtual-showroom an-ontology; do
-    CODE=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT1/plugins/$plugin/plugin.manifest.json" 2>/dev/null || echo ERR)
-    echo "   插件 $plugin -> $CODE"
-    [ "$CODE" = "200" ] || FAIL=1
-done
+check_plugins || FAIL=1
 
 echo ""
 if [ "$FAIL" = "0" ]; then

@@ -59,8 +59,9 @@ server {
     }
 
     # API proxy to registry backend (gateway mode, prefix strip).
-    location ~ ^/api/registry(/|$)(.*)$ {
-        rewrite ^/api/registry(/|$)(.*)$ /$2 break;
+    location ~ ^/api/(registry-center|registry)(/|$)(.*)$ {
+        rewrite ^/api/registry/rest/v1/registry(/|$)(.*)$ /rest/v1/registry-center/$2 break;
+        rewrite ^/api/(registry-center|registry)(/|$)(.*)$ /$3 break;
         proxy_pass ${REGISTRY_URL};
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -75,8 +76,20 @@ server {
         proxy_read_timeout 300s;
     }
 
-    # Direct API path used by the orchestration-center plugin in integrated
-    # mode (its manifest declares no gateway; calls hit the origin as-is).
+    # Read-only observation adapter. Do not expose unauthenticated ingestion
+    # POST endpoints through the Portal's presentation gateway.
+    location ~ ^/api/observe(/|$)(.*)$ {
+        limit_except GET { deny all; }
+        rewrite ^/api/observe(/|$)(.*)$ /$2 break;
+        proxy_pass ${OBSERVATION_URL};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Connection "";
+        proxy_buffering off;
+        proxy_read_timeout 60s;
+    }
+
+    # Compatibility for independently-built plugins using direct API paths.
     location /rest/v1/orchestrate/ {
         proxy_pass ${BACKEND_URL};
         proxy_http_version 1.1;
@@ -89,6 +102,15 @@ server {
         proxy_cache_bypass $http_upgrade;
 
         # SSE support
+        proxy_buffering off;
+        proxy_read_timeout 300s;
+    }
+
+    location /rest/v1/registry-center/ {
+        proxy_pass ${REGISTRY_URL};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Connection "";
         proxy_buffering off;
         proxy_read_timeout 300s;
     }

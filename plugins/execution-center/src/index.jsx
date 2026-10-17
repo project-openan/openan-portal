@@ -47,6 +47,7 @@ import { usePortalContext } from '@openan/portal-sdk';
 import { transformWorkflowToReactFlow, UnifiedWorkflow } from '@openan/shared-workflow';
 import ExecutionStatistics from './execution_statistics/index.jsx';
 import ExecutionTimeline from './timeline/index.jsx';
+import { openExecutionStream } from './execution-stream.js';
 
 const parseProtobufText = (raw) => {
     if (!raw || typeof raw !== 'string') return { text: raw, metadata: null };
@@ -377,11 +378,6 @@ const LogEntry = React.memo(({ event, isDark, t, isSelected }) => {
                     ? 'bg-blue-500/5 border-blue-500 shadow-[inset_4px_0_0_0_#3b82f6]' 
                     : 'border-zinc-100 dark:border-zinc-800/50'}`}
         >
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-2xl transition-all duration-300 shadow-xl
-                                                ${runningId === wf.workflow_id 
-                                                    ? 'opacity-100 scale-100 bg-rose-500 shadow-rose-500/20' 
-                                                    : (selectedId === wf.workflow_id ? 'opacity-100 scale-100 bg-emerald-500 shadow-emerald-500/20' : 'opacity-0 scale-75 bg-blue-600 group-hover:opacity-100 group-hover:scale-100 shadow-blue-500/20')}
-                                                hover:scale-110 active:scale-95 text-white z-10`}
             <div className="flex items-center gap-4 mb-3">
                 <div className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border-2 shadow-sm transition-all ${bgLight}`}>
                     {isNegotiation ? <MessageSquare size={15} className="opacity-80" /> : <Bot size={15} className="opacity-80" />}
@@ -475,7 +471,7 @@ const ExecutionCenter = () => {
         }));
     };
     const getStartProcessStreamUrl = (psopId, userIntent = '', lang = '', targetAgent = '') => {
-        const base = `${API_BASE}/execute?psop_id=${psopId}`;
+        const base = `${api.getUri({ url: `${API_BASE}/execute` })}?psop_id=${encodeURIComponent(psopId)}`;
         const params = [];
         if (userIntent) {
             params.push(`user_intent=${encodeURIComponent(userIntent)}`);
@@ -492,7 +488,7 @@ const ExecutionCenter = () => {
         return base;
     };
     const getDispatchStreamUrl = (intent, agentName, lang = '') => {
-        const base = `${API_BASE}/dispatch`;
+        const base = api.getUri({ url: `${API_BASE}/dispatch` });
         const params = [];
         params.push(`intent=${encodeURIComponent(intent)}`);
         params.push(`agent_name=${encodeURIComponent(agentName)}`);
@@ -588,7 +584,7 @@ const ExecutionCenter = () => {
     }, []);
 
     // Dispatch intent to the selected host agent via A2A-T
-    const handleDispatch = useCallback(() => {
+    const handleDispatch = () => {
         if (!userIntent.trim() || !selectedAgent) return;
 
         if (eventSource) {
@@ -610,13 +606,9 @@ const ExecutionCenter = () => {
         setEdges([]);
 
         const url = getDispatchStreamUrl(userIntent, selectedAgent, i18n.language);
-        const es = new EventSource(url, { withCredentials: true });
-
-        es.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
+        const es = openExecutionStream(url, {
+            onEvent: (data) => {
                 setEvents(prev => [...prev, data]);
-                console.log('[SSE event]', data.type, data.data?.step || data.data?.agent || '', JSON.stringify(data.data).slice(0, 120));
 
                switch (data.type) {
                     case 'start':
@@ -635,39 +627,20 @@ const ExecutionCenter = () => {
                             console.error('Failed to parse psop_update data:', e);
                         }
                         break;
-                    case 'dispatch_result':
-                    case 'complete':
-                    case 'close':
-                        setIsRunning(false);
-                        setIsDispatching(false);
-                        setRunningId(null);
-                        es.close();
-                        break;
-                    case 'dispatch_error':
-                    case 'error':
-                        setError(data.data.error || 'Dispatch failed');
-                        setIsRunning(false);
-                        setIsDispatching(false);
-                        setRunningId(null);
-                        es.close();
-                        break;
                 }
-            } catch (err) {
-                console.error("Failed to parse dispatch event data:", err);
-            }
-        };
-
-        es.onerror = () => {
-            if (es.readyState === EventSource.CLOSED) {
-                setError("Dispatch SSE Connection Error");
+            },
+            onFinish: ({ type, error }) => {
+                setError(error || (type === 'cancelled' ? t('common.cancelled', { ns: 'translation' }) : null));
+                if (error) setEvents(previous => ['error', 'dispatch_error'].includes(previous.at(-1)?.type) ? previous :
+                    [...previous, { type: 'error', data: { error }, timestamp: Date.now() / 1000 }]);
                 setIsRunning(false);
                 setIsDispatching(false);
                 setRunningId(null);
-            }
-        };
+            },
+        });
 
         setEventSource(es);
-    }, [userIntent, selectedAgent, eventSource, i18n.language]);
+    };
 
     // Update exact filter
     const updateFilter = useCallback((key, value) => {
@@ -905,7 +878,7 @@ const ExecutionCenter = () => {
                             t === 'agent_status_update' || t === 'agent_artifact_update' ||
                             t === 'negotiation_request' || t === 'negotiation_resolved' ||
                             t === 'negotiation_failed' ||
-                            t === 'complete' || t === 'error' || t === 'close' ||
+                            t === 'start' || t === 'complete' || t === 'error' || t === 'close' || t === 'cancelled' || t === 'dispatch_error' || t === 'dispatch_result' ||
                             t === 'workflow_complete';
                     });
                     setEvents(displayEvents);
@@ -981,11 +954,13 @@ const ExecutionCenter = () => {
             setEventSource(null);
         }
         setIsRunning(false);
+        setIsDispatching(false);
         setRunningId(null);
+        setEvents(previous => [...previous, { type: 'cancelled', data: {}, timestamp: Date.now() / 1000 }]);
     }, [eventSource]);
 
     // Start execution
-    const startExecution = useCallback((overrideId) => {
+    const startExecution = (overrideId) => {
         const idToRun = overrideId || selectedId;
         if (!idToRun) return;
 
@@ -1003,11 +978,9 @@ const ExecutionCenter = () => {
         setSelectedExecutionId(null);
 
         const url = getStartProcessStreamUrl(idToRun, userIntent, i18n.language, selectedAgent);
-        const es = new EventSource(url, { withCredentials: true });
-
-        es.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
+        setIsDispatching(false);
+        const es = openExecutionStream(url, {
+            onEvent: (data) => {
                 setEvents(prev => [...prev, data]);
 
                 switch (data.type) {
@@ -1021,40 +994,31 @@ const ExecutionCenter = () => {
                             console.error("Failed to parse psop_update data:", e);
                         }
                         break;
-                    case 'complete':
-                    case 'close':
-                        setIsRunning(false);
-                        setRunningId(null);
-                        es.close();
-                        break;
-                    case 'error':
-                        setError(data.data.error);
-                        setIsRunning(false);
-                        setRunningId(null);
-                        es.close();
-                        break;
                 }
-            } catch (err) {
-                console.error("Failed to parse event data:", err);
-            }
-        };
-
-        es.onerror = () => {
-            if (es.readyState === EventSource.CLOSED) {
-                setError("SSE Connection Error");
+            },
+            onFinish: ({ type, error }) => {
+                setError(error || (type === 'cancelled' ? t('common.cancelled', { ns: 'translation' }) : null));
+                if (error) setEvents(previous => ['error', 'dispatch_error'].includes(previous.at(-1)?.type) ? previous :
+                    [...previous, { type: 'error', data: { error }, timestamp: Date.now() / 1000 }]);
                 setIsRunning(false);
+                setIsDispatching(false);
                 setRunningId(null);
-            }
-        };
+            },
+        });
 
         setEventSource(es);
-    }, [selectedId, userIntent, selectedAgent]);
+    };
 
     useEffect(() => {
         return () => {
             if (eventSource) eventSource.close();
         };
     }, [eventSource]);
+
+    const terminal = events.findLast(event => ['complete', 'close', 'dispatch_result', 'cancelled', 'error', 'dispatch_error'].includes(event.type));
+    const statusLabel = isRunning ? t('execution.running') : terminal?.type === 'cancelled'
+        ? t('common.cancelled', { ns: 'translation' }) : ['error', 'dispatch_error'].includes(terminal?.type)
+            ? t('execution.failed') : terminal ? t('execution.completed') : t('execution.ready');
 
     const theme = useMemo(() => ({
         panel: isDark
@@ -1233,7 +1197,7 @@ const ExecutionCenter = () => {
                     <div className="flex items-center gap-2 pl-3 border-l border-zinc-200 dark:border-zinc-700">
                         <div className={`w-2 h-2 rounded-full ${isRunning ? 'bg-emerald-500 animate-pulse' : (psopStatus ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-600')}`} />
                         <span className={`text-xs font-medium ${isRunning ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-400'}`}>
-                            {isRunning ? t('execution.running') : (psopStatus ? t('execution.completed') : t('execution.ready'))}
+                            {statusLabel}
                         </span>
                     </div>
                 </div>

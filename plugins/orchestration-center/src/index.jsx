@@ -250,11 +250,6 @@ const OrchestrationCenter = () => {
         }
     };
 
-    useEffect(() => {
-        fetchWorkflows();
-        fetchTemplates();
-    }, []);
-
     const fetchTemplates = async () => {
         try {
             const res = await getTemplates();
@@ -265,6 +260,11 @@ const OrchestrationCenter = () => {
             console.error("Failed to fetch templates:", e);
         }
     };
+
+    useEffect(() => {
+        fetchWorkflows();
+        fetchTemplates();
+    }, []);
 
     const handleImportTemplate = async (tplId) => {
         try {

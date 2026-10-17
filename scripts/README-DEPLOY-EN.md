@@ -4,8 +4,8 @@
 
 This package contains the **production build artifacts** of OpenAN Portal (the pluggable unified portal) and one-click deployment scripts, ready to deploy standalone on any fresh server.
 
-- Build source: the `openan-portal` repository, `main` branch
-- Verified on production (Ubuntu 24.04 / nginx 1.24)
+- Build from reviewed source and independently built component artifacts. A historical deployment is not validation of the current revision.
+- Enabled bundle plugins are declared in `portal/bundled-plugins.json`.
 
 ## Package Contents
 
@@ -14,6 +14,8 @@ This package contains the **production build artifacts** of OpenAN Portal (the p
 | `openan-portal-dist.tar.gz` | Portal production build (index.html + assets/ + plugins/) |
 | `deploy-zh.sh` | One-click deploy script (Chinese output): copy-backup → overlay extract → install nginx config → self-check |
 | `deploy-en.sh` | One-click deploy script (English output) |
+| `deploy-common.sh` | Shared argument validation, template rendering and inventory-based checks; upload with both scripts |
+| `apply-plugin-registration.sh` | Compatibility tool for older prebuilt packages; requires Python 3.9+ |
 | `openan-portal.nginx.conf` | nginx config template (ports parametrizable) |
 | `README-DEPLOY-EN.md` | This document |
 
@@ -55,7 +57,7 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:9003/plugins/registry-
 curl -s http://127.0.0.1:9003/api/orchestrate/rest/v1/orchestrate/workflows          # expect JSON (needs the Orchestration backend)
 ```
 
-Open `http://<server-ip>:9003/` in a browser — the left menu should show: Registry Center / Orchestration Center / Execution Center (Execution Center and Skill Center are built-in plugins shipped with the main bundle).
+Open `http://<server-ip>:9003/` in a browser. The default bundle plugins are Registry Center, Orchestration Center, Observation Center, Virtual Showroom and AN Ontology; Execution Center and Skill Center are built in. Deliver every enabled artifact. Skill Center is marked as demo data. The obsolete `ontology-demo` must not be re-registered.
 
 ## Rollback
 
@@ -69,9 +71,22 @@ rm -rf /OpenA2A-T/openan-portal-frontend && cp -a /OpenA2A-T/openan-portal-front
 
 ```bash
 git clone <openan-portal repository> && cd openan-portal
-npm install
-npm run build          # artifacts in portal/dist/
-# Plugin UMD bundles live in portal/public/plugins/ and are copied into dist/plugins/ at build time
+npm ci
+# Build independently in each component project, then install its dist-plugin:
+npm run plugins:install -- registry-center=../registry-center/registry-center-web/dist-plugin orchestration-center=../orchestration-center/workflow-designer/dist-plugin
+npm run plugins:install -- virtual-showroom=../openan-demo/portal-plugins/virtual-showroom/dist-plugin
+npm run integrations:build
+# Set appUrl in integrations/dist-plugin/an-ontology/config.json to the editor's public dedicated origin root.
+npm run plugins:install -- observation-center=integrations/dist-plugin/observation-center an-ontology=integrations/dist-plugin/an-ontology
+npm run build:release
+# portal/dist/plugins.release.json records versions and hashes for all assets.
+# Package portal/dist/ as openan-portal-dist.tar.gz with the deployment scripts.
 ```
 
-> Note: JS artifacts use content-hash file names; hashes may differ between build environments (dependency drift) while functionality stays the same. `npm run build` succeeding + the page self-check passing is the acceptance criteria.
+`npm run build` builds the shell, not a complete release. Release and Docker builds require every enabled bundle; missing artifacts fail rather than silently disabling a plugin. For a reduced delivery, explicitly edit the JSON registry and rebuild. Remote runtime bundles need separate delivery verification.
+
+Set `OBSERVATION_URL` for dev/preview (default `http://127.0.0.1:5002`); containers also accept `OBSERVATION_HOST/PORT/SCHEME`. Adjust standalone Nginx's target separately. Deploy the native T-Box service and configure its browser-reachable dedicated origin root; HTTPS Portal requires an HTTPS editor. See [adapter setup](../integrations/README.md) for access control, embedding policy and verification boundaries.
+
+Installation copies and hashes auxiliary files such as `cards.json`, images and JS chunks, and rejects symlinks and non-public files. Upload `deploy-common.sh` with both language scripts; checks use the generated `plugins.enabled` inventory.
+
+Legacy compatibility: `bash apply-plugin-registration.sh WEB_ROOT [APP_URL]` restores missing registrations and optionally configures an HTTP(S) AN Ontology URL. It is idempotent, preserves `.bak-plugins` recovery copies, and rejects unknown or ambiguous builds without changing deployed files. It does not install artifacts or certify an older package. Prefer rebuilding from the JSON registry instead of modifying hashed bundles.

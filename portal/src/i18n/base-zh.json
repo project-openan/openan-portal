@@ -12,7 +12,16 @@
     "error": "登录失败，请检查密码",
     "logout": "退出"
   },
+  "password_change": {
+    "title": "修改密码", "required": "请先修改密码，再访问业务应用。",
+    "old": "当前密码", "new": "新密码", "confirm": "确认新密码",
+    "submit": "修改密码", "mismatch": "两次输入的新密码不一致。",
+    "same": "新密码不能与当前密码相同。",
+    "failed": "密码修改失败。", "relogin": "密码已修改，请重新登录。"
+  },
   "portal": {
+    "plugin_failed": "部分插件加载失败：",
+    "demo_data": "当前为演示数据，尚未接入实时技能管理服务。",
     "loading": "加载中...",
     "no_plugins": "没有启用的插件，请检查 plugins.config.js"
   },
@@ -32,6 +41,7 @@
     "close": "关闭"
   },
   "common": {
+    "cancelled": "执行已取消",
     "loading": "加载中...",
     "add": "添加",
     "delete": "删除",

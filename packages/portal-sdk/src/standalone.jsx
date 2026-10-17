@@ -15,9 +15,9 @@
 //    License for the specific language governing permissions and limitations
 //    under the License.
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { PortalContext } from './plugin-context.jsx';
+import { PortalProvider } from './plugin-context.jsx';
 
 /**
  * MockPortal — a minimal Portal shell for running a single plugin in
@@ -86,12 +86,7 @@ export function MockPortal({ children }) {
         },
         navigate: () => {},
         router: { location: { pathname: '/' }, params: {} },
-        registerMenu: () => {},
-        registerRoute: () => {},
     };
 
-    if (typeof window !== 'undefined') {
-        window.__OPENAN_PORTAL_CONTEXT__ = value;
-    }
-    return <PortalContext.Provider value={value}>{children}</PortalContext.Provider>;
+    return <PortalProvider value={value}>{children}</PortalProvider>;
 }

@@ -12,7 +12,16 @@
     "error": "Login failed, please check your password",
     "logout": "Logout"
   },
+  "password_change": {
+    "title": "Change password", "required": "Change your password before accessing applications.",
+    "old": "Current password", "new": "New password", "confirm": "Confirm new password",
+    "submit": "Change password", "mismatch": "New passwords do not match.",
+    "same": "New password must differ from the current password.",
+    "failed": "Password change failed.", "relogin": "Password changed. Please sign in again."
+  },
   "portal": {
+    "plugin_failed": "Some plugins could not be loaded:",
+    "demo_data": "Demo data only — not connected to a live skill registry.",
     "loading": "Loading...",
     "no_plugins": "No plugins enabled. Check plugins.config.js"
   },
@@ -32,6 +41,7 @@
     "close": "Close"
   },
   "common": {
+    "cancelled": "Execution cancelled",
     "loading": "Loading...",
     "add": "Add",
     "delete": "Delete",

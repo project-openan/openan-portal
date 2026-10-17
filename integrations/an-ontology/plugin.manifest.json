@@ -1,0 +1,9 @@
+{
+  "id": "an-ontology",
+  "name": "Ontology Center",
+  "version": "0.1.0",
+  "entry": "index.js",
+  "css": "index.css",
+  "menu": [{ "id": "an-ontology", "labelKey": "Ontology T-Box", "route": "/ontology", "order": 50 }],
+  "routes": [{ "path": "/ontology", "menuId": "an-ontology" }]
+}

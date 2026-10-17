@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
+import { backendProxy } from '../scripts/backend-proxy.js';
 
 const root = import.meta.dirname;
 const workspaceRoot = path.resolve(root, '..');
@@ -91,54 +92,12 @@ export default defineConfig({
     base: '/',
     preview: {
         port: 4173,
-        proxy: {
-            '/api/orchestrate': {
-                target: process.env.BACKEND_URL || 'http://127.0.0.1:5001',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/orchestrate/, ''),
-            },
-            '/api/registry': {
-                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/registry/, ''),
-            },
-            '/api/registry-center': {
-                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/registry-center/, ''),
-            },
-            '/api/ontology': {
-                target: process.env.ONTOLOGY_URL || 'http://127.0.0.1:8787',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/ontology/, ''),
-            },
-        },
+        proxy: backendProxy(),
     },
     server: {
         port: 3003,
         fs: { allow: [workspaceRoot] },
-        proxy: {
-            '/api/orchestrate': {
-                target: process.env.BACKEND_URL || 'http://127.0.0.1:5001',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/orchestrate/, ''),
-            },
-            '/api/registry': {
-                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/registry/, ''),
-            },
-            '/api/registry-center': {
-                target: process.env.REGISTRY_URL || 'http://127.0.0.1:5000',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/registry-center/, ''),
-            },
-            '/api/ontology': {
-                target: process.env.ONTOLOGY_URL || 'http://127.0.0.1:8787',
-                changeOrigin: true, secure: false,
-                rewrite: (p) => p.replace(/^\/api\/ontology/, ''),
-            },
-        },
+        proxy: backendProxy(),
     },
     plugins: [
         react(),
@@ -158,7 +117,6 @@ export default defineConfig({
             'react-markdown', 'remark-gfm',
             '@xyflow/react', 'dagre', '@tisoap/react-flow-smart-edge',
             'recharts', 'libgif', 'mobile-drag-drop',
-            'three',
         ],
     },
     test: { environment: 'jsdom' },

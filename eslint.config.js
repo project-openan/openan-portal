@@ -19,9 +19,10 @@ import js from '@eslint/js';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
+import react from 'eslint-plugin-react';
 
 export default [
-    { ignores: ['**/node_modules/**', '**/dist/**', '**/coverage/**'] },
+    { ignores: ['**/node_modules/**', '**/dist/**', '**/dist-plugin/**', '**/dist-bundle/**', 'portal/public/**', '**/coverage/**'] },
     js.configs.recommended,
     {
         files: ['**/*.{js,jsx}'],
@@ -32,10 +33,13 @@ export default [
             globals: { ...globals.browser },
         },
         plugins: {
+            react,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
         },
         rules: {
+            // Core no-unused-vars does not understand JSX references on its own.
+            'react/jsx-uses-vars': 'error',
             ...reactHooks.configs.recommended.rules,
             'react-refresh/only-export-components': [
                 'warn',
@@ -49,12 +53,12 @@ export default [
     },
     {
         // Node.js config files & scripts — allow process, __dirname, require
-        files: ['**/vite.config.js', '**/tailwind.config.js', '**/postcss.config.js', '**/eslint.config.js', 'scripts/**/*.js'],
+        files: ['**/vite*.{js,mjs}', '**/vitest*.{js,mjs}', '**/tailwind.config.js', '**/postcss.config.js', '**/eslint.config.js', 'scripts/**/*.{js,mjs}', 'tests/**/*.{js,mjs}'],
         languageOptions: {
             globals: { ...globals.node, ...globals.browser },
         },
         rules: {
-            'no-undef': 'off',
+            'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
         },
     },
 ];

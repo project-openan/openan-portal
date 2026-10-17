@@ -200,6 +200,10 @@ export default function Header({ plugins, disabledIds, onManagePlugins }) {
 
             {/* Right controls */}
             <div className="flex items-center gap-4">
+                <button type="button" onClick={onManagePlugins} title={t('plugin_manager.title')}
+                    aria-label={t('plugin_manager.title')} className="p-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                    <Puzzle size={18} /><span className="text-xs">{activeCount}{hasDisabled ? `/${plugins.length}` : ''}</span>
+                </button>
                 {authRequired && (
                     <>
                         <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">

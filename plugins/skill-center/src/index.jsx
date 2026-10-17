@@ -135,6 +135,7 @@ const SkillCenter = ({ isDark: isDarkProp }) => {
 
     return (
         <div className="h-full p-6 flex flex-col w-full transition-all animate-in fade-in duration-500 overflow-hidden font-sans">
+            <p role="note" className="mb-3 text-sm text-amber-700 dark:text-amber-300">{t('portal.demo_data', { ns: 'translation' })}</p>
             <div className="shrink-0 flex items-center justify-between mb-6 px-2">
                 <div className="flex items-center gap-4">
                     <div className="p-2.5 bg-zinc-900 dark:bg-violet-600 rounded-xl text-white shadow-lg">

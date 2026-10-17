@@ -120,6 +120,11 @@ async function loadScriptRetry(src, attempts = 2) {
 async function ensureRuntimeGlobals() {
     if (window.__OPENAN_BUNDLE_GLOBALS_READY__) return;
 
+    // Legacy bundles use this marker and the host-wide language singleton.
+    // Never expose per-plugin API/auth/router state through this bridge.
+    const { default: i18n } = await import('./i18n/index.js');
+    window.__OPENAN_PORTAL_CONTEXT__ = Object.freeze({ mode: 'portal', i18n });
+
     // Node-style `process` shim — UMD builds (e.g. React dev builds bundled
     // inside plugin artifacts) read process.env.NODE_ENV. Browsers don't
     // define `process`, so provide a minimal stub before any bundle loads.

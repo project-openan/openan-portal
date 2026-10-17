@@ -1,0 +1,112 @@
+{
+  "workflow": {
+    "title": "WORKFLOW PROGRESSION",
+    "progress_label": "System Execution Status",
+    "exportWorkflow": "Export",
+    "sidebar": {
+      "title": "Agent Library",
+      "defaultTask": "Execute {{name}} task",
+      "searchPlaceholder": "Search agents..."
+    },
+    "toolbar": {
+      "back": "Back",
+      "fitView": "Fit View",
+      "clear": "Clear Canvas",
+      "export": "Save",
+      "exportSuccess": "Saved successfully"
+    },
+    "node": {
+      "skill": "Skill",
+      "noTask": "Undefined Task",
+      "status": {
+        "executed": "Executed",
+        "not_executed": "Pending"
+      }
+    },
+    "panel": {
+      "empty": "No Element Selected",
+      "emptySub": "Select a node or edge to configure",
+      "nodeConfig": "Node Config",
+      "edgeConfig": "Edge Config",
+      "agentName": "Agent Name",
+      "stepName": "Step Name",
+      "status": "Status",
+      "subtasks": "Subtasks",
+      "taskDesc": "Task Description",
+      "taskPlaceholder": "Describe the specific action",
+      "selectSkill": "Select Skill",
+      "executeSkill": "Current Skill",
+      "inputDefine": "Input Definitions",
+      "outputDefine": "Output Definitions",
+      "noInput": "No input definitions",
+      "noOutput": "No output definitions",
+      "source": "Source",
+      "target": "Target",
+      "inputParams": "Runtime Parameters",
+      "condition": "Condition",
+      "conditionPlaceholder": "Describe the condition in natural language",
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "noParams": "No parameters defined",
+      "confirm": "Confirm Configuration",
+      "placeholderSelect": "please choose...",
+      "removeSubtask": "Remove subtask",
+      "layer": "Orchestration Layer",
+      "layerExecution": "Execution Layer (leaf agent)",
+      "layerAggregation": "Aggregation Layer (summarizes upstream outputs)",
+      "layerHint": "Execution: uses its own task description only. Aggregation: also receives upstream step outputs as context.",
+      "stepType": "Step Success Condition",
+      "stepTypeAllSuccess": "AllSuccess: Step succeeds only if all subtasks succeed",
+      "stepTypeAnySuccess": "AnySuccess: Step succeeds if any subtask succeeds",
+      "contextFrom": "Context From",
+      "contextFromHint": "The engine determines which upstream step outputs to include based on graph topology.",
+      "contextFromHintAuto": "Auto-derive: engine determines upstream steps from graph edges.",
+      "contextFromHintStar": "All predecessors selected (direct + indirect). Click below to exclude specific steps.",
+      "contextFromHintManual": "Manual selection. Click below to add or remove upstream steps.",
+      "contextFromHintLayer0": "Execution layer nodes use their task description only; upstream context is not applicable.",
+      "contextFromAll": "All predecessors",
+      "contextFromAuto": "Auto-derive (default)",
+      "contextFromNone": "No upstream steps available",
+      "stepTypeSelfLoop": "SelfLoop: Task handled locally by the workflow executor, no A2A-T dispatch to other agents. Use for merge, summarize, or other self-processing tasks."
+    },
+    "export": {
+      "success": "Workflow saved successfully",
+      "failed": "Save failed, please check backend service",
+      "modalTitle": "Save Workflow",
+      "modalDesc": "Enter a name and scenario description for later retrieval and invocation.",
+      "nameLabel": "Workflow Name",
+      "namePlaceholder": "e.g. Network Link Auto Recovery",
+      "descLabel": "Scenario Description",
+      "descPlaceholder": "e.g. Automatically diagnose and trigger recovery when a network link fails..."
+    },
+    "validate": {
+      "empty": "Canvas cannot be empty",
+      "invalidAgent": "Node validation failed",
+      "noSkill": "Node validation failed: Skill must be selected",
+      "noEdge": "Node missing output connection: Please complete the topology",
+      "noEnd": "Workflow missing an End Node",
+      "yamlError": "YAML generation failed"
+    },
+    "exit": {
+      "title": "Confirm exit",
+      "desc": "You have unsaved changes. Exiting will discard these changes. Are you sure?"
+    },
+    "selfLoop": "Self-Process"
+  },
+  "workflow_empty": {
+    "title": "No Workflow Data",
+    "desc": "There are no nodes or edges to display for this execution record."
+  },
+  "workflow_loader": {
+    "loading": "Loading Workflow",
+    "initializing": "Initializing data..."
+  },
+  "node_label": {
+    "start": "Start Node",
+    "end": "End Node",
+    "no_skill": "No skill specified",
+    "no_subtasks": "No subtasks configured",
+    "allSuccess": "AllSuccess",
+    "anySuccess": "AnySuccess"
+  }
+}

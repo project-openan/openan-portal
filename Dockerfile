@@ -38,21 +38,10 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
-# Copy workspace manifests first so `npm ci` is cached independently of
-# source changes. npm workspaces resolve from the repository root.
-COPY package.json package-lock.json ./
-COPY portal/package.json portal/
-COPY packages/portal-sdk/package.json packages/portal-sdk/
-COPY packages/shared-workflow/package.json packages/shared-workflow/
-COPY plugins/demo-showcase/package.json plugins/demo-showcase/
-COPY plugins/hello-portal/package.json plugins/hello-portal/
-COPY plugins/orchestration-center/package.json plugins/orchestration-center/
-COPY plugins/registry-center/package.json plugins/registry-center/
-
-RUN npm ci
-
+# Discover workspaces from the actual tree; independently-built bundles are
+# staged in portal/public/plugins before docker build (see plugins:install).
 COPY . .
-RUN npm run build
+RUN npm ci && npm run build:release
 
 # ---- Runtime stage: nginx serves the static output ----
 # Runs as the nginx user (uid 101) with arbitrary-UID (GID 0) tolerance,
@@ -85,6 +74,9 @@ ENV REGISTRY_HOST=registry-center \
     REGISTRY_SCHEME=http \
     BACKEND_HOST=orchestration-center \
     BACKEND_PORT=5001 \
-    BACKEND_SCHEME=http
+    BACKEND_SCHEME=http \
+    OBSERVATION_HOST=observation-center \
+    OBSERVATION_PORT=5002 \
+    OBSERVATION_SCHEME=http
 
 EXPOSE 8080

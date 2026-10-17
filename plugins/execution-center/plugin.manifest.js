@@ -21,6 +21,7 @@ export default {
     id: 'execution-center',
     name: 'Execution Center',
     version: '0.1.0',
+    backend: { gateway: '/api/orchestrate' },
     menu: [{
         id: 'execution',
         labelKey: 'execution-center:execution.title',

@@ -34,49 +34,12 @@
  *   plugin.manifest.json + index.js (UMD) + index.css
  */
 import discovered from 'virtual:openan-plugins';
+import bundledPlugins from '../bundled-plugins.json';
 
 // Bundled plugins — LOCAL mode: artifacts under portal/public/plugins/
 // REMOTE mode: change entry to the plugin server's absolute URL,
 //   e.g. 'http://registry-center:5000/plugins/registry-center'
-const bundledPlugins = [
-    {
-        id: 'registry-center',
-        mode: 'bundle',
-        entry: '/plugins/registry-center',   // → portal/public/plugins/registry-center
-        enabled: true,
-    },
-    {
-        id: 'orchestration-center',
-        mode: 'bundle',
-        entry: '/plugins/orchestration-center',   // → portal/public/plugins/orchestration-center
-        enabled: true,
-    },
-    {
-        id: 'observation-center',
-        mode: 'bundle',
-        entry: '/plugins/observation-center',   // → portal/public/plugins/observation-center
-        enabled: true,
-    },
-    {
-        id: 'virtual-showroom',
-        mode: 'bundle',
-        entry: '/plugins/virtual-showroom',   // → portal/public/plugins/virtual-showroom
-        enabled: true,
-    },
-    {
-        id: 'an-ontology',
-        mode: 'bundle',
-        entry: '/plugins/an-ontology',   // → portal/public/plugins/an-ontology
-        enabled: true,
-    },
-    // Example REMOTE mode (served by the plugin's own server with CORS):
-    // {
-    //     id: 'demo-showcase-remote',
-    //     mode: 'bundle',
-    //     entry: 'http://localhost:5500/plugins/demo-showcase',  // http:// → REMOTE
-    //     enabled: true,
-    // },
-];
+// One JSON registry is shared by runtime and release validation.
 
 export default {
     plugins: [

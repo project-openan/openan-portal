@@ -553,6 +553,10 @@ import UnifiedWorkflow from '../orchestration_center/workflow/index.jsx';
 | `execution` | 91 | `plugins/execution-center/src/locales/` |
 | `skills` | 22 | `plugins/skill-center/src/locales/` |
 
+## 当前交付
+
+`portal/bundled-plugins.json` 默认启用注册中心、编排中心、观测中心、虚拟展厅和 AN 本体五个独立 bundle。先安装全部制品，再执行 `npm run build:release`；仅构建壳层不等于完整交付通过。操作见[部署指南](./scripts/README-DEPLOY.md)。
+
 ## Issue #77 合规性
 
 | 目标 | 状态 |
