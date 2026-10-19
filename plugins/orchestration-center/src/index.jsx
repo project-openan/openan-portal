@@ -124,6 +124,10 @@ const OrchestrationCenter = () => {
         });
         return unwrapEnvelope(body) || body;
     };
+    // Solution package (SPG) library: real backend list/delete backing the
+    // packages management view (previously a hardcoded 3-entry mock).
+    const listSolutionPackages = () => api.get(`${ORCHESTRATE_BASE}/solution-packages`);
+    const deleteSolutionPackage = (pdfFilename) => api.delete(`${ORCHESTRATE_BASE}/solution-packages/${encodeURIComponent(pdfFilename)}`);
     const [workflows, setWorkflows] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
     const [currentWf, setCurrentWf] = useState(null);
@@ -656,6 +660,8 @@ const OrchestrationCenter = () => {
                         onViewWorkflow={(wfId) => {
                             setSelectedId(wfId);
                         }}
+                        listPackages={listSolutionPackages}
+                        deletePackage={deleteSolutionPackage}
                         loading={loading && loadingStatus !== LOADING_STAGES.IDLE}
                         loadingStatus={loadingStatus}
                         progress={progress}

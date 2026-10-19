@@ -165,5 +165,8 @@
     "no_subtasks": "No subtasks configured",
     "allSuccess": "AllSuccess",
     "anySuccess": "AnySuccess"
+  },
+  "skills": {
+    "delete_package": "Delete package"
   }
 }
