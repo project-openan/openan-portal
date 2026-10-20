@@ -7,3 +7,9 @@ stats.html
 tsconfig.tsbuildinfo
 portal/public/
 integrations/dist-plugin/
+
+# Bundled plugin artifacts are part of the delivery (registered in
+# portal/bundled-plugins.json) - keep them tracked despite public/ ignore.
+!portal/public/
+!portal/public/plugins/
+!portal/public/plugins/**

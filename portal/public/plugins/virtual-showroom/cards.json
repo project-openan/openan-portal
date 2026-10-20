@@ -1,0 +1,53 @@
+{
+  "$schema": "virtual-showroom-cards-v1",
+  "updatedAt": "2026-10-15",
+  "comment": [
+    "虚拟展厅卡片配置文件。新增/修改卡片只需编辑本文件并上传到 /plugins/virtual-showroom/cards.json，无需重新构建插件。",
+    "Card config for the Virtual Showroom plugin. Add or edit cards here and upload cards.json — no plugin rebuild required.",
+    "字段说明 / Field notes: order 排序(小在前), enabled=false 隐藏, image 相对本插件目录, openIn: new-tab|same-tab"
+  ],
+  "cards": [
+    {
+      "id": "observation-demo",
+      "enabled": false,
+      "order": 1,
+      "title": "Observation Demo（A2A-T 展屏）",
+      "titleEn": "Observation Demo (A2A-T Showcase)",
+      "category": "多智能体案例",
+      "categoryEn": "Multi-Agent Example Case",
+      "description": "OpenAN 编排专业化智能体端到端协作，贯通呼叫中心、计费、CDN 与 NOC，实现投诉自主闭环处置；内置 WAIMO 故障分类定界与专线投诉动态编排两个案例，支持故事线回放。",
+      "descriptionEn": "OpenAN orchestrates specialized agents end-to-end — bridging call centers, billing, CDN and NOC for autonomous complaint resolution, with storyline replay of two end-to-end cases.",
+      "image": "images/observation-demo.svg",
+      "url": "http://47.236.98.226:9010/observation-demo/",
+      "openIn": "new-tab"
+    },
+    {
+      "id": "ontology-showcase",
+      "enabled": true,
+      "order": 2,
+      "title": "Ontology Showcase（本体应用演示）",
+      "titleEn": "Ontology Showcase (Ontology-driven Application Demo)",
+      "category": "本体应用演示",
+      "categoryEn": "Ontology-driven Application",
+      "description": "以本体驱动的应用编排演示（广东 POC）：输入自然语言任务，实时呈现本体检索、应用编排与执行全流程事件流。",
+      "descriptionEn": "Ontology-driven application demo (Guangdong POC): type a natural-language task and watch ontology retrieval, application orchestration and execution as a live event stream.",
+      "image": "images/ontology-showcase.svg",
+      "url": "http://47.236.98.226:9010/ontology-showcase/",
+      "openIn": "new-tab"
+    },
+    {
+      "id": "live-assurance-demo",
+      "enabled": true,
+      "order": 3,
+      "title": "Live Assurance Demo（大型赛事直播业务保障）",
+      "titleEn": "Major-event Live Broadcast Emergency Assurance Demo",
+      "category": "多智能体场景包",
+      "categoryEn": "Multi-Agent Scenario Package",
+      "description": "城市马拉松赛事直播保障闭环：直播智能体解析赛事需求并订阅保障服务，保障智能体生成策略，RAN 智能体执行功率提升时发现节能 SLA 冲突并经 A2A-T 协商关闭一半节能任务；KQI 劣化后关闭全部节能并跨站协同优化，KQI 恢复后恢复初始配置。点击卡片在工作流执行中心打开对应正式 PSOP 工作流（psop_live_event_assurance_en），可直接启动执行。",
+      "descriptionEn": "City-marathon live broadcast assurance closed loop: the Live Streaming Agent parses event requirements and subscribes to assurance, the Assurance Agent generates the policy, the RAN Agent discovers an energy-saving SLA conflict and closes half of the energy-saving tasks via A2A-T negotiation; KQI degradation triggers a full energy-saving shutdown with inter-site coordinated optimization, and the initial configuration is restored after recovery. Clicking the card opens the formal PSOP workflow (psop_live_event_assurance_en) in the Execution Center, ready to run.",
+      "image": "images/live-assurance.svg",
+      "url": "http://47.236.98.226:9003/execution?workflow=psop_live_event_assurance_en",
+      "openIn": "new-tab"
+    }
+  ]
+}

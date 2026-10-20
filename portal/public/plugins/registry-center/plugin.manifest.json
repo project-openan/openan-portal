@@ -1,0 +1,24 @@
+{
+  "id": "registry-center",
+  "name": "Registry Center",
+  "version": "0.2.0",
+  "backend": {
+    "gateway": "/api/registry-center"
+  },
+  "menu": [
+    {
+      "id": "agents",
+      "labelKey": "registry-center:nav.title",
+      "order": 1,
+      "route": "/registry"
+    }
+  ],
+  "routes": [
+    {
+      "path": "/registry",
+      "menuId": "agents"
+    }
+  ],
+  "entry": "index.js",
+  "css": "index.css"
+}

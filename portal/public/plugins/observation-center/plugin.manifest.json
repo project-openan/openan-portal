@@ -1,0 +1,21 @@
+{
+  "id": "observation-center",
+  "name": "Observation Center",
+  "version": "1.0.0",
+  "menu": [
+    {
+      "id": "metrics-observation",
+      "labelKey": "Observation Center",
+      "order": 7,
+      "route": "/observation"
+    }
+  ],
+  "routes": [
+    {
+      "path": "/observation",
+      "menuId": "metrics-observation"
+    }
+  ],
+  "entry": "index.js",
+  "css": "index.css"
+}
