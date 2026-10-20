@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#150f2e"/>
+      <stop offset="0.55" stop-color="#1d1440"/>
+      <stop offset="1" stop-color="#33206b"/>
+    </linearGradient>
+    <linearGradient id="accent2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#7c5cff"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="0.3" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#7c5cff" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#7c5cff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots2" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.5" fill="#8b6cff" fill-opacity="0.20"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg2)"/>
+  <rect width="800" height="450" fill="url(#dots2)"/>
+  <rect width="800" height="450" fill="url(#glow2)"/>
+
+  <!-- ontology graph -->
+  <g stroke="#6d55c8" stroke-width="2" stroke-opacity="0.85">
+    <path d="M400 250 L 250 160"/>
+    <path d="M400 250 L 400 120"/>
+    <path d="M400 250 L 550 160"/>
+    <path d="M250 160 L 150 220"/>
+    <path d="M550 160 L 650 220"/>
+    <path d="M400 250 L 300 340"/>
+    <path d="M400 250 L 500 340"/>
+  </g>
+  <g>
+    <circle cx="400" cy="250" r="34" fill="#241a52" stroke="url(#accent2)" stroke-width="3.5"/>
+    <circle cx="400" cy="250" r="10" fill="#a78bfa"/>
+    <circle cx="250" cy="160" r="18" fill="#1c1440" stroke="#8b6cff" stroke-width="2.5"/>
+    <circle cx="400" cy="120" r="18" fill="#1c1440" stroke="#8b6cff" stroke-width="2.5"/>
+    <circle cx="550" cy="160" r="18" fill="#1c1440" stroke="#8b6cff" stroke-width="2.5"/>
+    <circle cx="150" cy="220" r="13" fill="#1c1440" stroke="#6d55c8" stroke-width="2"/>
+    <circle cx="650" cy="220" r="13" fill="#1c1440" stroke="#6d55c8" stroke-width="2"/>
+    <circle cx="300" cy="340" r="13" fill="#1c1440" stroke="#6d55c8" stroke-width="2"/>
+    <circle cx="500" cy="340" r="13" fill="#1c1440" stroke="#6d55c8" stroke-width="2"/>
+  </g>
+  <g fill="#c9b8ff" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" text-anchor="middle">
+    <text x="400" y="196" opacity="0.95">核心本体</text>
+    <text x="250" y="128">设备域</text>
+    <text x="400" y="92">任务域</text>
+    <text x="550" y="128">服务域</text>
+  </g>
+
+  <!-- stream line -->
+  <path d="M120 396 C 260 372, 420 420, 560 388 S 700 372, 760 384"
+        fill="none" stroke="url(#accent2)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.75"/>
+
+  <!-- titles -->
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="48" y="64" font-size="40" font-weight="700" fill="#efeaff" letter-spacing="1">ONTOLOGY SHOWCASE</text>
+    <text x="48" y="100" font-size="20" fill="#b3a1ec" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">本体驱动 · 应用编排 · 实时事件流</text>
+  </g>
+</svg>
