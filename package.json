@@ -1,7 +1,7 @@
 {
   "name": "openan-website",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "OpenAN Unified Web Framework — Pluggable Portal",
   "workspaces": [
