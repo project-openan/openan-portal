@@ -1,0 +1,21 @@
+{
+  "id": "scenario-showcase",
+  "name": "Scenario Showcase",
+  "version": "0.1.0",
+  "menu": [
+    {
+      "id": "scenario-showcase",
+      "labelKey": "scenario-showcase:nav.title",
+      "order": 9,
+      "route": "/scenario-showcase"
+    }
+  ],
+  "routes": [
+    {
+      "path": "/scenario-showcase",
+      "menuId": "scenario-showcase"
+    }
+  ],
+  "entry": "index.js",
+  "css": "index.css"
+}

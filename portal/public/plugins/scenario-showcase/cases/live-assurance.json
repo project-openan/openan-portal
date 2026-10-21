@@ -1,0 +1,1276 @@
+{
+  "$schema": "scenario-showcase-case-v1",
+  "id": "live-assurance",
+  "title": {
+    "zh": "大型赛事直播业务保障",
+    "en": "Major-event Live Broadcast Assurance"
+  },
+  "description": {
+    "zh": "城市马拉松赛事直播保障闭环：业务保障智能体生成策略，无线域智能体执行功率提升时发现节能 SLA 冲突并经 A2A-T 协商裁定；KQI 劣化后关闭全部节能并跨站协同优化，恢复后回归初始配置。",
+    "en": "City-marathon live broadcast assurance closed loop: the Assurance Agent generates the policy, the RAN Agent discovers an energy-saving SLA conflict during power boost and resolves it via A2A-T negotiation; KQI degradation triggers a full energy-saving shutdown with inter-site coordination, and the initial configuration is restored after recovery."
+  },
+  "agents": [
+    {
+      "id": "live-streaming",
+      "name": {
+        "zh": "直播域智能体",
+        "en": "Live Streaming Agent"
+      },
+      "role": "host",
+      "color": "blue",
+      "skills": [
+        "Event Info Parsing",
+        "KQI Monitoring"
+      ]
+    },
+    {
+      "id": "assurance",
+      "name": {
+        "zh": "业务保障智能体",
+        "en": "Assurance Agent"
+      },
+      "role": "domain",
+      "color": "amber",
+      "skills": [
+        "Policy Generation",
+        "Recovery Policy Dispatch"
+      ]
+    },
+    {
+      "id": "ran",
+      "name": {
+        "zh": "无线域智能体",
+        "en": "RAN Agent"
+      },
+      "role": "domain",
+      "color": "emerald",
+      "skills": [
+        "Network Policy Execution",
+        "Energy SLA Negotiation"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step1",
+      "name": {
+        "zh": "赛事信息解析与保障订阅",
+        "en": "Event Info Parsing & Subscription"
+      },
+      "agent": "live-streaming",
+      "type": "selfloop",
+      "skill": "Event Info Parsing",
+      "task": "task-live-001",
+      "short": {
+        "zh": "解析订阅",
+        "en": "Subscribe"
+      }
+    },
+    {
+      "id": "step2",
+      "name": {
+        "zh": "保障策略生成",
+        "en": "Assurance Policy Generation"
+      },
+      "agent": "assurance",
+      "skill": "Policy Generation",
+      "task": "task-live-002",
+      "short": {
+        "zh": "策略生成",
+        "en": "Policy"
+      }
+    },
+    {
+      "id": "step3",
+      "name": {
+        "zh": "功率提升与节能 SLA 冲突协商",
+        "en": "Power Boost & Energy SLA Negotiation"
+      },
+      "agent": "ran",
+      "skill": "Network Policy Execution",
+      "task": "task-live-003",
+      "short": {
+        "zh": "功率协商",
+        "en": "Negotiate"
+      }
+    },
+    {
+      "id": "step4",
+      "name": {
+        "zh": "KQI 监控与劣化上报",
+        "en": "KQI Monitoring & Degradation Alert"
+      },
+      "agent": "live-streaming",
+      "type": "selfloop",
+      "skill": "KQI Monitoring",
+      "task": "task-live-004",
+      "short": {
+        "zh": "KQI 监控",
+        "en": "KQI Watch"
+      }
+    },
+    {
+      "id": "step5",
+      "name": {
+        "zh": "劣化分析与保障决策",
+        "en": "Degradation Analysis & Decision"
+      },
+      "agent": "assurance",
+      "skill": "Policy Generation",
+      "task": "task-live-005",
+      "short": {
+        "zh": "劣化决策",
+        "en": "Decide"
+      }
+    },
+    {
+      "id": "step6",
+      "name": {
+        "zh": "关闭全部节能并跨站协同优化",
+        "en": "Full Shutdown & Inter-site Optimization"
+      },
+      "agent": "ran",
+      "skill": "Network Policy Execution",
+      "task": "task-live-006",
+      "short": {
+        "zh": "协同优化",
+        "en": "Coordinate"
+      }
+    },
+    {
+      "id": "step7",
+      "name": {
+        "zh": "KQI 复核确认",
+        "en": "KQI Re-check"
+      },
+      "agent": "live-streaming",
+      "type": "selfloop",
+      "skill": "KQI Monitoring",
+      "task": "task-live-007",
+      "short": {
+        "zh": "KQI 复核",
+        "en": "Re-check"
+      }
+    },
+    {
+      "id": "step8",
+      "name": {
+        "zh": "保障结果汇总与恢复策略下发",
+        "en": "Summary & Recovery Dispatch"
+      },
+      "agent": "assurance",
+      "skill": "Recovery Policy Dispatch",
+      "task": "task-live-008",
+      "short": {
+        "zh": "汇总恢复",
+        "en": "Dispatch"
+      }
+    },
+    {
+      "id": "step9",
+      "name": {
+        "zh": "初始配置恢复",
+        "en": "Initial Configuration Restoration"
+      },
+      "agent": "ran",
+      "skill": "Network Policy Execution",
+      "task": "task-live-009",
+      "short": {
+        "zh": "配置恢复",
+        "en": "Restore"
+      }
+    }
+  ],
+  "panels": [
+    {
+      "id": "map",
+      "type": "map",
+      "title": {
+        "zh": "赛事区域网络视图",
+        "en": "Event Area Network View"
+      },
+      "initial": {
+        "siteStatus": {
+          "venue": "good"
+        }
+      },
+      "config": {
+        "sites": [
+          {
+            "id": "venue",
+            "x": 16,
+            "y": 46,
+            "label": "主会场",
+            "status": "good"
+          },
+          {
+            "id": "cell-1",
+            "x": 34,
+            "y": 30,
+            "label": "Cell-1"
+          },
+          {
+            "id": "cell-2",
+            "x": 52,
+            "y": 20,
+            "label": "Cell-2"
+          },
+          {
+            "id": "cell-3",
+            "x": 70,
+            "y": 27,
+            "label": "Cell-3"
+          },
+          {
+            "id": "cell-4",
+            "x": 86,
+            "y": 40,
+            "label": "Cell-4"
+          },
+          {
+            "id": "core",
+            "x": 50,
+            "y": 52,
+            "label": "核心机房",
+            "status": "good"
+          }
+        ],
+        "route": [
+          {
+            "x": 16,
+            "y": 46
+          },
+          {
+            "x": 34,
+            "y": 30
+          },
+          {
+            "x": 52,
+            "y": 20
+          },
+          {
+            "x": 70,
+            "y": 27
+          },
+          {
+            "x": 86,
+            "y": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "kqi",
+      "type": "chart",
+      "title": {
+        "zh": "KQI 实时趋势",
+        "en": "KQI Trend"
+      },
+      "initial": {
+        "points": {
+          "kqi": [
+            95
+          ],
+          "stall": [
+            0.5
+          ],
+          "bitrate": [
+            90
+          ]
+        }
+      },
+      "config": {
+        "yMin": 0,
+        "yMax": 100,
+        "series": [
+          {
+            "id": "kqi",
+            "name": {
+              "zh": "KQI",
+              "en": "KQI"
+            },
+            "color": "#3b82f6",
+            "fill": true
+          },
+          {
+            "id": "stall",
+            "name": {
+              "zh": "卡顿率%",
+              "en": "Stall %"
+            },
+            "color": "#f43f5e"
+          },
+          {
+            "id": "bitrate",
+            "name": {
+              "zh": "比特率",
+              "en": "Bitrate"
+            },
+            "color": "#f59e0b"
+          }
+        ]
+      }
+    }
+  ],
+  "script": [
+    {
+      "at": 0,
+      "type": "step",
+      "id": "step1",
+      "status": "active"
+    },
+    {
+      "at": 0.5,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "request",
+      "step": "step1",
+      "text": {
+        "zh": "收到大型马拉松赛事直播保障订阅：主会场 + 赛道沿线 4 个小区，直播时长约 3 小时，要求卡顿率 < 1%。",
+        "en": "Received the marathon live broadcast assurance subscription: venue + 4 cells along the course, ~3 hours on air, stall rate must stay below 1%."
+      },
+      "attachments": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "icon": "users",
+              "label": {
+                "zh": "现场观众",
+                "en": "Audience"
+              },
+              "value": {
+                "zh": "5.2万",
+                "en": "52K"
+              }
+            },
+            {
+              "icon": "clock",
+              "label": {
+                "zh": "直播时长",
+                "en": "Duration"
+              },
+              "value": "3h"
+            },
+            {
+              "icon": "tower",
+              "label": {
+                "zh": "赛道小区",
+                "en": "Course cells"
+              },
+              "value": "4"
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 3,
+      "type": "step",
+      "id": "step1",
+      "status": "done"
+    },
+    {
+      "at": 3.5,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "response",
+      "step": "step1",
+      "text": {
+        "zh": "本地解析完成：产出保障任务清单，并注册赛道小区 KQI 监控订阅。",
+        "en": "Local parsing done: assurance task list produced, KQI monitoring subscriptions registered for the course cells."
+      },
+      "attachments": [
+        {
+          "type": "list",
+          "items": [
+            {
+              "icon": "tower",
+              "text": {
+                "zh": "主会场 — 上行保障订阅",
+                "en": "Venue — uplink assurance subscription"
+              }
+            },
+            {
+              "icon": "wifi",
+              "text": {
+                "zh": "Cell-1 ~ Cell-4 — KQI 巡检订阅",
+                "en": "Cell-1 ~ Cell-4 — KQI patrol subscription"
+              }
+            },
+            {
+              "icon": "video",
+              "text": {
+                "zh": "直播流 SLA: 卡顿率 < 1%",
+                "en": "Stream SLA: stall rate < 1%"
+              }
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 6,
+      "type": "step",
+      "id": "step2",
+      "status": "active"
+    },
+    {
+      "at": 6.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "step": "step2",
+      "text": {
+        "zh": "接收保障任务，开始生成保障策略：资源核查、带宽保障与功率提升预案。",
+        "en": "Assurance task accepted, generating the policy: resource inventory, bandwidth assurance and a power boost plan."
+      },
+      "attachments": [
+        {
+          "type": "table",
+          "title": {
+            "zh": "保障预案（节选）",
+            "en": "Assurance plan (excerpt)"
+          },
+          "headers": [
+            {
+              "zh": "小区",
+              "en": "Cell"
+            },
+            {
+              "zh": "保障动作",
+              "en": "Action"
+            },
+            {
+              "zh": "上行保障",
+              "en": "Uplink"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "zh": "主会场",
+                "en": "Venue"
+              },
+              {
+                "zh": "功率提升 +3dB",
+                "en": "Power boost +3dB"
+              },
+              "380Mbps"
+            ],
+            [
+              {
+                "zh": "Cell-1/2",
+                "en": "Cell-1/2"
+              },
+              {
+                "zh": "载波扩容",
+                "en": "Carrier expansion"
+              },
+              "220Mbps"
+            ],
+            [
+              {
+                "zh": "Cell-3/4",
+                "en": "Cell-3/4"
+              },
+              {
+                "zh": "覆盖增强",
+                "en": "Coverage boost"
+              },
+              "180Mbps"
+            ]
+          ]
+        }
+      ],
+      "to": "ran"
+    },
+    {
+      "at": 13,
+      "type": "step",
+      "id": "step2",
+      "status": "done"
+    },
+    {
+      "at": 14,
+      "type": "step",
+      "id": "step3",
+      "status": "active"
+    },
+    {
+      "at": 14.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "request",
+      "step": "step3",
+      "text": {
+        "zh": "下发功率提升任务：主会场及沿线小区射频功率提升 +3dB，保障上行直播带宽。",
+        "en": "Dispatching the power boost task: +3dB radio power on the venue and course cells to secure uplink bandwidth."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 20,
+      "type": "message",
+      "from": "ran",
+      "kind": "alert",
+      "step": "step3",
+      "text": {
+        "zh": "发现冲突：功率提升与在网节能 SLA 冲突（Cell-3 处于深度节能）。发起 A2A-T 协商请求。",
+        "en": "Conflict discovered: the power boost clashes with the in-service energy-saving SLA (Cell-3 is in deep sleep). Raising an A2A-T negotiation request."
+      },
+      "attachments": [
+        {
+          "type": "spark",
+          "series": [
+            {
+              "name": {
+                "zh": "功率需求",
+                "en": "Power demand"
+              },
+              "color": "#3b82f6",
+              "points": [
+                58,
+                62,
+                71,
+                86
+              ]
+            },
+            {
+              "name": {
+                "zh": "节能余量",
+                "en": "ES headroom"
+              },
+              "color": "#10b981",
+              "points": [
+                42,
+                38,
+                26,
+                15
+              ]
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 20.4,
+      "type": "message",
+      "from": "ran",
+      "kind": "a2at",
+      "step": "step3",
+      "text": {
+        "zh": "A2A-T 协商请求：申请裁定节能任务让功率部分，以完成赛事保障。",
+        "en": "A2A-T negotiation request: asking the Assurance Agent to arbitrate energy-saving vs power headroom."
+      },
+      "a2at": {
+        "verb": "NEGOTIATE_REQUEST",
+        "session": "a2at-sess-20261020-003",
+        "clauses": [
+          {
+            "k": {
+              "zh": "协商标的",
+              "en": "Subject"
+            },
+            "v": {
+              "zh": "Cell-3 深度节能任务 (SLA-ES-019)",
+              "en": "Cell-3 deep energy-saving task (SLA-ES-019)"
+            }
+          },
+          {
+            "k": {
+              "zh": "发起方",
+              "en": "Initiator"
+            },
+            "v": {
+              "zh": "RAN Agent → Assurance Agent",
+              "en": "RAN Agent → Assurance Agent"
+            }
+          },
+          {
+            "k": {
+              "zh": "提案",
+              "en": "Proposal"
+            },
+            "v": {
+              "zh": "关闭 50% 节能任务，释放功率余量",
+              "en": "Close 50% of energy-saving tasks to release power headroom"
+            }
+          },
+          {
+            "k": {
+              "zh": "SLA 影响",
+              "en": "SLA impact"
+            },
+            "v": {
+              "zh": "节能率 31% → 18%（高于承诺下限 15%）",
+              "en": "Energy saving 31% → 18% (floor is 15%)"
+            }
+          }
+        ]
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 24,
+      "type": "message",
+      "from": "assurance",
+      "kind": "response",
+      "step": "step3",
+      "text": {
+        "zh": "协商裁定：本次赛事保障优先 —— 关闭 Cell-3 节能任务（约 50% 节能站点），其余站点节能保留。",
+        "en": "Negotiation resolved: the event takes priority — Cell-3 exits energy saving (~50% of sleeping sites); the rest keep sleeping."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 24.4,
+      "type": "message",
+      "from": "assurance",
+      "kind": "a2at",
+      "step": "step3",
+      "text": {
+        "zh": "A2A-T 协商裁定：接受提案，授权关闭 50% 节能任务。",
+        "en": "A2A-T negotiation result: proposal accepted, closing 50% of the energy-saving tasks is authorized."
+      },
+      "a2at": {
+        "verb": "NEGOTIATE_RESULT",
+        "session": "a2at-sess-20261020-003",
+        "decision": "ACCEPTED",
+        "clauses": [
+          {
+            "k": {
+              "zh": "裁定",
+              "en": "Decision"
+            },
+            "v": {
+              "zh": "赛事保障优先，接受让功率提案",
+              "en": "Event assurance first — power-headroom proposal accepted"
+            }
+          },
+          {
+            "k": {
+              "zh": "授权范围",
+              "en": "Scope"
+            },
+            "v": {
+              "zh": "关闭约 50% 节能站点（含 Cell-3）",
+              "en": "Close ~50% of sleeping sites (incl. Cell-3)"
+            }
+          },
+          {
+            "k": {
+              "zh": "约束",
+              "en": "Constraint"
+            },
+            "v": {
+              "zh": "节能率不得低于 15%，赛事结束后复核",
+              "en": "Energy saving must stay above 15%; re-audit after the event"
+            }
+          }
+        ]
+      },
+      "to": "ran"
+    },
+    {
+      "at": 28,
+      "type": "message",
+      "from": "ran",
+      "kind": "response",
+      "step": "step3",
+      "text": {
+        "zh": "协商结果已执行：Cell-3 退出节能，功率提升生效，赛道覆盖电平提升。",
+        "en": "Negotiation executed: Cell-3 woke up, power boost is live, course coverage level improved."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 30,
+      "type": "step",
+      "id": "step3",
+      "status": "done"
+    },
+    {
+      "at": 30.5,
+      "type": "panel",
+      "panel": "map",
+      "action": "merge",
+      "data": {
+        "siteStatus": {
+          "cell-3": "warn"
+        },
+        "marker": {
+          "x": 70,
+          "y": 27
+        }
+      }
+    },
+    {
+      "at": 31,
+      "type": "step",
+      "id": "step4",
+      "status": "active"
+    },
+    {
+      "at": 31,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 92
+      }
+    },
+    {
+      "at": 31,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 0.6
+      }
+    },
+    {
+      "at": 31,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 88
+      }
+    },
+    {
+      "at": 34,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "info",
+      "step": "step4",
+      "text": {
+        "zh": "KQI 监控中：卡顿率 0.6%，满足 SLA 要求，持续巡检赛道小区。",
+        "en": "KQI nominal: stall rate 0.6%, within SLA. Continuing patrols over the course cells."
+      },
+      "to": "live-streaming"
+    },
+    {
+      "at": 40,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 90
+      }
+    },
+    {
+      "at": 40,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 1.0
+      }
+    },
+    {
+      "at": 40,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 86
+      }
+    },
+    {
+      "at": 46,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 87
+      }
+    },
+    {
+      "at": 46,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 1.8
+      }
+    },
+    {
+      "at": 46,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 78
+      }
+    },
+    {
+      "at": 50,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "alert",
+      "step": "step4",
+      "text": {
+        "zh": "KQI 告警：Cell-3 覆盖段卡顿率升至 4.2%，观众反馈直播卡顿，立即上报。",
+        "en": "KQI alert: stall rate on the Cell-3 segment spiked to 4.2%, viewers report buffering. Reporting upstream."
+      },
+      "attachments": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "icon": "gauge",
+              "label": {
+                "zh": "卡顿率",
+                "en": "Stall rate"
+              },
+              "value": "4.2%",
+              "trend": "up"
+            },
+            {
+              "icon": "trend",
+              "label": {
+                "zh": "KQI",
+                "en": "KQI"
+              },
+              "value": "58",
+              "trend": "down"
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 50,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 58
+      }
+    },
+    {
+      "at": 50,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 4.2
+      }
+    },
+    {
+      "at": 50,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 54
+      }
+    },
+    {
+      "at": 50.5,
+      "type": "panel",
+      "panel": "map",
+      "action": "merge",
+      "data": {
+        "siteStatus": {
+          "cell-3": "bad"
+        }
+      }
+    },
+    {
+      "at": 52,
+      "type": "step",
+      "id": "step4",
+      "status": "done"
+    },
+    {
+      "at": 53,
+      "type": "step",
+      "id": "step5",
+      "status": "active"
+    },
+    {
+      "at": 53.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "step": "step5",
+      "text": {
+        "zh": "收到劣化上报，启动劣化分析：初判为 Cell-3 负载激增与节能策略残留冲突叠加。",
+        "en": "Degradation report received, analysis started: preliminary — a Cell-3 load surge amplified by residual energy-saving conflicts."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 62,
+      "type": "message",
+      "from": "assurance",
+      "kind": "request",
+      "step": "step5",
+      "text": {
+        "zh": "保障决策：关闭全部节能站点，启动跨站协同优化，优先恢复直播体验。",
+        "en": "Decision: shut down ALL energy-saving sites and start inter-site coordinated optimization — viewer experience first."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 66,
+      "type": "step",
+      "id": "step5",
+      "status": "done"
+    },
+    {
+      "at": 67,
+      "type": "step",
+      "id": "step6",
+      "status": "active"
+    },
+    {
+      "at": 67.5,
+      "type": "message",
+      "from": "ran",
+      "kind": "request",
+      "step": "step6",
+      "text": {
+        "zh": "执行中：关闭全部节能任务，邻区载波均衡与迁移参数协同调整。",
+        "en": "Executing: all energy-saving tasks shutting down; neighbor carrier balancing and mobility parameters being tuned together."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 68,
+      "type": "panel",
+      "panel": "map",
+      "action": "merge",
+      "data": {
+        "siteStatus": {
+          "cell-1": "boost",
+          "cell-2": "boost",
+          "cell-4": "boost"
+        }
+      }
+    },
+    {
+      "at": 76,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 78
+      }
+    },
+    {
+      "at": 76,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 2.1
+      }
+    },
+    {
+      "at": 76,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 72
+      }
+    },
+    {
+      "at": 80,
+      "type": "message",
+      "from": "ran",
+      "kind": "response",
+      "step": "step6",
+      "text": {
+        "zh": "全部节能任务已关闭，跨站协同优化完成，Cell-3 负载已回落至安全水位。",
+        "en": "All energy-saving tasks are off, inter-site coordination finished, Cell-3 load is back to a safe level."
+      },
+      "attachments": [
+        {
+          "type": "image",
+          "src": "data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27260%27 height=%27110%27><rect width=%27260%27 height=%27110%27 rx=%278%27 fill=%27%2309090b%27/><text x=%2710%27 y=%2716%27 fill=%27%2394a3b8%27 font-size=%279%27 font-family=%27monospace%27>Coverage restored - inter-site coordination</text><g stroke=%27%2310b981%27 stroke-width=%271.5%27 fill=%27none%27><path d=%27M50 78 L62 42 L74 78%27/><path d=%27M118 78 L130 38 L142 78%27/><path d=%27M186 78 L198 42 L210 78%27/></g><g stroke=%27%2334d399%27 fill=%27none%27 opacity=%270.85%27><path d=%27M46 66 Q62 52 78 66%27/><path d=%27M114 60 Q130 44 146 60%27/><path d=%27M182 66 Q198 52 214 66%27/></g><text x=%2746%27 y=%2792%27 fill=%27%2371717a%27 font-size=%278%27 font-family=%27monospace%27>Cell-1</text><text x=%27114%27 y=%2792%27 fill=%27%2371717a%27 font-size=%278%27 font-family=%27monospace%27>Cell-3</text><text x=%27182%27 y=%2792%27 fill=%27%2371717a%27 font-size=%278%27 font-family=%27monospace%27>Cell-4</text></svg>",
+          "caption": {
+            "zh": "跨站协同覆盖恢复示意（Cell-1/3/4）",
+            "en": "Coverage recovery via inter-site coordination (Cell-1/3/4)"
+          }
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 82,
+      "type": "step",
+      "id": "step6",
+      "status": "done"
+    },
+    {
+      "at": 82.5,
+      "type": "panel",
+      "panel": "map",
+      "action": "merge",
+      "data": {
+        "siteStatus": {
+          "cell-3": "warn"
+        }
+      }
+    },
+    {
+      "at": 83,
+      "type": "step",
+      "id": "step7",
+      "status": "active"
+    },
+    {
+      "at": 84,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 93
+      }
+    },
+    {
+      "at": 84,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 0.7
+      }
+    },
+    {
+      "at": 84,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 90
+      }
+    },
+    {
+      "at": 86,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "info",
+      "step": "step7",
+      "text": {
+        "zh": "KQI 复核通过：卡顿率回落至 0.7%，KQI 恢复达标，直播恢复流畅。",
+        "en": "Re-check passed: stall rate back to 0.7%, KQI within SLA, the stream is smooth again."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 88,
+      "type": "step",
+      "id": "step7",
+      "status": "done"
+    },
+    {
+      "at": 88.5,
+      "type": "panel",
+      "panel": "map",
+      "action": "merge",
+      "data": {
+        "siteStatus": {
+          "cell-3": "good",
+          "cell-1": "good",
+          "cell-2": "good",
+          "cell-4": "good"
+        }
+      }
+    },
+    {
+      "at": 89,
+      "type": "step",
+      "id": "step8",
+      "status": "active"
+    },
+    {
+      "at": 89.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "step": "step8",
+      "text": {
+        "zh": "汇总保障结果：故障历时 38 秒，全程 SLA 最终达成，输出保障报告并下发恢复策略。",
+        "en": "Summary: the incident lasted 38s, SLA ultimately met. Assurance report produced and the recovery policy dispatched."
+      },
+      "attachments": [
+        {
+          "type": "table",
+          "title": {
+            "zh": "保障报告摘要",
+            "en": "Assurance report summary"
+          },
+          "headers": [
+            {
+              "zh": "指标",
+              "en": "Metric"
+            },
+            {
+              "zh": "结果",
+              "en": "Result"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "zh": "故障历时",
+                "en": "Incident duration"
+              },
+              "38s"
+            ],
+            [
+              {
+                "zh": "SLA 达成",
+                "en": "SLA met"
+              },
+              {
+                "zh": "是（全程）",
+                "en": "Yes (end-to-end)"
+              }
+            ],
+            [
+              {
+                "zh": "恢复策略",
+                "en": "Recovery"
+              },
+              {
+                "zh": "分批恢复节能",
+                "en": "Staged ES restoration"
+              }
+            ]
+          ]
+        }
+      ],
+      "to": "ran"
+    },
+    {
+      "at": 96,
+      "type": "message",
+      "from": "assurance",
+      "kind": "response",
+      "step": "step8",
+      "text": {
+        "zh": "恢复策略已下发至无线域：按预案分批恢复节能配置，避免二次冲击。",
+        "en": "Recovery policy dispatched to the RAN domain: staged energy-saving restoration to avoid a second disturbance."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 98,
+      "type": "step",
+      "id": "step8",
+      "status": "done"
+    },
+    {
+      "at": 99,
+      "type": "step",
+      "id": "step9",
+      "status": "active"
+    },
+    {
+      "at": 99.5,
+      "type": "message",
+      "from": "ran",
+      "kind": "response",
+      "step": "step9",
+      "text": {
+        "zh": "初始配置恢复完成：节能策略、功率参数均已回归保障前基线。",
+        "en": "Initial configuration restored: energy-saving policies and power parameters are back to the pre-event baseline."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 106,
+      "type": "step",
+      "id": "step9",
+      "status": "done"
+    },
+    {
+      "at": 107,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "text": {
+        "zh": "保障闭环完成：直播全程 SLA 达成，保障工单归档。",
+        "en": "Closed loop complete: SLA met for the whole broadcast, the assurance ticket is archived."
+      },
+      "to": "live-streaming"
+    }
+  ],
+  "history": [
+    {
+      "id": "run-20261019",
+      "time": "2026-10-19 20:15",
+      "title": {
+        "zh": "国庆晚会直播保障演练",
+        "en": "Holiday gala rehearsal"
+      },
+      "result": "success",
+      "duration": "4m 12s"
+    },
+    {
+      "id": "run-20261018",
+      "time": "2026-10-18 14:02",
+      "title": {
+        "zh": "半程马拉松试运行",
+        "en": "Half-marathon trial run"
+      },
+      "result": "partial",
+      "duration": "3m 48s"
+    },
+    {
+      "id": "run-20261017",
+      "time": "2026-10-17 09:30",
+      "title": {
+        "zh": "首次三方联调",
+        "en": "First tri-agent joint test"
+      },
+      "result": "success",
+      "duration": "5m 03s"
+    },
+    {
+      "id": "run-la-agent-01",
+      "title": {
+        "zh": "智能体服务执行（mockAgent 会话）",
+        "en": "Agent service run (mockAgent session)"
+      },
+      "time": "2026-10-19 16:12",
+      "duration": "1分52秒",
+      "result": "success",
+      "mode": "agent"
+    }
+  ],
+  "driver": "script",
+  "mockAgent": {
+    "endpoint": "http://47.236.98.226:9015/mockagent",
+    "caseKey": "live-assurance",
+    "turnDelayMs": 1500
+  }
+}
