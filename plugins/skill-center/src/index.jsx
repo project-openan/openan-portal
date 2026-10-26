@@ -16,14 +16,17 @@
 //    under the License.
 
 // Skill Center = thin iframe mount around the standalone SkillHub SPA
-// (deployed at /skillhub-app/ on the same origin). The SPA owns skills
-// browsing, versions, files and security-scan details; this plugin only
-// embeds it so the portal keeps one consistent navigation shell.
+// (deployed at /skillhub-app/ on the same origin).
+//
+// Language: the portal owns the language. The SPA receives the initial
+// language via the ?lang= query parameter and follow-up switches via
+// postMessage({ type: 'openan-lang', lang }); it renders no toggle of its own.
 //
 // The mount URL can be overridden per environment:
 //   window.__OPENAN_SKILLHUB_APP_URL__ = 'https://other-host/skillhub-app/';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const FALLBACK_APP_URL = '/skillhub-app/';
 
@@ -32,6 +35,11 @@ function resolveAppUrl() {
         return window.__OPENAN_SKILLHUB_APP_URL__;
     }
     return FALLBACK_APP_URL;
+}
+
+function withLangParam(url, lang) {
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}lang=${lang}`;
 }
 
 const styles = {
@@ -77,9 +85,32 @@ const styles = {
 };
 
 export default function SkillCenter() {
-    const [appUrl] = useState(resolveAppUrl);
+    const { i18n } = useTranslation();
+    const frameRef = useRef(null);
+    const [initialLang] = useState(() => (i18n.language || 'zh').startsWith('en') ? 'en' : 'zh');
     const [ready, setReady] = useState(false);
 
+    // Portal language changes are forwarded to the iframe.
+    useEffect(() => {
+        const handler = (lng) => {
+            const norm = lng && lng.startsWith('en') ? 'en' : 'zh';
+            frameRef.current?.contentWindow?.postMessage({ type: 'openan-lang', lang: norm }, '*');
+        };
+        i18n.on('languageChanged', handler);
+        return () => i18n.off('languageChanged', handler);
+    }, [i18n]);
+
+    // Re-sync once after the iframe finished loading (covers a language
+    // switch that happened while the SPA was still booting).
+    useEffect(() => {
+        if (ready) handler(i18n.language);
+        function handler(lng) {
+            const norm = lng && lng.startsWith('en') ? 'en' : 'zh';
+            frameRef.current?.contentWindow?.postMessage({ type: 'openan-lang', lang: norm }, '*');
+        }
+    }, [ready, i18n.language]);
+
+    // Inject the keyframes once.
     useEffect(() => {
         if (!document.getElementById('skillhub-spin-style')) {
             const tag = document.createElement('style');
@@ -100,7 +131,8 @@ export default function SkillCenter() {
                 </div>
             )}
             <iframe
-                src={appUrl}
+                ref={frameRef}
+                src={withLangParam(resolveAppUrl(), initialLang)}
                 title="OpenAN SkillHub"
                 onLoad={() => setReady(true)}
                 style={styles.frame}
