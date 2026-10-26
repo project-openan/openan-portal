@@ -1,0 +1,99 @@
+name: plugin-sync
+
+# Sync a bundle plugin artifact into portal/public/plugins/<id>/.
+# Triggers:
+#   1. repository_dispatch (types: [plugin-release]) - call from a plugin
+#      repo's release pipeline:
+#        curl -X POST \
+#          -H "Authorization: Bearer <PAT with repo scope>" \
+#          https://api.github.com/repos/project-openan/openan-portal/dispatches \
+#          -d '{"event_type":"plugin-release","client_payload":{"plugin_id":"registry-center","artifact_url":"https://.../registry-center-dist.tar.gz"}}'
+#   2. workflow_dispatch - manual run with plugin_id + artifact_url inputs.
+# The job downloads the archive, overwrites portal/public/plugins/<id>/,
+# ensures bundled-plugins.json registration, and opens an auto-merged PR.
+
+on:
+  workflow_dispatch:
+    inputs:
+      plugin_id:
+        description: 'Plugin id (directory name), e.g. registry-center'
+        required: true
+      artifact_url:
+        description: 'URL of a .tar.gz/.zip containing plugin.manifest.json + index.js + index.css'
+        required: true
+  repository_dispatch:
+    types: [plugin-release]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve inputs
+        id: in
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "plugin_id=${{ github.event.inputs.plugin_id }}" >> "$GITHUB_OUTPUT"
+            echo "artifact_url=${{ github.event.inputs.artifact_url }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "plugin_id=${{ github.event.client_payload.plugin_id }}" >> "$GITHUB_OUTPUT"
+            echo "artifact_url=${{ github.event.client_payload.artifact_url }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download and unpack artifact
+        env:
+          PID: ${{ steps.in.outputs.plugin_id }}
+          URL: ${{ steps.in.outputs.artifact_url }}
+        run: |
+          mkdir -p /tmp/art /tmp/art-x "portal/public/plugins/$PID"
+          curl -sSL "$URL" -o /tmp/art/pkg
+          cd /tmp/art-x
+          case "$URL" in
+            *.zip) unzip -o /tmp/art/pkg ;;
+            *) tar xzf /tmp/art/pkg 2>/dev/null || tar xf /tmp/art/pkg ;;
+          esac
+          SRC=$(dirname "$(find /tmp/art-x -name 'plugin.manifest.json' | head -1)")
+          cp -rv "$SRC"/. "portal/public/plugins/$PID/"
+          python3 - "$PID" <<'PY'
+          import json, sys
+          pid = sys.argv[1]
+          path = "portal/bundled-plugins.json"
+          data = json.load(open(path, encoding="utf-8"))
+          if not any(e.get("id") == pid for e in data):
+              data.append({"id": pid, "mode": "bundle", "entry": f"/plugins/{pid}", "enabled": True})
+              json.dump(data, open(path, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+              print(f"registered {pid}")
+          else:
+              print(f"{pid} already registered")
+          PY
+
+      - name: Create and merge PR if changed
+        env:
+          PID: ${{ steps.in.outputs.plugin_id }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No changes; nothing to sync."
+            exit 0
+          fi
+          VER=$(python3 -c "import json;print(json.load(open('portal/public/plugins/$PID/plugin.manifest.json'))['version'])")
+          BR="chore/plugin-sync-$PID-$GITHUB_RUN_NUMBER"
+          git config user.name "guofei66"
+          git config user.email "guofei6@huawei.com"
+          git checkout -b "$BR"
+          git add -f portal/public/plugins portal/bundled-plugins.json
+          git commit -s -m "chore(plugins): sync $PID v$VER artifact / 同步插件发布产物" -m "Auto-synced by plugin-sync workflow from a plugin release.
+
+Signed-off-by: guofei66 <guofei6@huawei.com>"
+          git push -u origin "$BR"
+          gh pr create --title "chore(plugins): sync $PID v$VER artifact / 同步插件发布产物" \
+            --body "Auto-synced by plugin-sync workflow (artifact release).
+
+Signed-off-by: guofei66 <guofei6@huawei.com>" \
+            --head "$BR" --base main
+          gh pr merge --squash --delete-branch
