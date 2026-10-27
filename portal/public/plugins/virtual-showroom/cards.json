@@ -40,44 +40,14 @@
       "enabled": true,
       "order": 3,
       "title": "Live Assurance Demo（大型赛事直播业务保障）",
-      "titleEn": "Major-event Live Broadcast Emergency Assurance Demo",
+      "titleEn": "Major-event Live-stream Service Assurance Demo",
       "category": "多智能体场景包",
       "categoryEn": "Multi-Agent Scenario Package",
-      "description": "城市马拉松赛事直播保障闭环：直播智能体解析赛事需求并订阅保障服务，保障智能体生成策略，RAN 智能体执行功率提升时发现节能 SLA 冲突并经 A2A-T 协商关闭一半节能任务；KQI 劣化后关闭全部节能并跨站协同优化，KQI 恢复后恢复初始配置。点击卡片选择驱动模式（默认 Agent 执行 · 真实 mockAgent 服务，或 Demo 回放 · 不拉起 Agent）、Agent 答复模式三选一（剧本回放·固定文本（默认）/ 数据集匹配·模板检索 / LLM 生成·未配 key 自动降级），后两者由 Playground 打桩实例实时生成应答）与智能体启动选项后拉起场景框架页面，PSOP 流程与多智能体团队随场景自动注入，首次拉起后页面持续驻留。",
-      "descriptionEn": "City-marathon live broadcast assurance closed loop: the Live Streaming Agent parses event requirements and subscribes to assurance, the Assurance Agent generates the policy, the RAN Agent discovers an energy-saving SLA conflict and closes half of the energy-saving tasks via A2A-T negotiation; KQI degradation triggers a full energy-saving shutdown with inter-site coordinated optimization, and the initial configuration is restored after recovery. Clicking the card opens launch options (default: Agent Run via the real mockAgent service; or Demo Replay with no agent launch), an Agent reply mode (three content-source modes: bank replay (fixed text, default) / dataset matching (template retrieval) / LLM generation (auto-degrades without a key)), and agent startup selection (applies to Agent Run only), then launches the scenario framework page with the PSOP workflow and multi-agent team injected; after the first launch the page stays alive.",
+      "description": "大型体育赛事直播期间直播专线质量劣化、观众反馈卡顿：业务保障智能体解析保障意图，经 A2A-T 并行调度无线域与直播域打桩智能体执行小区保障与直播质量诊断，聚合输出保障结论。场景包含 agents / scenario / workflow 三份配置，可由 mockagent 引擎与 openan-debug 加载运行。",
+      "descriptionEn": "During a major sports event live-stream, the dedicated line degrades and viewers report buffering: the service-assurance agent parses intent, orchestrates wireless-domain and live-stream stub agents via A2A-T for cell assurance and stream quality diagnosis, then aggregates the assurance conclusion. The package ships agents / scenario / workflow configs and runs on the mockagent engine and openan-debug.",
       "image": "images/live-assurance.svg",
-      "url": "http://47.236.98.226:9010/scenario-showcase/?case=live-assurance",
-      "openIn": "new-tab",
-      "launch": {
-        "type": "scenario-framework",
-        "case": "live-assurance",
-        "window": "openan-scenario-live-assurance",
-        "startup": {
-          "autoStart": true,
-          "agents": [
-            "live-streaming",
-            "assurance",
-            "ran"
-          ]
-        },
-        "agents": [
-          {
-            "id": "live-streaming",
-            "zh": "直播域智能体",
-            "en": "Live Streaming Agent"
-          },
-          {
-            "id": "assurance",
-            "zh": "业务保障智能体",
-            "en": "Assurance Agent"
-          },
-          {
-            "id": "ran",
-            "zh": "无线域智能体",
-            "en": "RAN Agent"
-          }
-        ]
-      }
+      "url": "https://github.com/project-openan/openan-demo/tree/main/mockagent/scenarios/live-assurance-demo",
+      "openIn": "new-tab"
     }
   ]
 }
