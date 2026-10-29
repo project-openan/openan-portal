@@ -112,7 +112,7 @@ test.each(['manifest', 'locale'])('pending source %s is isolated by its deadline
             ? { id: 'pending', manifest: () => new Promise(() => {}) }
             : plugin('pending', Healthy, { i18n: { namespace: 'pending', resources: { en: () => new Promise(() => {}) } } });
         await act(async () => root.render(<PortalApp pluginsConfig={{ plugins: [plugin('healthy'), pending] }} />));
-        await act(async () => vi.advanceTimersByTimeAsync(15001));
+        await act(async () => vi.advanceTimersByTimeAsync(60001));
         expect(node.textContent).toContain('HEALTHY_CONTENT');
         expect(node.querySelector('[role=alert]').textContent).toContain('timed out');
         expect(node.querySelector('button[aria-label="Settings"]')).toBeTruthy();

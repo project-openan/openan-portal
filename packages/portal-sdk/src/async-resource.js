@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-export const DEFAULT_PLUGIN_TIMEOUT_MS = 15000;
+// 60s: a gzipped 1.5MB plugin bundle (e.g. a 3D scenario showcase) can take
+// 20s+ to transfer alone on a cross-border link; 15s dropped such plugins
+// from the portal even though they would have mounted shortly after.
+export const DEFAULT_PLUGIN_TIMEOUT_MS = 60000;
 
 /** Bound even non-cancellable imports; cancellable resources receive a signal. */
 export function withPluginDeadline(work, { signal, timeoutMs = DEFAULT_PLUGIN_TIMEOUT_MS, label = 'Plugin resource' } = {}) {
