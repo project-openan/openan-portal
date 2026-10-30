@@ -25,6 +25,26 @@ import { usePortalContext } from '@openan/portal-sdk';
 import { transformWorkflowToReactFlow, UnifiedWorkflow } from '@openan/shared-workflow';
 import SolutionPackages from "./packages/index.jsx";
 import { useTranslation } from 'react-i18next';
+import en from './locales/en.json';
+import zh from './locales/zh.json';
+
+
+/**
+ * Self-register the plugin's i18n resources on the PORTAL's i18next
+ * instance. Bundle plugins are evaluated as plain UMD scripts and the
+ * portal only loads locale resources for SOURCE plugins (manifest-driven),
+ * so a rebuilt bundle without this registration renders raw translation
+ * keys instead of localized text.
+ */
+const I18N_NAMESPACE = 'orchestration-center';
+const I18N_RESOURCES = { en, zh };
+function registerI18nResources(i18n) {
+    if (!i18n || typeof i18n.addResourceBundle !== 'function') return false;
+    for (const [lng, res] of Object.entries(I18N_RESOURCES)) {
+        i18n.addResourceBundle(lng, I18N_NAMESPACE, res, true, false);
+    }
+    return true;
+}
 
 
 const MethodCard = ({ icon: Icon, title, onClick, color, loading, progress, status, t }) => (
@@ -94,7 +114,10 @@ function unwrapEnvelope(body) {
 }
 
 const OrchestrationCenter = () => {
-    const { theme, api } = usePortalContext();
+    const { theme, api, i18n: portalI18n } = usePortalContext();
+    // Bundle mode: the portal's i18n instance arrives via context — make
+    // sure our namespace is registered on it (no-op when already loaded).
+    useMemo(() => { registerI18nResources(portalI18n); }, [portalI18n]);
     const { t, i18n } = useTranslation('orchestration-center');
     const isDark = theme.isDark;
     const ORCHESTRATE_BASE = '/rest/v1/orchestrate';
@@ -103,6 +126,10 @@ const OrchestrationCenter = () => {
     const getWorkflowById = (id) => api.get(`${ORCHESTRATE_BASE}/workflows/${id}`);
     const delWorkflowById = (id) => api.delete(`${ORCHESTRATE_BASE}/workflows/${id}`);
     const getTemplates = () => api.get(`${ORCHESTRATE_BASE}/templates`);
+    const listSolutionPackages = async () => {
+        const body = await api.get(`${ORCHESTRATE_BASE}/solution-packages`);
+        return unwrapEnvelope(body);
+    };
     const importTemplate = (templateId) => api.post(`${ORCHESTRATE_BASE}/templates/${templateId}/import`);
     const parsePdf = async (file) => {
         const formData = new FormData();
@@ -656,6 +683,7 @@ const OrchestrationCenter = () => {
                         onViewWorkflow={(wfId) => {
                             setSelectedId(wfId);
                         }}
+                        listPackages={listSolutionPackages}
                         loading={loading && loadingStatus !== LOADING_STAGES.IDLE}
                         loadingStatus={loadingStatus}
                         progress={progress}
