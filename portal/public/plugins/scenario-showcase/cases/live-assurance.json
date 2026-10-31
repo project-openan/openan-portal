@@ -1272,5 +1272,9 @@
     "endpoint": "http://47.236.98.226:9015/mockagent",
     "caseKey": "live-assurance",
     "turnDelayMs": 1500
+  },
+  "layout": {
+    "teamBar": false,
+    "conversation": "byAgent"
   }
 }
