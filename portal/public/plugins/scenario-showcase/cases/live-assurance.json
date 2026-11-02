@@ -1717,11 +1717,7 @@
               "en": "KQI on target throughout, stall rate < 1%, zero service interruption, energy policy restored"
             }
           }
-        ],
-        "close": {
-          "zh": "感谢您的信任，本次保障服务结束。如需新的保障需求，欢迎随时提出。",
-          "en": "Thank you — this assurance service is complete. Reach out anytime for new requirements."
-        }
+        ]
       },
       "at": 122.0
     }
