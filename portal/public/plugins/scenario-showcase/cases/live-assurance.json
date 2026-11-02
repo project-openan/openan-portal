@@ -1500,6 +1500,69 @@
         "en": "Closed loop complete: SLA met for the whole broadcast, the assurance ticket is archived."
       },
       "to": "live-streaming"
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "text": {
+        "zh": "本次保障服务已全流程闭环，服务总结如下。",
+        "en": "The assurance service is fully closed-loop. Summary below."
+      },
+      "summary": {
+        "title": {
+          "zh": "服务总结",
+          "en": "Service Summary"
+        },
+        "rows": [
+          {
+            "label": {
+              "zh": "需求受理",
+              "en": "Request"
+            },
+            "value": {
+              "zh": "REQ-2026-1102 大型活动体验保障需求已全流程闭环",
+              "en": "The large-event assurance request is fully closed-loop"
+            }
+          },
+          {
+            "label": {
+              "zh": "保障团队",
+              "en": "Team"
+            },
+            "value": {
+              "zh": "CRM组建 直播域/业务保障/无线域 3 智能体协同保障",
+              "en": "CRM assembled a 3-agent team (live-streaming / assurance / RAN)"
+            }
+          },
+          {
+            "label": {
+              "zh": "配置变更",
+              "en": "Config changes"
+            },
+            "value": {
+              "zh": "4 项配置变更全部经您授权后执行：功率提升、A2A-T 裁定关节能、关闭全部节能站点、分批恢复",
+              "en": "All 4 config changes executed under your authorization (power boost, A2A-T decision, energy sites off, batched restore)"
+            }
+          },
+          {
+            "label": {
+              "zh": "保障结果",
+              "en": "Result"
+            },
+            "value": {
+              "zh": "KQI 全程达标，直播卡顿率 < 1%，业务零中断，节能策略已恢复基线",
+              "en": "KQI on target throughout, stall rate < 1%, zero service interruption, energy policy restored"
+            }
+          }
+        ],
+        "close": {
+          "zh": "感谢您的信任，本次保障服务结束。如需新的保障需求，欢迎随时提出。",
+          "en": "Thank you — this assurance service is complete. Reach out anytime for new requirements."
+        }
+      },
+      "at": 122.0
     }
   ],
   "history": [
