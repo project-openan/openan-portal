@@ -11,6 +11,19 @@
   },
   "agents": [
     {
+      "id": "crm",
+      "name": {
+        "zh": "CRM智能体",
+        "en": "CRM Agent"
+      },
+      "role": "crm",
+      "color": "rose",
+      "skills": [
+        "Customer Intent Parsing",
+        "Assurance Team Assembly"
+      ]
+    },
+    {
       "id": "live-streaming",
       "name": {
         "zh": "直播域智能体",
@@ -51,6 +64,26 @@
     }
   ],
   "steps": [
+    {
+      "id": "crm-intent",
+      "name": {
+        "zh": "接收客户意图",
+        "en": "Receive Customer Intent"
+      },
+      "agent": "crm",
+      "skill": "Customer Intent Parsing",
+      "task": "REQ-2026-1102"
+    },
+    {
+      "id": "crm-assembly",
+      "name": {
+        "zh": "组建保障团队",
+        "en": "Assemble Assurance Team"
+      },
+      "agent": "crm",
+      "skill": "Assurance Team Assembly",
+      "task": "REQ-2026-1102"
+    },
     {
       "id": "step1",
       "name": {
@@ -314,13 +347,125 @@
   ],
   "script": [
     {
-      "at": 0,
+      "type": "step",
+      "id": "crm-intent",
+      "status": "active",
+      "at": 0.2
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "step": "crm-intent",
+      "text": {
+        "zh": "收到客户需求 REQ-2026-1102，正在解析客户意图并匹配保障方案。",
+        "en": "Customer request REQ-2026-1102 received; parsing intent and matching an assurance plan."
+      },
+      "intent": {
+        "reqId": "REQ-2026-1102",
+        "text": {
+          "zh": "客户要求对马拉松赛事进行体验保障，保证需求 REQ-2026-1102：赛事期间直播连续流畅、公专网协同联动。",
+          "en": "Customer requests experience assurance for the marathon event (REQ-2026-1102): continuous smooth live streaming and coordinated public-private network operation."
+        }
+      },
+      "at": 0.4
+    },
+    {
+      "type": "step",
+      "id": "crm-intent",
+      "status": "done",
+      "at": 2.0
+    },
+    {
+      "type": "step",
+      "id": "crm-assembly",
+      "status": "active",
+      "at": 2.4
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "意图解析完成：匹配「大型活动体验保障」方案，需要组建跨域保障团队协同执行。",
+        "en": "Intent parsed: matched the Large-Event Experience Assurance plan; assembling a cross-domain agent team."
+      },
+      "at": 2.6
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "live-streaming",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "团队组建 1/3：接入 直播域智能体，负责赛事直播质量监控与体验保障。",
+        "en": "Team assembly 1/3: Live Streaming Agent joined for live QoE monitoring."
+      },
+      "assembles": [
+        "live-streaming"
+      ],
+      "at": 5.2
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "assurance",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "团队组建 2/3：接入 业务保障智能体，负责保障策略生成与跨域协同裁定。",
+        "en": "Team assembly 2/3: Assurance Agent joined for strategy generation and cross-domain arbitration."
+      },
+      "assembles": [
+        "assurance"
+      ],
+      "at": 6.7
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "ran",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "团队组建 3/3：接入 无线域智能体，负责无线资源配置与节能协同。",
+        "en": "Team assembly 3/3: RAN Agent joined for radio resource configuration and energy coordination."
+      },
+      "assembles": [
+        "ran"
+      ],
+      "at": 8.2
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "live-streaming",
+      "kind": "request",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "保障团队组建完成（3/3）。任务移交：按 REQ-2026-1102 执行马拉松赛事全程体验保障，直播域牵头。",
+        "en": "Team ready (3/3). Handing over: run full-event experience assurance per REQ-2026-1102, led by the Live Streaming Agent."
+      },
+      "at": 9.7
+    },
+    {
+      "type": "step",
+      "id": "crm-assembly",
+      "status": "done",
+      "at": 12.1
+    },
+    {
+      "at": 12.5,
       "type": "step",
       "id": "step1",
       "status": "active"
     },
     {
-      "at": 0.5,
+      "at": 13.0,
       "type": "message",
       "from": "live-streaming",
       "kind": "request",
@@ -366,13 +511,13 @@
       "to": "assurance"
     },
     {
-      "at": 3,
+      "at": 15.5,
       "type": "step",
       "id": "step1",
       "status": "done"
     },
     {
-      "at": 3.5,
+      "at": 16.0,
       "type": "message",
       "from": "live-streaming",
       "kind": "response",
@@ -412,13 +557,13 @@
       "to": "assurance"
     },
     {
-      "at": 6,
+      "at": 18.5,
       "type": "step",
       "id": "step2",
       "status": "active"
     },
     {
-      "at": 6.5,
+      "at": 19.0,
       "type": "message",
       "from": "assurance",
       "kind": "info",
@@ -488,19 +633,19 @@
       "to": "ran"
     },
     {
-      "at": 13,
+      "at": 25.5,
       "type": "step",
       "id": "step2",
       "status": "done"
     },
     {
-      "at": 14,
+      "at": 26.5,
       "type": "step",
       "id": "step3",
       "status": "active"
     },
     {
-      "at": 14.5,
+      "at": 27.0,
       "type": "message",
       "from": "assurance",
       "kind": "request",
@@ -509,10 +654,34 @@
         "zh": "下发功率提升任务：主会场及沿线小区射频功率提升 +3dB，保障上行直播带宽。",
         "en": "Dispatching the power boost task: +3dB radio power on the venue and course cells to secure uplink bandwidth."
       },
-      "to": "ran"
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "title": {
+          "zh": "射频功率提升配置下发",
+          "en": "RF power boost configuration push"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "主会场及沿线小区射频功率",
+              "en": "Cell RF power (main venue + track cells)"
+            },
+            "from": {
+              "zh": "保障前基线",
+              "en": "pre-assurance baseline"
+            },
+            "to": {
+              "zh": "提升 +3dB",
+              "en": "+3 dB boost"
+            }
+          }
+        ]
+      }
     },
     {
-      "at": 20,
+      "at": 32.5,
       "type": "message",
       "from": "ran",
       "kind": "alert",
@@ -557,7 +726,7 @@
       "to": "assurance"
     },
     {
-      "at": 20.4,
+      "at": 32.9,
       "type": "message",
       "from": "ran",
       "kind": "a2at",
@@ -615,7 +784,7 @@
       "to": "assurance"
     },
     {
-      "at": 24,
+      "at": 36.5,
       "type": "message",
       "from": "assurance",
       "kind": "response",
@@ -627,7 +796,7 @@
       "to": "ran"
     },
     {
-      "at": 24.4,
+      "at": 36.9,
       "type": "message",
       "from": "assurance",
       "kind": "a2at",
@@ -673,10 +842,38 @@
           }
         ]
       },
-      "to": "ran"
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "via": {
+          "zh": "经 A2A-T 协商裁定",
+          "en": "via A2A-T negotiation decision"
+        },
+        "title": {
+          "zh": "关闭 Cell-3 节能任务（50% 站点）",
+          "en": "Deactivate Cell-3 energy-saving task (50% of sites)"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "Cell-3 节能任务",
+              "en": "Cell-3 energy-saving task"
+            },
+            "from": {
+              "zh": "运行中（深度节能）",
+              "en": "running (deep energy-saving)"
+            },
+            "to": {
+              "zh": "关闭",
+              "en": "deactivated"
+            }
+          }
+        ]
+      }
     },
     {
-      "at": 28,
+      "at": 40.5,
       "type": "message",
       "from": "ran",
       "kind": "response",
@@ -688,13 +885,13 @@
       "to": "assurance"
     },
     {
-      "at": 30,
+      "at": 42.5,
       "type": "step",
       "id": "step3",
       "status": "done"
     },
     {
-      "at": 30.5,
+      "at": 43.0,
       "type": "panel",
       "panel": "map",
       "action": "merge",
@@ -709,13 +906,13 @@
       }
     },
     {
-      "at": 31,
+      "at": 43.5,
       "type": "step",
       "id": "step4",
       "status": "active"
     },
     {
-      "at": 31,
+      "at": 43.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -725,7 +922,7 @@
       }
     },
     {
-      "at": 31,
+      "at": 43.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -735,7 +932,7 @@
       }
     },
     {
-      "at": 31,
+      "at": 43.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -745,7 +942,7 @@
       }
     },
     {
-      "at": 34,
+      "at": 46.5,
       "type": "message",
       "from": "live-streaming",
       "kind": "info",
@@ -757,7 +954,7 @@
       "to": "live-streaming"
     },
     {
-      "at": 40,
+      "at": 52.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -767,7 +964,7 @@
       }
     },
     {
-      "at": 40,
+      "at": 52.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -777,7 +974,7 @@
       }
     },
     {
-      "at": 40,
+      "at": 52.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -787,7 +984,7 @@
       }
     },
     {
-      "at": 46,
+      "at": 58.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -797,7 +994,7 @@
       }
     },
     {
-      "at": 46,
+      "at": 58.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -807,7 +1004,7 @@
       }
     },
     {
-      "at": 46,
+      "at": 58.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -817,7 +1014,7 @@
       }
     },
     {
-      "at": 50,
+      "at": 62.5,
       "type": "message",
       "from": "live-streaming",
       "kind": "alert",
@@ -854,7 +1051,7 @@
       "to": "assurance"
     },
     {
-      "at": 50,
+      "at": 62.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -864,7 +1061,7 @@
       }
     },
     {
-      "at": 50,
+      "at": 62.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -874,7 +1071,7 @@
       }
     },
     {
-      "at": 50,
+      "at": 62.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -884,7 +1081,7 @@
       }
     },
     {
-      "at": 50.5,
+      "at": 63.0,
       "type": "panel",
       "panel": "map",
       "action": "merge",
@@ -895,19 +1092,19 @@
       }
     },
     {
-      "at": 52,
+      "at": 64.5,
       "type": "step",
       "id": "step4",
       "status": "done"
     },
     {
-      "at": 53,
+      "at": 65.5,
       "type": "step",
       "id": "step5",
       "status": "active"
     },
     {
-      "at": 53.5,
+      "at": 66.0,
       "type": "message",
       "from": "assurance",
       "kind": "info",
@@ -919,7 +1116,7 @@
       "to": "ran"
     },
     {
-      "at": 62,
+      "at": 74.5,
       "type": "message",
       "from": "assurance",
       "kind": "request",
@@ -928,22 +1125,74 @@
         "zh": "保障决策：关闭全部节能站点，启动跨站协同优化，优先恢复直播体验。",
         "en": "Decision: shut down ALL energy-saving sites and start inter-site coordinated optimization — viewer experience first."
       },
-      "to": "ran"
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "title": {
+          "zh": "关闭全部节能站点并启动跨站协同优化",
+          "en": "Deactivate ALL energy-saving sites and start cross-site coordination"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "节能站点",
+              "en": "Energy-saving sites"
+            },
+            "from": {
+              "zh": "50% 关闭",
+              "en": "50% off"
+            },
+            "to": {
+              "zh": "全部关闭",
+              "en": "all off"
+            }
+          },
+          {
+            "label": {
+              "zh": "邻区载波均衡",
+              "en": "Neighbor-carrier load balancing"
+            },
+            "from": {
+              "zh": "未启用",
+              "en": "off"
+            },
+            "to": {
+              "zh": "启动",
+              "en": "on"
+            }
+          },
+          {
+            "label": {
+              "zh": "迁移参数",
+              "en": "Mobility parameters"
+            },
+            "from": {
+              "zh": "基线",
+              "en": "baseline"
+            },
+            "to": {
+              "zh": "协同调整",
+              "en": "coordinated"
+            }
+          }
+        ]
+      }
     },
     {
-      "at": 66,
+      "at": 78.5,
       "type": "step",
       "id": "step5",
       "status": "done"
     },
     {
-      "at": 67,
+      "at": 79.5,
       "type": "step",
       "id": "step6",
       "status": "active"
     },
     {
-      "at": 67.5,
+      "at": 80.0,
       "type": "message",
       "from": "ran",
       "kind": "request",
@@ -955,7 +1204,7 @@
       "to": "assurance"
     },
     {
-      "at": 68,
+      "at": 80.5,
       "type": "panel",
       "panel": "map",
       "action": "merge",
@@ -968,7 +1217,7 @@
       }
     },
     {
-      "at": 76,
+      "at": 88.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -978,7 +1227,7 @@
       }
     },
     {
-      "at": 76,
+      "at": 88.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -988,7 +1237,7 @@
       }
     },
     {
-      "at": 76,
+      "at": 88.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -998,7 +1247,7 @@
       }
     },
     {
-      "at": 80,
+      "at": 92.5,
       "type": "message",
       "from": "ran",
       "kind": "response",
@@ -1020,13 +1269,13 @@
       "to": "assurance"
     },
     {
-      "at": 82,
+      "at": 94.5,
       "type": "step",
       "id": "step6",
       "status": "done"
     },
     {
-      "at": 82.5,
+      "at": 95.0,
       "type": "panel",
       "panel": "map",
       "action": "merge",
@@ -1037,13 +1286,13 @@
       }
     },
     {
-      "at": 83,
+      "at": 95.5,
       "type": "step",
       "id": "step7",
       "status": "active"
     },
     {
-      "at": 84,
+      "at": 96.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -1053,7 +1302,7 @@
       }
     },
     {
-      "at": 84,
+      "at": 96.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -1063,7 +1312,7 @@
       }
     },
     {
-      "at": 84,
+      "at": 96.5,
       "type": "panel",
       "panel": "kqi",
       "action": "push",
@@ -1073,7 +1322,7 @@
       }
     },
     {
-      "at": 86,
+      "at": 98.5,
       "type": "message",
       "from": "live-streaming",
       "kind": "info",
@@ -1085,13 +1334,13 @@
       "to": "assurance"
     },
     {
-      "at": 88,
+      "at": 100.5,
       "type": "step",
       "id": "step7",
       "status": "done"
     },
     {
-      "at": 88.5,
+      "at": 101.0,
       "type": "panel",
       "panel": "map",
       "action": "merge",
@@ -1105,13 +1354,13 @@
       }
     },
     {
-      "at": 89,
+      "at": 101.5,
       "type": "step",
       "id": "step8",
       "status": "active"
     },
     {
-      "at": 89.5,
+      "at": 102.0,
       "type": "message",
       "from": "assurance",
       "kind": "info",
@@ -1171,7 +1420,7 @@
       "to": "ran"
     },
     {
-      "at": 96,
+      "at": 108.5,
       "type": "message",
       "from": "assurance",
       "kind": "response",
@@ -1180,22 +1429,46 @@
         "zh": "恢复策略已下发至无线域：按预案分批恢复节能配置，避免二次冲击。",
         "en": "Recovery policy dispatched to the RAN domain: staged energy-saving restoration to avoid a second disturbance."
       },
-      "to": "ran"
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "title": {
+          "zh": "节能配置分批恢复下发",
+          "en": "Batched restore of energy-saving configuration"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "节能策略",
+              "en": "Energy-saving policy"
+            },
+            "from": {
+              "zh": "全部关闭",
+              "en": "all off"
+            },
+            "to": {
+              "zh": "分批恢复至基线",
+              "en": "batched restore to baseline"
+            }
+          }
+        ]
+      }
     },
     {
-      "at": 98,
+      "at": 110.5,
       "type": "step",
       "id": "step8",
       "status": "done"
     },
     {
-      "at": 99,
+      "at": 111.5,
       "type": "step",
       "id": "step9",
       "status": "active"
     },
     {
-      "at": 99.5,
+      "at": 112.0,
       "type": "message",
       "from": "ran",
       "kind": "response",
@@ -1207,13 +1480,13 @@
       "to": "assurance"
     },
     {
-      "at": 106,
+      "at": 118.5,
       "type": "step",
       "id": "step9",
       "status": "done"
     },
     {
-      "at": 107,
+      "at": 119.5,
       "type": "message",
       "from": "assurance",
       "kind": "info",
