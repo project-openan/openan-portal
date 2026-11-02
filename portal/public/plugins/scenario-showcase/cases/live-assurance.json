@@ -1724,45 +1724,52 @@
   ],
   "history": [
     {
-      "id": "run-20261019",
-      "time": "2026-10-19 20:15",
-      "title": {
-        "zh": "国庆晚会直播保障演练",
-        "en": "Holiday gala rehearsal"
-      },
+      "id": "intent-marathon",
+      "intent": "marathon",
+      "mode": "agent",
       "result": "success",
-      "duration": "4m 12s"
+      "time": "2026-11-02 09:12",
+      "duration": "2m 05s",
+      "title": {
+        "zh": "交互意图 · 马拉松赛事体验保障",
+        "en": "Intent · Marathon event assurance"
+      },
+      "req": {
+        "zh": "12月10日，XX地区进行马拉松比赛，对比赛进行赛事体验保障，保障赛事期间的用户上网体验",
+        "en": "Dec 10 — a marathon is held in XX district; provide event experience assurance to safeguard user internet access during the race"
+      }
     },
     {
-      "id": "run-20261018",
-      "time": "2026-10-18 14:02",
+      "id": "intent-concert",
+      "intent": "concert",
+      "mode": "agent",
+      "result": "success",
+      "time": "2026-11-01 16:40",
+      "duration": "1m 58s",
       "title": {
-        "zh": "半程马拉松试运行",
-        "en": "Half-marathon trial run"
+        "zh": "交互意图 · 跨年演唱会保障",
+        "en": "Intent · New Year concert assurance"
       },
-      "result": "partial",
-      "duration": "3m 48s"
+      "req": {
+        "zh": "12月31日，XX市体育中心举办大型跨年演唱会，对活动进行用户体验保障，保障现场直播与分享体验",
+        "en": "Dec 31 — a large New Year countdown concert is held at XX Sports Center; provide event experience assurance for the live broadcast and sharing experience"
+      }
     },
     {
-      "id": "run-20261017",
-      "time": "2026-10-17 09:30",
-      "title": {
-        "zh": "首次三方联调",
-        "en": "First tri-agent joint test"
-      },
+      "id": "intent-summit",
+      "intent": "summit",
+      "mode": "agent",
       "result": "success",
-      "duration": "5m 03s"
-    },
-    {
-      "id": "run-la-agent-01",
+      "time": "2026-10-31 10:05",
+      "duration": "2m 11s",
       "title": {
-        "zh": "智能体服务执行（mockAgent 会话）",
-        "en": "Agent service run (mockAgent session)"
+        "zh": "交互意图 · 行业峰会保障",
+        "en": "Intent · Industry summit assurance"
       },
-      "time": "2026-10-19 16:12",
-      "duration": "1分52秒",
-      "result": "success",
-      "mode": "agent"
+      "req": {
+        "zh": "1月15日，XX国际会展中心举办大型行业峰会，对展会进行体验保障，保障展商与观众的上网体验",
+        "en": "Jan 15 — a large industry summit is held at XX International Convention & Exhibition Center; provide event experience assurance for exhibitors and attendees"
+      }
     }
   ],
   "driver": "script",
