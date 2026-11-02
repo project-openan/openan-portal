@@ -82,7 +82,12 @@
       },
       "agent": "crm",
       "skill": "Assurance Team Assembly",
-      "task": "REQ-2026-1102"
+      "task": "REQ-2026-1102",
+      "next": [
+        "live-streaming",
+        "assurance",
+        "ran"
+      ]
     },
     {
       "id": "step1",
