@@ -53,14 +53,14 @@
         "case": "live-assurance",
         "window": "openan-scenario-live-assurance",
         "startup": {
-          "autoStart": true,
-          "agents": [
-            "live-streaming",
-            "assurance",
-            "ran"
-          ]
+          "autoStart": true
         },
         "agents": [
+          {
+            "id": "crm",
+            "zh": "CRM智能体",
+            "en": "CRM Agent"
+          },
           {
             "id": "live-streaming",
             "zh": "直播域智能体",
