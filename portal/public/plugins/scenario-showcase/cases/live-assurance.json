@@ -221,78 +221,149 @@
   ],
   "panels": [
     {
-      "id": "map",
+      "id": "route-map",
       "type": "map",
       "title": {
-        "zh": "赛事区域网络视图",
-        "en": "Event Area Network View"
+        "zh": "马拉松路线保障态势",
+        "en": "Marathon Route Assurance"
       },
       "initial": {
-        "siteStatus": {
-          "venue": "good"
+        "routeActive": true,
+        "siteStatus": {},
+        "marker": {
+          "x": 8,
+          "y": 44
         }
       },
       "config": {
         "sites": [
           {
-            "id": "venue",
-            "x": 16,
-            "y": 46,
-            "label": "主会场",
+            "id": "start",
+            "x": 8,
+            "y": 44,
+            "label": {
+              "zh": "起点·滨江广场",
+              "en": "Start · Riverside Plaza"
+            },
             "status": "good"
           },
           {
-            "id": "cell-1",
-            "x": 34,
-            "y": 30,
-            "label": "Cell-1"
+            "id": "bs1",
+            "x": 18,
+            "y": 36,
+            "label": {
+              "zh": "基站 BS-1",
+              "en": "BS-1"
+            },
+            "status": "good"
           },
           {
-            "id": "cell-2",
-            "x": 52,
-            "y": 20,
-            "label": "Cell-2"
+            "id": "km10",
+            "x": 30,
+            "y": 24,
+            "label": {
+              "zh": "10km·老城区",
+              "en": "10km · Old Town"
+            },
+            "status": "good"
           },
           {
-            "id": "cell-3",
-            "x": 70,
-            "y": 27,
-            "label": "Cell-3"
+            "id": "bs2",
+            "x": 42,
+            "y": 18,
+            "label": {
+              "zh": "基站 BS-2",
+              "en": "BS-2"
+            },
+            "status": "good"
           },
           {
-            "id": "cell-4",
+            "id": "half",
+            "x": 54,
+            "y": 14,
+            "label": {
+              "zh": "21km·半程",
+              "en": "21km · Half"
+            },
+            "status": "good"
+          },
+          {
+            "id": "bs3",
+            "x": 66,
+            "y": 18,
+            "label": {
+              "zh": "基站 BS-3",
+              "en": "BS-3"
+            },
+            "status": "good"
+          },
+          {
+            "id": "km30",
+            "x": 76,
+            "y": 26,
+            "label": {
+              "zh": "30km·科技园",
+              "en": "30km · Tech Park"
+            },
+            "status": "good"
+          },
+          {
+            "id": "bs4",
             "x": 86,
-            "y": 40,
-            "label": "Cell-4"
+            "y": 34,
+            "label": {
+              "zh": "基站 BS-4",
+              "en": "BS-4"
+            },
+            "status": "good"
           },
           {
-            "id": "core",
-            "x": 50,
-            "y": 52,
-            "label": "核心机房",
+            "id": "finish",
+            "x": 93,
+            "y": 44,
+            "label": {
+              "zh": "终点·体育场",
+              "en": "Finish · Stadium"
+            },
             "status": "good"
           }
         ],
         "route": [
           {
-            "x": 16,
-            "y": 46
+            "x": 8,
+            "y": 44
           },
           {
-            "x": 34,
-            "y": 30
+            "x": 18,
+            "y": 36
           },
           {
-            "x": 52,
-            "y": 20
+            "x": 30,
+            "y": 24
           },
           {
-            "x": 70,
-            "y": 27
+            "x": 42,
+            "y": 18
+          },
+          {
+            "x": 54,
+            "y": 14
+          },
+          {
+            "x": 66,
+            "y": 18
+          },
+          {
+            "x": 76,
+            "y": 26
           },
           {
             "x": 86,
-            "y": 40
+            "y": 34
+          },
+          {
+            "x": 93,
+            "y": 44
           }
         ]
       }
@@ -1735,8 +1806,8 @@
         "en": "Intent · Marathon event assurance"
       },
       "req": {
-        "zh": "12月10日，XX地区进行马拉松比赛，对比赛进行赛事体验保障，保障赛事期间的用户上网体验",
-        "en": "Dec 10 — a marathon is held in XX district; provide event experience assurance to safeguard user internet access during the race"
+        "zh": "12月10日 07:00-13:00，XX市滨江大道及城区环线举办全程马拉松比赛（42.195公里，约2万名选手参赛），对比赛进行赛事体验保障。保障目标：参赛选手与沿途观众的移动上网体验，直播回传上行速率≥50Mbps，视频卡顿率<1%，沿途基站零重大故障。",
+        "en": "Dec 10, 07:00-13:00 — a full marathon (42.195 km, ~20,000 runners) is held along XX City riverside avenue and the urban loop; provide event experience assurance. Goals: mobile internet experience for runners and spectators, live uplink ≥50 Mbps, stall ratio <1%, zero critical site outages along the route."
       }
     },
     {
@@ -1751,8 +1822,8 @@
         "en": "Intent · New Year concert assurance"
       },
       "req": {
-        "zh": "12月31日，XX市体育中心举办大型跨年演唱会，对活动进行用户体验保障，保障现场直播与分享体验",
-        "en": "Dec 31 — a large New Year countdown concert is held at XX Sports Center; provide event experience assurance for the live broadcast and sharing experience"
+        "zh": "12月31日 19:00-次日00:30，XX市体育中心举办大型跨年演唱会（现场约5万名观众），对活动进行用户体验保障。保障目标：现场观众上网与社交分享体验，直播推流与短视频上传成功率≥99%，散场高峰期网络不拥塞、业务零中断。",
+        "en": "Dec 31, 19:00-00:30+1 — a large New Year countdown concert (~50,000 attendees) is held at XX Sports Center; provide event experience assurance. Goals: on-site internet and social sharing experience, live-stream and short-video upload success ≥99%, no congestion or service outage during the exit peak."
       }
     },
     {
@@ -1767,8 +1838,8 @@
         "en": "Intent · Industry summit assurance"
       },
       "req": {
-        "zh": "1月15日，XX国际会展中心举办大型行业峰会，对展会进行体验保障，保障展商与观众的上网体验",
-        "en": "Jan 15 — a large industry summit is held at XX International Convention & Exhibition Center; provide event experience assurance for exhibitors and attendees"
+        "zh": "1月15日 09:00-18:00，XX国际会展中心举办大型行业峰会（3个展馆、约1.2万名展商与观众），对展会进行体验保障。保障目标：展商与观众上网体验，主论坛 keynote 直播稳定不卡顿，会议签到、电子支付等关键业务零中断。",
+        "en": "Jan 15, 09:00-18:00 — a large industry summit (3 halls, ~12,000 exhibitors and visitors) is held at XX International Convention & Exhibition Center; provide event experience assurance. Goals: attendee internet experience, stable keynote live-streaming, zero interruption for critical services such as check-in and e-payment."
       }
     }
   ],
