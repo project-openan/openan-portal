@@ -224,15 +224,18 @@
       "id": "route-map",
       "type": "map",
       "title": {
-        "zh": "马拉松路线保障态势",
-        "en": "Marathon Route Assurance"
+        "zh": "活动路线保障态势",
+        "en": "Event Route Assurance"
       },
       "initial": {
         "routeActive": true,
         "siteStatus": {},
+        "loc": "shanghai",
+        "location": "shanghai",
         "marker": {
           "x": 8,
-          "y": 44
+          "y": 44,
+          "loc": "shanghai"
         }
       },
       "config": {
@@ -242,8 +245,8 @@
             "x": 8,
             "y": 44,
             "label": {
-              "zh": "起点·滨江广场",
-              "en": "Start · Riverside Plaza"
+              "zh": "起点·外滩广场",
+              "en": "Start · Bund Plaza"
             },
             "status": "good"
           },
@@ -262,7 +265,7 @@
             "x": 30,
             "y": 24,
             "label": {
-              "zh": "10km·老城区",
+              "zh": "10km·老城厢",
               "en": "10km · Old Town"
             },
             "status": "good"
@@ -302,8 +305,8 @@
             "x": 76,
             "y": 26,
             "label": {
-              "zh": "30km·科技园",
-              "en": "30km · Tech Park"
+              "zh": "30km·陆家嘴",
+              "en": "30km · Lujiazui"
             },
             "status": "good"
           },
@@ -364,6 +367,1181 @@
           {
             "x": 93,
             "y": 44
+          }
+        ],
+        "city": {
+          "blocks": [
+            {
+              "x": 1,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 37,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 49,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 61,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 73,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 1,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 49,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 61,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 10,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 61,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 73,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 19,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 37,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 29,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 13,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 25,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 37,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 49,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 85,
+              "y": 38,
+              "w": 9,
+              "h": 6
+            }
+          ],
+          "roads": [
+            {
+              "points": "0,8 100,8"
+            },
+            {
+              "points": "0,17 100,17"
+            },
+            {
+              "points": "0,27 100,27"
+            },
+            {
+              "points": "0,36 100,36"
+            },
+            {
+              "points": "0,50 58,50"
+            },
+            {
+              "points": "12,0 12,52"
+            },
+            {
+              "points": "24,0 24,52"
+            },
+            {
+              "points": "36,0 36,52"
+            },
+            {
+              "points": "48,0 48,52"
+            },
+            {
+              "points": "60,0 60,52"
+            },
+            {
+              "points": "72,0 72,52"
+            },
+            {
+              "points": "84,0 84,52"
+            },
+            {
+              "points": "55,0 68,14 82,28 96,40"
+            }
+          ],
+          "arteries": [
+            {
+              "points": "0,47 20,45 45,46 62,49 80,52",
+              "w": 2.4
+            },
+            {
+              "points": "0,22 100,22",
+              "w": 2.2
+            },
+            {
+              "points": "5,60 30,38 55,20 78,6",
+              "w": 2.2
+            }
+          ],
+          "river": {
+            "points": "0,56 18,52.5 38,55.5 58,60 80,62.5 100,63",
+            "w": 5.2,
+            "label": {
+              "zh": "黄浦江",
+              "en": "Huangpu River"
+            },
+            "lx": 30,
+            "ly": 60.5
+          },
+          "parks": [
+            {
+              "points": "38,11 48,11 48,16 38,16",
+              "label": {
+                "zh": "豫园绿地",
+                "en": "Yu Garden"
+              },
+              "lx": 43,
+              "ly": 14.3
+            },
+            {
+              "points": "37,20 49,20 49,26 37,26",
+              "label": {
+                "zh": "人民公园",
+                "en": "People's Park"
+              },
+              "lx": 43,
+              "ly": 23.6
+            },
+            {
+              "points": "0,50 18,49 24,53 10,55.5 0,55",
+              "label": {
+                "zh": "外滩滨江绿地",
+                "en": "Bund Green"
+              },
+              "lx": 11,
+              "ly": 53.4
+            }
+          ]
+        },
+        "locId": "shanghai",
+        "locLabel": {
+          "zh": "上海",
+          "en": "Shanghai"
+        },
+        "altLocations": [
+          {
+            "id": "london",
+            "label": {
+              "zh": "伦敦",
+              "en": "London"
+            },
+            "city": {
+              "blocks": [
+                {
+                  "x": 2,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 13,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 13,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                }
+              ],
+              "roads": [
+                {
+                  "points": "0,8 100,8"
+                },
+                {
+                  "points": "0,15 100,15"
+                },
+                {
+                  "points": "0,22 100,22"
+                },
+                {
+                  "points": "0,30 100,30"
+                },
+                {
+                  "points": "0,50 100,50"
+                },
+                {
+                  "points": "0,58 74,58"
+                },
+                {
+                  "points": "11,0 11,30"
+                },
+                {
+                  "points": "24,0 24,30"
+                },
+                {
+                  "points": "35,0 35,30"
+                },
+                {
+                  "points": "46,0 46,30"
+                },
+                {
+                  "points": "57,0 57,30"
+                },
+                {
+                  "points": "68,0 68,30"
+                },
+                {
+                  "points": "79,0 79,30"
+                },
+                {
+                  "points": "90,0 90,30"
+                },
+                {
+                  "points": "11,40 11,58"
+                },
+                {
+                  "points": "24,40 24,58"
+                },
+                {
+                  "points": "35,40 35,58"
+                },
+                {
+                  "points": "46,40 46,58"
+                },
+                {
+                  "points": "57,40 57,58"
+                },
+                {
+                  "points": "68,40 68,58"
+                },
+                {
+                  "points": "90,30 90,62"
+                }
+              ],
+              "arteries": [
+                {
+                  "points": "0,33 22,31 44,32 62,34 80,35 100,36",
+                  "w": 2.2
+                },
+                {
+                  "points": "40,28 40,46",
+                  "w": 2.4
+                },
+                {
+                  "points": "64,30 64,46",
+                  "w": 2.4
+                }
+              ],
+              "river": {
+                "points": "0,36 18,34 36,37 54,35 72,39 88,38 100,40",
+                "w": 5.2,
+                "label": {
+                  "zh": "泰晤士河",
+                  "en": "River Thames"
+                },
+                "lx": 52,
+                "ly": 41.5
+              },
+              "parks": [
+                {
+                  "points": "6,8 24,8 24,20 6,20",
+                  "label": {
+                    "zh": "海德公园",
+                    "en": "Hyde Park"
+                  },
+                  "lx": 15,
+                  "ly": 14.5
+                },
+                {
+                  "points": "76,48 92,48 92,56 76,56",
+                  "label": {
+                    "zh": "格林尼治公园",
+                    "en": "Greenwich Park"
+                  },
+                  "lx": 84,
+                  "ly": 52.5
+                }
+              ]
+            },
+            "sites": [
+              {
+                "id": "start",
+                "x": 80,
+                "y": 38,
+                "label": {
+                  "zh": "O2竞技场·主会场",
+                  "en": "The O2 · Main"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs1",
+                "x": 72,
+                "y": 34,
+                "label": {
+                  "zh": "基站 BS-1",
+                  "en": "BS-1"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km10",
+                "x": 62,
+                "y": 40,
+                "label": {
+                  "zh": "金丝雀码头",
+                  "en": "Canary Wharf"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs2",
+                "x": 52,
+                "y": 40,
+                "label": {
+                  "zh": "基站 BS-2",
+                  "en": "BS-2"
+                },
+                "status": "good"
+              },
+              {
+                "id": "half",
+                "x": 40,
+                "y": 32,
+                "label": {
+                  "zh": "伦敦塔桥",
+                  "en": "Tower Bridge"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs3",
+                "x": 30,
+                "y": 27,
+                "label": {
+                  "zh": "基站 BS-3",
+                  "en": "BS-3"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km30",
+                "x": 25,
+                "y": 22,
+                "label": {
+                  "zh": "圣保罗大教堂",
+                  "en": "St Paul's"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs4",
+                "x": 18,
+                "y": 24,
+                "label": {
+                  "zh": "基站 BS-4",
+                  "en": "BS-4"
+                },
+                "status": "good"
+              },
+              {
+                "id": "finish",
+                "x": 14,
+                "y": 16,
+                "label": {
+                  "zh": "海德公园·跨年场",
+                  "en": "Hyde Park · NYE"
+                },
+                "status": "good"
+              }
+            ],
+            "route": [
+              {
+                "x": 80,
+                "y": 38
+              },
+              {
+                "x": 72,
+                "y": 34
+              },
+              {
+                "x": 62,
+                "y": 40
+              },
+              {
+                "x": 52,
+                "y": 40
+              },
+              {
+                "x": 40,
+                "y": 32
+              },
+              {
+                "x": 30,
+                "y": 27
+              },
+              {
+                "x": 25,
+                "y": 22
+              },
+              {
+                "x": 18,
+                "y": 24
+              },
+              {
+                "x": 14,
+                "y": 16
+              }
+            ]
+          },
+          {
+            "id": "singapore",
+            "label": {
+              "zh": "新加坡",
+              "en": "Singapore"
+            },
+            "city": {
+              "blocks": [
+                {
+                  "x": 2,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 42,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 52,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 62,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 72,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 82,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 42,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 52,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 62,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 72,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 82,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 42,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 52,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 62,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 72,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 82,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 40,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 40,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 40,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 48,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 48,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 48,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 34,
+                  "y": 50,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 44,
+                  "y": 50,
+                  "w": 9,
+                  "h": 5
+                }
+              ],
+              "roads": [
+                {
+                  "points": "0,8 100,8"
+                },
+                {
+                  "points": "0,16 100,16"
+                },
+                {
+                  "points": "38,24 100,24"
+                },
+                {
+                  "points": "0,29 34,29"
+                },
+                {
+                  "points": "0,56 60,56"
+                },
+                {
+                  "points": "11,0 11,58"
+                },
+                {
+                  "points": "23,0 23,26"
+                },
+                {
+                  "points": "59,0 59,20"
+                },
+                {
+                  "points": "71,0 71,22"
+                },
+                {
+                  "points": "83,0 83,26"
+                },
+                {
+                  "points": "11,36 11,56"
+                },
+                {
+                  "points": "47,42 47,56"
+                },
+                {
+                  "points": "59,46 59,56"
+                }
+              ],
+              "arteries": [
+                {
+                  "points": "41,0 41,58",
+                  "w": 2.4
+                },
+                {
+                  "points": "0,56 60,56",
+                  "w": 2.4
+                },
+                {
+                  "points": "30,29 44,27 58,26 70,28 82,32 96,34",
+                  "w": 2.2
+                }
+              ],
+              "river": {
+                "points": "34,34 48,30 64,32 78,38 96,41",
+                "w": 8.5,
+                "label": {
+                  "zh": "滨海湾",
+                  "en": "Marina Bay"
+                },
+                "lx": 58,
+                "ly": 36.5
+              },
+              "parks": [
+                {
+                  "points": "50,20 60,20 60,25 50,25",
+                  "label": {
+                    "zh": "鱼尾狮公园",
+                    "en": "Merlion Park"
+                  },
+                  "lx": 55,
+                  "ly": 23.2
+                },
+                {
+                  "points": "74,42 92,42 92,54 74,54",
+                  "label": {
+                    "zh": "滨海湾花园",
+                    "en": "Gardens by the Bay"
+                  },
+                  "lx": 83,
+                  "ly": 48.5
+                }
+              ]
+            },
+            "sites": [
+              {
+                "id": "start",
+                "x": 36,
+                "y": 28,
+                "label": {
+                  "zh": "金沙会展中心·主馆",
+                  "en": "Sands Expo · Main"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs1",
+                "x": 44,
+                "y": 22,
+                "label": {
+                  "zh": "基站 BS-1",
+                  "en": "BS-1"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km10",
+                "x": 54,
+                "y": 22,
+                "label": {
+                  "zh": "鱼尾狮公园",
+                  "en": "Merlion Park"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs2",
+                "x": 64,
+                "y": 24,
+                "label": {
+                  "zh": "基站 BS-2",
+                  "en": "BS-2"
+                },
+                "status": "good"
+              },
+              {
+                "id": "half",
+                "x": 74,
+                "y": 30,
+                "label": {
+                  "zh": "滨海湾堤岸",
+                  "en": "Bayfront Ave"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs3",
+                "x": 80,
+                "y": 38,
+                "label": {
+                  "zh": "基站 BS-3",
+                  "en": "BS-3"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km30",
+                "x": 84,
+                "y": 46,
+                "label": {
+                  "zh": "花穹双馆",
+                  "en": "Conservatory Domes"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs4",
+                "x": 74,
+                "y": 50,
+                "label": {
+                  "zh": "基站 BS-4",
+                  "en": "BS-4"
+                },
+                "status": "good"
+              },
+              {
+                "id": "finish",
+                "x": 64,
+                "y": 52,
+                "label": {
+                  "zh": "螺旋桥·终点",
+                  "en": "Helix Bridge · Finish"
+                },
+                "status": "good"
+              }
+            ],
+            "route": [
+              {
+                "x": 36,
+                "y": 28
+              },
+              {
+                "x": 44,
+                "y": 22
+              },
+              {
+                "x": 54,
+                "y": 22
+              },
+              {
+                "x": 64,
+                "y": 24
+              },
+              {
+                "x": 74,
+                "y": 30
+              },
+              {
+                "x": 80,
+                "y": 38
+              },
+              {
+                "x": 84,
+                "y": 46
+              },
+              {
+                "x": 74,
+                "y": 50
+              },
+              {
+                "x": 64,
+                "y": 52
+              }
+            ]
           }
         ]
       }
@@ -1806,8 +2984,8 @@
         "en": "Intent · Marathon event assurance"
       },
       "req": {
-        "zh": "12月10日 07:00-13:00，XX市滨江大道及城区环线举办全程马拉松比赛（42.195公里，约2万名选手参赛），对比赛进行赛事体验保障。保障目标：参赛选手与沿途观众的移动上网体验，直播回传上行速率≥50Mbps，视频卡顿率<1%，沿途基站零重大故障。",
-        "en": "Dec 10, 07:00-13:00 — a full marathon (42.195 km, ~20,000 runners) is held along XX City riverside avenue and the urban loop; provide event experience assurance. Goals: mobile internet experience for runners and spectators, live uplink ≥50 Mbps, stall ratio <1%, zero critical site outages along the route."
+        "zh": "12月10日 07:00-13:00，上海市黄浦滨江大道及城区环线举办全程马拉松比赛（42.195公里，约2万名选手参赛），对比赛进行赛事体验保障。保障目标：参赛选手与沿途观众的移动上网体验，直播回传上行速率≥50Mbps，视频卡顿率<1%，沿途基站零重大故障。",
+        "en": "Dec 10, 07:00-13:00 — a full marathon (42.195 km, ~20,000 runners) is held along the Bund riverside avenue and the urban loop in Shanghai; provide event experience assurance. Goals: mobile internet experience for runners and spectators, live uplink ≥50 Mbps, stall ratio <1%, zero critical site outages along the route."
       }
     },
     {
@@ -1822,8 +3000,8 @@
         "en": "Intent · New Year concert assurance"
       },
       "req": {
-        "zh": "12月31日 19:00-次日00:30，XX市体育中心举办大型跨年演唱会（现场约5万名观众），对活动进行用户体验保障。保障目标：现场观众上网与社交分享体验，直播推流与短视频上传成功率≥99%，散场高峰期网络不拥塞、业务零中断。",
-        "en": "Dec 31, 19:00-00:30+1 — a large New Year countdown concert (~50,000 attendees) is held at XX Sports Center; provide event experience assurance. Goals: on-site internet and social sharing experience, live-stream and short-video upload success ≥99%, no congestion or service outage during the exit peak."
+        "zh": "12月31日 19:00-次日00:30，英国伦敦O2竞技场举办大型跨年演唱会（现场约5万名观众），对活动进行用户体验保障。保障目标：现场观众上网与社交分享体验，直播推流与短视频上传成功率≥99%，散场高峰期网络不拥塞、业务零中断。",
+        "en": "Dec 31, 19:00-00:30+1 — a large New Year countdown concert (~50,000 attendees) is held at The O2 Arena in London, UK; provide event experience assurance. Goals: on-site internet and social sharing experience, live-stream and short-video upload success ≥99%, no congestion or service outage during the exit peak."
       }
     },
     {
@@ -1838,8 +3016,8 @@
         "en": "Intent · Industry summit assurance"
       },
       "req": {
-        "zh": "1月15日 09:00-18:00，XX国际会展中心举办大型行业峰会（3个展馆、约1.2万名展商与观众），对展会进行体验保障。保障目标：展商与观众上网体验，主论坛 keynote 直播稳定不卡顿，会议签到、电子支付等关键业务零中断。",
-        "en": "Jan 15, 09:00-18:00 — a large industry summit (3 halls, ~12,000 exhibitors and visitors) is held at XX International Convention & Exhibition Center; provide event experience assurance. Goals: attendee internet experience, stable keynote live-streaming, zero interruption for critical services such as check-in and e-payment."
+        "zh": "1月15日 09:00-18:00，新加坡滨海湾金沙会展中心举办大型行业峰会（3个展馆、约1.2万名展商与观众），对展会进行体验保障。保障目标：展商与观众上网体验，主论坛 keynote 直播稳定不卡顿，会议签到、电子支付等关键业务零中断。",
+        "en": "Jan 15, 09:00-18:00 — a large industry summit (3 halls, ~12,000 exhibitors and visitors) is held at Marina Bay Sands, Singapore; provide event experience assurance. Goals: attendee internet experience, stable keynote live-streaming, zero interruption for critical services such as check-in and e-payment."
       }
     }
   ],
