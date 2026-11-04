@@ -1,9 +1,22 @@
 {
   "id": "an-ontology",
-  "name": "Ontology Center",
-  "version": "0.1.0",
+  "name": "AN Ontology",
+  "version": "1.0.0",
+  "menu": [
+    {
+      "id": "an-ontology",
+      "labelKey": "an-ontology:nav.title",
+      "order": 9,
+      "route": "/an-ontology",
+      "group": "AN Ontology"
+    }
+  ],
+  "routes": [
+    {
+      "path": "/an-ontology",
+      "menuId": "an-ontology"
+    }
+  ],
   "entry": "index.js",
-  "css": "index.css",
-  "menu": [{ "id": "an-ontology", "labelKey": "Ontology T-Box", "route": "/ontology", "order": 50 }],
-  "routes": [{ "path": "/ontology", "menuId": "an-ontology" }]
+  "css": "index.css"
 }
