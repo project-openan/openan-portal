@@ -48,6 +48,7 @@ import { transformWorkflowToReactFlow, UnifiedWorkflow } from '@openan/shared-wo
 import ExecutionStatistics from './execution_statistics/index.jsx';
 import ExecutionTimeline from './timeline/index.jsx';
 import { openExecutionStream } from './execution-stream.js';
+import { listWorkflows } from './workflow-list.js';
 
 const parseProtobufText = (raw) => {
     if (!raw || typeof raw !== 'string') return { text: raw, metadata: null };
@@ -450,7 +451,6 @@ const ExecutionCenter = () => {
 
     const API_BASE = '/rest/v1/orchestrate';
     const getAgentCards = () => api.get(`${API_BASE}/agent-cards`);
-    const getWorkflow = () => api.get(`${API_BASE}/workflows`);
     const getWorkflowById = (id) => api.get(`${API_BASE}/workflows/${id}`);
     const getExecutionRecords = () => api.get(`${API_BASE}/execution-records`);
     const getExecutionRecord = (executionId) => api.get(`${API_BASE}/execution-records/${executionId}`);
@@ -553,6 +553,7 @@ const ExecutionCenter = () => {
     // Save search mode to localStorage
     const handleSearchModeChange = useCallback((mode) => {
         setSearchMode(mode);
+        setIsMatching(false);
         localStorage.setItem('execution_search_mode', mode);
         setUserIntent('');
         setMatchedWorkflows([]);
@@ -675,7 +676,7 @@ const ExecutionCenter = () => {
     }, []);
 
     // Handle exact search
-    const handleExactSearch = useCallback(async () => {
+    const handleExactSearch = useCallback(async (signal) => {
         try {
             setIsMatching(true);
             setNodes([]);
@@ -684,74 +685,73 @@ const ExecutionCenter = () => {
             setPsopStatus(null);
             setError(null);
 
-            const res = await getWorkflow();
-            if (res.status === 'success') {
-                let results = (res.data || []).map(item => ({
-                    workflow_id: item.workflow_id,
-                    name: item.name || 'Untitled',
-                    tags: item.tags || [],
-                    description: item.description,
-                    created_at: item.created_at,
-                    status: item.status || 'unknown'
-                }));
+            const workflows = await listWorkflows(api, signal);
+            let results = workflows.map(item => ({
+                workflow_id: item.workflow_id,
+                name: item.name || 'Untitled',
+                tags: item.tags || [],
+                description: item.description,
+                created_at: item.created_at,
+                status: item.status || 'unknown'
+            }));
 
-                // Apply filters
-                if (exactFilters.name) {
-                    const nameLower = exactFilters.name.toLowerCase();
-                    results = results.filter(wf =>
-                        wf.name.toLowerCase().includes(nameLower)
-                    );
-                }
+            // Apply filters
+            if (exactFilters.name) {
+                const nameLower = exactFilters.name.toLowerCase();
+                results = results.filter(wf =>
+                    wf.name.toLowerCase().includes(nameLower)
+                );
+            }
 
-                if (exactFilters.workflowId) {
-                    const idLower = exactFilters.workflowId.toLowerCase();
-                    results = results.filter(wf =>
-                        wf.workflow_id.toLowerCase().includes(idLower)
-                    );
-                }
+            if (exactFilters.workflowId) {
+                const idLower = exactFilters.workflowId.toLowerCase();
+                results = results.filter(wf =>
+                    wf.workflow_id.toLowerCase().includes(idLower)
+                );
+            }
 
-                if (exactFilters.tags.length > 0) {
-                    results = results.filter(wf =>
-                        exactFilters.tags.some(tag => wf.tags.includes(tag))
-                    );
-                }
+            if (exactFilters.tags.length > 0) {
+                results = results.filter(wf =>
+                    exactFilters.tags.some(tag => wf.tags.includes(tag))
+                );
+            }
 
-                if (exactFilters.status) {
-                    results = results.filter(wf => wf.status === exactFilters.status);
-                }
+            if (exactFilters.status) {
+                results = results.filter(wf => wf.status === exactFilters.status);
+            }
 
-                if (exactFilters.dateFrom) {
-                    const fromDate = new Date(exactFilters.dateFrom);
-                    results = results.filter(wf => new Date(wf.created_at) >= fromDate);
-                }
+            if (exactFilters.dateFrom) {
+                const fromDate = new Date(exactFilters.dateFrom);
+                results = results.filter(wf => new Date(wf.created_at) >= fromDate);
+            }
 
-                if (exactFilters.dateTo) {
-                    const toDate = new Date(exactFilters.dateTo);
-                    results = results.filter(wf => new Date(wf.created_at) <= toDate);
-                }
+            if (exactFilters.dateTo) {
+                const toDate = new Date(exactFilters.dateTo);
+                results = results.filter(wf => new Date(wf.created_at) <= toDate);
+            }
 
-                // Extract all unique tags for filter options
-                const allTags = new Set();
-                (res.data || []).forEach(item => {
-                    (item.tags || []).forEach(tag => allTags.add(tag));
-                });
-                setAvailableTags(Array.from(allTags));
+            // Extract all unique tags for filter options
+            const allTags = new Set();
+            workflows.forEach(item => {
+                (item.tags || []).forEach(tag => allTags.add(tag));
+            });
+            setAvailableTags(Array.from(allTags));
 
-                setMatchedWorkflows(results);
-                if (results.length === 1) {
-                    setSelectedId(results[0].workflow_id);
-                    setWorkflowSource('retrieved');
-                } else if (results.length === 0) {
-                    setError(t('execution.no_match'));
-                }
+            setMatchedWorkflows(results);
+            if (results.length === 1) {
+                setSelectedId(results[0].workflow_id);
+                setWorkflowSource('retrieved');
+            } else if (results.length === 0) {
+                setError(t('execution.no_match'));
             }
         } catch (err) {
+            if (signal.aborted) return;
             console.error("Exact search failed:", err);
             setError(t('execution.match_failed'));
         } finally {
-            setIsMatching(false);
+            if (!signal.aborted) setIsMatching(false);
         }
-    }, [exactFilters, t]);
+    }, [api, exactFilters, t]);
 
     // Auto-search when filters change in exact mode
     useEffect(() => {
@@ -760,30 +760,27 @@ const ExecutionCenter = () => {
                 exactFilters.tags.length > 0 || exactFilters.status ||
                 exactFilters.dateFrom || exactFilters.dateTo;
             if (hasFilters) {
-                const timer = setTimeout(() => handleExactSearch(), 300);
-                return () => clearTimeout(timer);
+                const controller = new AbortController();
+                const timer = setTimeout(() => handleExactSearch(controller.signal), 300);
+                return () => {
+                    clearTimeout(timer);
+                    controller.abort();
+                };
             }
+            setIsMatching(false);
         }
     }, [exactFilters, searchMode, handleExactSearch]);
 
     // Load available tags on mount
     useEffect(() => {
-        const loadTags = async () => {
-            try {
-                const res = await getWorkflow();
-                if (res.status === 'success') {
-                    const allTags = new Set();
-                    (res.data || []).forEach(item => {
-                        (item.tags || []).forEach(tag => allTags.add(tag));
-                    });
-                    setAvailableTags(Array.from(allTags));
-                }
-            } catch (err) {
-                console.error("Failed to load tags:", err);
-            }
-        };
-        loadTags();
-    }, []);
+        const controller = new AbortController();
+        listWorkflows(api, controller.signal)
+            .then(workflows => setAvailableTags([...new Set(workflows.flatMap(item => item.tags || []))]))
+            .catch(err => {
+                if (!controller.signal.aborted) console.error("Failed to load tags:", err);
+            });
+        return () => controller.abort();
+    }, [api]);
 
     const handleNodeSelect = useCallback((node) => {
         if (!node) {

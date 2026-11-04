@@ -81,6 +81,7 @@ try {
     await hanging.goto(url + '/ontology', { waitUntil: 'domcontentloaded' });
     await hanging.getByRole('alert').filter({ hasText: 'timed out' }).waitFor({ timeout: 22000 });
     assert(await hanging.locator('main').isVisible());
+    await hanging.getByRole('button', { name: 'Settings', exact: true }).click();
     assert(await hanging.getByRole('button', { name: 'Plugin Management', exact: true }).isVisible());
     release(); await hanging.unroute('**/plugins/observation-center/plugin.manifest.json', handler);
     await hanging.goto(url + '/observation'); await hanging.getByRole('button', { name: 'Workflow 0', exact: true }).waitFor();
