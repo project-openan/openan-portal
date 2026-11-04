@@ -1199,7 +1199,12 @@
                     "zh": "O2竞技场·主会场",
                     "en": "The O2 · Main"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 46,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
                 },
                 {
                   "id": "bs1",
@@ -1211,7 +1216,12 @@
                     "zh": "基站 BS-1",
                     "en": "BS-1"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 52,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
                 },
                 {
                   "id": "km10",
@@ -1223,7 +1233,12 @@
                     "zh": "金丝雀码头",
                     "en": "Canary Wharf"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 43,
+                    "stall": 1.2,
+                    "kqi": 89
+                  }
                 },
                 {
                   "id": "bs2",
@@ -1235,7 +1250,12 @@
                     "zh": "基站 BS-2",
                     "en": "BS-2"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 50,
+                    "stall": 0.7,
+                    "kqi": 92
+                  }
                 },
                 {
                   "id": "half",
@@ -1247,7 +1267,12 @@
                     "zh": "伦敦塔桥",
                     "en": "Tower Bridge"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 47,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
                 },
                 {
                   "id": "bs3",
@@ -1259,7 +1284,12 @@
                     "zh": "基站 BS-3",
                     "en": "BS-3"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 51,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
                 },
                 {
                   "id": "km30",
@@ -1271,7 +1301,12 @@
                     "zh": "圣保罗大教堂",
                     "en": "St Paul's"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 44,
+                    "stall": 1.1,
+                    "kqi": 90
+                  }
                 },
                 {
                   "id": "bs4",
@@ -1283,7 +1318,12 @@
                     "zh": "基站 BS-4",
                     "en": "BS-4"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 49,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
                 },
                 {
                   "id": "finish",
@@ -1295,7 +1335,12 @@
                     "zh": "海德公园·跨年场",
                     "en": "Hyde Park · NYE"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 45,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
                 }
               ]
             }
@@ -1776,7 +1821,12 @@
                     "zh": "金沙会展中心·主馆",
                     "en": "Sands Expo · Main"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 46,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
                 },
                 {
                   "id": "bs1",
@@ -1788,7 +1838,12 @@
                     "zh": "基站 BS-1",
                     "en": "BS-1"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 52,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
                 },
                 {
                   "id": "km10",
@@ -1800,7 +1855,12 @@
                     "zh": "鱼尾狮公园",
                     "en": "Merlion Park"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 43,
+                    "stall": 1.2,
+                    "kqi": 89
+                  }
                 },
                 {
                   "id": "bs2",
@@ -1812,7 +1872,12 @@
                     "zh": "基站 BS-2",
                     "en": "BS-2"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 50,
+                    "stall": 0.7,
+                    "kqi": 92
+                  }
                 },
                 {
                   "id": "half",
@@ -1824,7 +1889,12 @@
                     "zh": "滨海湾堤岸",
                     "en": "Bayfront Ave"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 47,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
                 },
                 {
                   "id": "bs3",
@@ -1836,7 +1906,12 @@
                     "zh": "基站 BS-3",
                     "en": "BS-3"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 51,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
                 },
                 {
                   "id": "km30",
@@ -1848,7 +1923,12 @@
                     "zh": "花穹双馆",
                     "en": "Conservatory Domes"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 44,
+                    "stall": 1.1,
+                    "kqi": 90
+                  }
                 },
                 {
                   "id": "bs4",
@@ -1860,7 +1940,12 @@
                     "zh": "基站 BS-4",
                     "en": "BS-4"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 49,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
                 },
                 {
                   "id": "finish",
@@ -1872,7 +1957,12 @@
                     "zh": "螺旋桥·终点",
                     "en": "Helix Bridge · Finish"
                   },
-                  "status": "good"
+                  "status": "good",
+                  "metrics": {
+                    "up": 45,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
                 }
               ]
             }
@@ -1961,7 +2051,12 @@
                 "zh": "起点·外滩广场",
                 "en": "Start · Bund Plaza"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 46,
+                "stall": 0.9,
+                "kqi": 91
+              }
             },
             {
               "id": "bs1",
@@ -1973,7 +2068,12 @@
                 "zh": "基站 BS-1",
                 "en": "BS-1"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 52,
+                "stall": 0.6,
+                "kqi": 93
+              }
             },
             {
               "id": "km10",
@@ -1985,7 +2085,12 @@
                 "zh": "10km·老城厢",
                 "en": "10km · Old Town"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 43,
+                "stall": 1.2,
+                "kqi": 89
+              }
             },
             {
               "id": "bs2",
@@ -1997,7 +2102,12 @@
                 "zh": "基站 BS-2",
                 "en": "BS-2"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 50,
+                "stall": 0.7,
+                "kqi": 92
+              }
             },
             {
               "id": "half",
@@ -2009,7 +2119,12 @@
                 "zh": "21km·半程",
                 "en": "21km · Half"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 47,
+                "stall": 0.8,
+                "kqi": 91
+              }
             },
             {
               "id": "bs3",
@@ -2021,7 +2136,12 @@
                 "zh": "基站 BS-3",
                 "en": "BS-3"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 51,
+                "stall": 0.6,
+                "kqi": 93
+              }
             },
             {
               "id": "km30",
@@ -2033,7 +2153,12 @@
                 "zh": "30km·徐汇西岸",
                 "en": "30km · West Bund"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 44,
+                "stall": 1.1,
+                "kqi": 90
+              }
             },
             {
               "id": "bs4",
@@ -2045,7 +2170,12 @@
                 "zh": "基站 BS-4",
                 "en": "BS-4"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 49,
+                "stall": 0.8,
+                "kqi": 91
+              }
             },
             {
               "id": "finish",
@@ -2057,7 +2187,12 @@
                 "zh": "终点·体育场",
                 "en": "Finish · Stadium"
               },
-              "status": "good"
+              "status": "good",
+              "metrics": {
+                "up": 45,
+                "stall": 0.9,
+                "kqi": 91
+              }
             }
           ]
         }
