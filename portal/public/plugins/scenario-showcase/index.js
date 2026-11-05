@@ -1,4 +1,4 @@
-window.__SS_BUILD_V__="20261105195352";
+window.__SS_BUILD_V__="20261105204101";
 (function(ue,Cn){typeof exports=="object"&&typeof module<"u"?module.exports=Cn(require("react")):typeof define=="function"&&define.amd?define(["react"],Cn):(ue=typeof globalThis<"u"?globalThis:ue||self,ue.__OPENAN_PLUGIN__scenario_showcase=Cn(ue.React))})(this,function(ue){"use strict";var Fq=Object.defineProperty;var ZC=ue=>{throw TypeError(ue)};var Bq=(ue,Cn,ui)=>Cn in ue?Fq(ue,Cn,{enumerable:!0,configurable:!0,writable:!0,value:ui}):ue[Cn]=ui;var YC=(ue,Cn,ui)=>Bq(ue,typeof Cn!="symbol"?Cn+"":Cn,ui),KC=(ue,Cn,ui)=>Cn.has(ue)||ZC("Cannot "+ui);var tg=(ue,Cn,ui)=>(KC(ue,Cn,"read from private field"),ui?ui.call(ue):Cn.get(ue)),gy=(ue,Cn,ui)=>Cn.has(ue)?ZC("Cannot add the same private member more than once"):Cn instanceof WeakSet?Cn.add(ue):Cn.set(ue,ui),_y=(ue,Cn,ui,Uu)=>(KC(ue,Cn,"write to private field"),Uu?Uu.call(ue,ui):Cn.set(ue,ui),ui);var kd,Ru;var Cn=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function ui(i){return i&&i.__esModule&&Object.prototype.hasOwnProperty.call(i,"default")?i.default:i}var Uu={exports:{}},qd={};/**
  * @license React
  * react-jsx-runtime.production.min.js
@@ -5674,11 +5674,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   color: #e2e8f0 !important; border-radius: 6px !important; font: 600 10px/1.3 Inter, system-ui, sans-serif;
   padding: 2px 6px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.45) !important; }
 .ss-map-tip::before { border-top-color: rgba(56,189,248,0.35) !important; }
-.ss-site-tip { min-width: 118px; }
+.ss-site-tip { min-width: 118px; max-width: 220px; white-space: normal; }
 .ss-site-tip .ss-site-name { font-size: 10px; font-weight: 700; color: #e2e8f0; white-space: nowrap; }
 .ss-site-tip .ss-site-kpi { font-size: 9px; color: #94a3b8; margin-top: 1px; white-space: nowrap; }
 .ss-site-tip .ss-site-kpi b { color: #67e8f9; font-weight: 700; }
-.ss-site-tip .ss-site-cfg { font-size: 9px; font-weight: 700; color: #34d399; margin-top: 1px; white-space: nowrap; }
+.ss-site-tip .ss-site-cfg { font-size: 9px; font-weight: 700; color: #34d399; margin-top: 1px; white-space: normal; word-break: break-word; }
 .ss-site-tip .ss-site-cfg::before { content: '⚡ '; }
 .ss-site-tip .ss-site-name.ss-now { color: #67e8f9; }
 .ss-site-badge { display: inline-block; margin-left: 4px; padding: 0 3px; border-radius: 3px;
@@ -5693,9 +5693,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 @keyframes ss-runner-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .ss-cfg-bubble { transform: translate(10px, -50%); background: rgba(6,78,59,0.94); color: #6ee7b7;
   border: 1px solid rgba(52,211,153,0.55); border-radius: 6px; padding: 3px 8px; white-space: normal;
-  max-width: 175px; font: 700 9px/1.5 Inter, system-ui, sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  max-width: 240px; min-width: 132px; font: 700 9px/1.5 Inter, system-ui, sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
 .ss-cfg-bubble .ss-cfg-no { color: #ffffff; margin-right: 2px; }
-.ss-cfg-bubble .ss-cfg-delta { display: block; color: #a7f3d0; font-weight: 600; margin-top: 1px; white-space: nowrap; }
+.ss-cfg-bubble .ss-cfg-delta { display: block; color: #a7f3d0; font-weight: 600; margin-top: 1px; white-space: normal; word-break: break-word; }
 .ss-map-marker { display: flex; align-items: center; justify-content: center; }
 .ss-map-marker i { width: 12px; height: 12px; border-radius: 9999px; background: #3b82f6; border: 2px solid #bfdbfe;
   box-shadow: 0 0 10px 2px rgba(59,130,246,0.75); display: block; }
