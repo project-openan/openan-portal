@@ -4241,56 +4241,7 @@
       "at": 122.0
     }
   ],
-  "history": [
-    {
-      "id": "intent-marathon",
-      "intent": "marathon",
-      "mode": "agent",
-      "result": "success",
-      "time": "2026-11-02 09:12",
-      "duration": "2m 05s",
-      "title": {
-        "zh": "交互意图 · 马拉松赛事体验保障",
-        "en": "Intent · Marathon event assurance"
-      },
-      "req": {
-        "zh": "12月10日 07:00-13:00，上海市黄浦滨江大道及城区环线举办全程马拉松比赛（42.195公里，约2万名选手参赛），对比赛进行赛事体验保障。保障目标：参赛选手与沿途观众的移动上网体验，直播回传上行速率≥50Mbps，视频卡顿率<1%，沿途基站零重大故障。",
-        "en": "Dec 10, 07:00-13:00 — a full marathon (42.195 km, ~20,000 runners) is held along the Bund riverside avenue and the urban loop in Shanghai; provide event experience assurance. Goals: mobile internet experience for runners and spectators, live uplink ≥50 Mbps, stall ratio <1%, zero critical site outages along the route."
-      }
-    },
-    {
-      "id": "intent-concert",
-      "intent": "concert",
-      "mode": "agent",
-      "result": "success",
-      "time": "2026-11-01 16:40",
-      "duration": "1m 58s",
-      "title": {
-        "zh": "交互意图 · 跨年演唱会保障",
-        "en": "Intent · New Year concert assurance"
-      },
-      "req": {
-        "zh": "12月31日 19:00-次日00:30，英国伦敦O2竞技场举办大型跨年演唱会（现场约5万名观众），对活动进行用户体验保障。保障目标：现场观众上网与社交分享体验，直播推流与短视频上传成功率≥99%，散场高峰期网络不拥塞、业务零中断。",
-        "en": "Dec 31, 19:00-00:30+1 — a large New Year countdown concert (~50,000 attendees) is held at The O2 Arena in London, UK; provide event experience assurance. Goals: on-site internet and social sharing experience, live-stream and short-video upload success ≥99%, no congestion or service outage during the exit peak."
-      }
-    },
-    {
-      "id": "intent-summit",
-      "intent": "summit",
-      "mode": "agent",
-      "result": "success",
-      "time": "2026-10-31 10:05",
-      "duration": "2m 11s",
-      "title": {
-        "zh": "交互意图 · 行业峰会保障",
-        "en": "Intent · Industry summit assurance"
-      },
-      "req": {
-        "zh": "1月15日 09:00-18:00，新加坡滨海湾金沙会展中心举办大型行业峰会（3个展馆、约1.2万名展商与观众），对展会进行体验保障。保障目标：展商与观众上网体验，主论坛 keynote 直播稳定不卡顿，会议签到、电子支付等关键业务零中断。",
-        "en": "Jan 15, 09:00-18:00 — a large industry summit (3 halls, ~12,000 exhibitors and visitors) is held at Marina Bay Sands, Singapore; provide event experience assurance. Goals: attendee internet experience, stable keynote live-streaming, zero interruption for critical services such as check-in and e-payment."
-      }
-    }
-  ],
+  "history": [],
   "driver": "mockAgent",
   "mockAgent": {
     "endpoint": "/mockagent",
