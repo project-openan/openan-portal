@@ -216,10 +216,8 @@ export default {
         },
     },
 
-    // ── 生命周期钩子 (可选) ──
-    onInit: async (ctx) => { /* 注册后调用一次 */ },
-    onActivate: () => { /* 插件变为活跃视图时 */ },
-    onDeactivate: () => { /* 插件离开活跃视图时 */ },
+    // 路由/菜单仅支持声明式注册。组件使用 React useEffect 管理资源和清理。
+    // 不支持 manifest 生命周期钩子或命令式动态注册，校验时明确拒绝钩子字段。
 
     // ── 独立模式 (可选) ──
     standalone: {
