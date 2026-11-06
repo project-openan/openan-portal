@@ -23,7 +23,7 @@ export async function buildIntegrations(output = path.join(workspace, 'integrati
         await fs.copyFile(path.join(source, 'plugin.manifest.json'), path.join(outDir, 'plugin.manifest.json'));
         // Preserve a deployer's sidecar on rebuild; the template contains no
         // machine-specific URL. Configure it before installing the artifact.
-        if (id === 'an-ontology') {
+        if (id === 'an-ontology' || id === 'observation-center') {
             try { await fs.copyFile(path.join(source, 'config.json'), path.join(outDir, 'config.json'), constants.COPYFILE_EXCL); }
             catch (error) { if (error.code !== 'EEXIST') throw error; }
         }

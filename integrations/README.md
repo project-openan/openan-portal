@@ -10,6 +10,8 @@ npm ci
 npm run integrations:build
 # Configure integrations/dist-plugin/an-ontology/config.json before installing:
 # { "appUrl": "https://ontology.example.org/" }
+# Optional native demo UI: integrations/dist-plugin/observation-center/config.json
+# { "appUrl": "https://observation-demo.example.org/" }
 npm run plugins:install -- observation-center=integrations/dist-plugin/observation-center an-ontology=integrations/dist-plugin/an-ontology
 ```
 
@@ -28,7 +30,7 @@ not bypass missing third-party artifacts or certify backend availability.
 ## Observation / 观测
 
 Source contract: [GitCode observation-center](https://gitcode.com/OpenAN/observation-center),
-verified against `98bd1843388c981c6ed6e0adf702f32d21ec894f`.
+verified against `7fa64877328d2a539889716d52a61d39452b2bf6`.
 
 Start the existing service on 5002 using its own instructions. For Vite dev and
 preview, set `OBSERVATION_URL` in the process environment before starting Vite
@@ -41,8 +43,8 @@ preview, set `OBSERVATION_URL` in the process environment before starting Vite
 - Snapshot refresh runs 5 seconds **after** the preceding request finishes.
   Refresh can be paused or requested manually; old requests are aborted on
   session change/unmount. It does not start workflows or subscribe/unsubscribe
-  engine notification channels. This is not the replay-only observation-web UI
-  and does not claim an SSE topology animation or a full trace replay editor.
+  engine notification channels. This live view does not claim an SSE topology
+  animation or a full trace replay editor.
 - Up to 200 recent interactions are rendered. Full history remains owned by
   the observation service / its configured Langfuse backend.
 
@@ -50,10 +52,17 @@ preview, set `OBSERVATION_URL` in the process environment before starting Vite
 Portal gateway denies non-GET/HEAD requests; agents ingest directly into the
 observation service through its separately managed network boundary.
 
+The optional `observation-center/config.json` points to the component's original
+`observation-web` UI on a dedicated browser-reachable origin. “Native replay
+(demo)” opens it in an isolated frame; “Back to live data” restores the
+real service view. Replay data is explicitly labelled demo data. It is not
+evidence that a real agent execution or telemetry pipeline succeeded. The URL
+policy is the same origin-root/HTTPS policy described below for the editor.
+
 ## Ontology / 本体
 
 Source: [GitCode an-ontology](https://gitcode.com/OpenAN/an-ontology), verified
-against `98b807c921e1b71c8ac2613ba3dbb77671888f30` (master).
+against `a93a04291904895d7e972a08eaa0b8611eeb9b40` (master).
 
 ```bash
 python -m pip install -r tbox-editor/backend/requirements.txt
@@ -72,8 +81,11 @@ fragments and Portal's own origin are rejected. Legacy deployment script URL
 injection remains supported and takes precedence.
 
 The iframe supports native editing, upload and download without copying or
-changing its workspace protocol. Leaving the menu closes the embedded page:
-**download work first** or use “Open separately” to keep editing independently.
+changing its workspace protocol. Switching Portal menus retains the embedded
+workspace through the route's `keepMounted: true` contract. Reloading, logging
+out or disabling the plugin closes it: **download work first**, or use “Open
+separately” to keep editing independently. This is session retention, not
+persistent or distributed workspace storage.
 The native editor manages its own theme/language; no unimplemented A-Box menu is
 advertised. Cross-origin iframe failures cannot be reliably detected by its host;
 the UI provides a separate-page link and troubleshooting guidance, not a false

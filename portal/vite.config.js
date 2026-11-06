@@ -71,8 +71,14 @@ function openanPluginDiscovery() {
             return null;
         },
         load(id) {
-            if (id === resolvedVirtualId) return buildModuleCode();
+            if (id === resolvedVirtualId) {
+                this.addWatchFile(path.join(pluginsDir, 'plugin-overrides.json'));
+                return buildModuleCode();
+            }
             return null;
+        },
+        configureServer(server) {
+            server.watcher.add(pluginsDir);
         },
         handleHotUpdate({ file, server }) {
             // Re-scan when a manifest or overrides file changes (e.g. a new

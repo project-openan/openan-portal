@@ -1,4 +1,4 @@
-import { act } from 'react';
+import { act, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Simulate } from 'react-dom/test-utils';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
@@ -36,6 +36,24 @@ beforeEach(async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 afterEach(async () => { await act(async () => root.unmount()); node.remove(); });
+
+test('native editors opt into state preservation while ordinary route pages unmount', async () => {
+    let mounts = 0, unmounts = 0;
+    function Editor() {
+        const [value, setValue] = useState('');
+        useEffect(() => { mounts++; return () => { unmounts++; }; }, []);
+        return <input aria-label="Editor draft" value={value} onChange={event => setValue(event.target.value)} />;
+    }
+    const retained = plugin('retained', Editor, {routes:[{path:'/retained', keepMounted:true, component:async () => ({default:Editor})}]});
+    await render([retained, plugin('healthy')]);
+    const input = node.querySelector('[aria-label="Editor draft"]');
+    await act(async () => { Simulate.change(input, {target:{value:'Unsaved native document'}}); });
+    await click([...node.querySelectorAll('button')].find(button => button.textContent === 'healthy'));
+    expect(unmounts).toBe(0); expect(input.closest('[hidden]')).toBeTruthy();
+    await click([...node.querySelectorAll('button')].find(button => button.textContent === 'retained'));
+    expect(node.querySelector('[aria-label="Editor draft"]').value).toBe('Unsaved native document');
+    expect(mounts).toBe(1); expect(unmounts).toBe(0);
+});
 
 test('all-disabled plugins can be enabled again from the empty state and persisted', async () => {
     localStorage.setItem('openan-disabled-plugins', '["healthy"]'); await render([plugin('healthy')]);

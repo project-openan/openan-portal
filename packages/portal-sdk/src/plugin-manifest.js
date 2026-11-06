@@ -23,6 +23,7 @@
  * @typedef {Object} MenuItem
  * @property {string}   id            — Unique menu item id (also used as tab key)
  * @property {string}   labelKey      — i18n key for the display label
+ * @property {string}   [label]       — Readable fallback for a bundle menu
  * @property {import('react').ComponentType} icon — Icon component (e.g. lucide-react)
  * @property {number}   order         — Sort order in the navigation bar
  * @property {string[]} [permissions] — Required permissions (future use)
@@ -32,6 +33,8 @@
  * @property {string}   path          — Route path (e.g. "/orchestration")
  * @property {() => Promise<import('react').ComponentType>} component — Lazy component loader
  * @property {string}   menuId        — Associated menu item id (for active highlighting)
+ * @property {string}   [componentExport] — Named UMD export for this route (default: default)
+ * @property {boolean}  [keepMounted] — Retain a visited native editor while switching routes
  * @property {string[]} [permissions] — Required permissions (future use)
  *
  * @typedef {Object} PluginI18n
@@ -81,6 +84,8 @@ export function validateManifestMetadata(manifest) {
     } else {
         manifest.routes.forEach((r, i) => {
             if (typeof r?.path !== 'string' || !r.path.startsWith('/')) errors.push(`manifest.routes[${i}].path must be absolute`);
+            if (r?.componentExport !== undefined && (typeof r.componentExport !== 'string' || !/^[A-Za-z_$][\w$]*$/.test(r.componentExport))) errors.push(`manifest.routes[${i}].componentExport must be an export name`);
+            if (r?.keepMounted !== undefined && typeof r.keepMounted !== 'boolean') errors.push(`manifest.routes[${i}].keepMounted must be boolean`);
         });
         if (new Set(manifest.routes.map(r => r?.path)).size !== manifest.routes.length) errors.push('duplicate route path');
     }

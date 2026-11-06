@@ -36,7 +36,7 @@ export default function OntologyCenter() {
     return <section className="openan-integration" tabIndex={0} data-dark={!!theme?.isDark}>
         <header><h1>{zh ? '本体 T-Box 编辑器' : 'Ontology T-Box Editor'}</h1>
             {url && <a href={url} target="_blank" rel="noopener noreferrer">{zh ? '在独立页面打开' : 'Open separately'}</a>}</header>
-        <p>{zh ? '使用本体服务原生编辑器。离开此菜单会关闭本次工作区，请先下载成果；编辑器主题与语言由自身管理。' : 'Native ontology editor. Leaving this menu closes its workspace; download your work first. The editor manages its own theme and language.'}</p>
+        <p>{zh ? '使用原生编辑器；切换菜单保留工作区。刷新页面、退出登录或停用组件前请先下载成果；编辑器主题与语言由自身管理。' : 'Native editor; switching menus preserves the workspace. Download your work before reloading, logging out or disabling this component. The editor manages its own theme and language.'}</p>
         {error && <p role="alert" className="integration-error">{error}</p>}
         {!url && !error && <p role="status">{zh ? '加载配置…' : 'Loading configuration…'}</p>}
         {url && <>

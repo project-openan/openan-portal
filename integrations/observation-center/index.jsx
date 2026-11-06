@@ -3,7 +3,42 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePortalContext } from '@openan/portal-sdk';
 import { readTraceList, readTraceDetail } from './api.js';
+import { resolveEditorUrl } from '../an-ontology/config.js';
 import '../integration.css';
+
+const replayConfigUrl = new URL('config.json', document.currentScript?.src || new URL('/plugins/observation-center/index.js', window.location.href)).href;
+
+function NativeReplay({onBack}) {
+    const {theme} = usePortalContext();
+    const {i18n} = useTranslation();
+    const zh = i18n.language?.startsWith('zh');
+    const [state, setState] = useState({url:'', error:''});
+    useEffect(() => {
+        const controller = new AbortController();
+        (async () => {
+            try {
+                const response = await fetch(replayConfigUrl, {cache:'no-store', signal:controller.signal});
+                if (!response.ok) throw new Error(`Replay config HTTP ${response.status}`);
+                const {appUrl} = await response.json();
+                if (!appUrl) throw new Error('Configure appUrl in /plugins/observation-center/config.json');
+                const url = resolveEditorUrl(appUrl);
+                if (!controller.signal.aborted) setState({url, error:''});
+            } catch (error) {
+                if (!controller.signal.aborted) setState({url:'', error:error.message});
+            }
+        })();
+        return () => controller.abort();
+    }, []);
+    return <section className="openan-integration openan-native-app" data-dark={!!theme?.isDark}>
+        <header><button onClick={onBack}>{zh ? '返回实时数据' : 'Back to live data'}</button>
+            <strong>{zh ? '原生观测回放（演示数据）' : 'Native observation replay (demo data)'}</strong>
+            {state.url && <a href={state.url} target="_blank" rel="noopener noreferrer">{zh ? '独立打开' : 'Open separately'}</a>}</header>
+        {state.error && <p role="alert" className="integration-error">{state.error}</p>}
+        {!state.url && !state.error && <p role="status">{zh ? '加载回放配置…' : 'Loading replay configuration…'}</p>}
+        {state.url && <iframe title="Native Observation Replay" src={state.url}
+            sandbox="allow-scripts allow-same-origin allow-downloads allow-forms allow-modals" referrerPolicy="no-referrer" />}
+    </section>;
+}
 
 // Schedule after completion, rather than setInterval: slow backends never cause
 // overlapping requests. Selection changes and unmount abort outstanding work.
@@ -41,6 +76,7 @@ export default function ObservationCenter() {
     const [selected, setSelected] = useState('');
     const [automatic, setAutomatic] = useState(true);
     const [revision, setRevision] = useState(0);
+    const [native, setNative] = useState(false);
     const loadList = useCallback(signal => readTraceList(api, signal), [api]);
     const sessions = usePolling(loadList, automatic, revision);
     const loadDetail = useCallback(async signal => selected
@@ -49,8 +85,10 @@ export default function ObservationCenter() {
     const detail = trace.data?.id === selected ? trace.data.value : null;
     const rows = sessions.data || [];
     const error = sessions.error || trace.error;
+    if (native) return <NativeReplay onBack={() => setNative(false)} />;
     return <section className="openan-integration" tabIndex={0} data-dark={!!theme?.isDark}>
         <header><h1>{t.title}</h1><button onClick={() => setRevision(value => value + 1)}>{t.refresh}</button>
+            <button onClick={() => setNative(true)}>{i18n.language?.startsWith('zh') ? '原生回放（演示）' : 'Native replay (demo)'}</button>
             <label><input type="checkbox" checked={automatic} onChange={event => setAutomatic(event.target.checked)} /> {t.auto}</label></header>
         <p>{t.hint}</p>
         {error && <p role="alert" className="integration-error">{t.failed} {error}</p>}

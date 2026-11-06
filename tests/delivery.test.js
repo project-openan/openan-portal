@@ -13,9 +13,10 @@ afterEach(async () => {
     expect(path.dirname(temp)).toBe(os.tmpdir()); expect(path.basename(temp)).toMatch(/^portal-delivery-test-/);
     await fs.rm(temp, { recursive: true, force: true });
 });
-const artifact = async (id = 'registry-center') => {
+const artifact = async (id = 'registry-center', extraRoutes = []) => {
     const directory = path.join(temp, 'portal/public/plugins', id); await fs.mkdir(directory, { recursive: true });
-    const manifest = { id, name: id, version: '1.0.0', routes: [{ path: `/${id}` }], entry: 'index.js', css: 'index.css' };
+    const extra = extraRoutes.filter(routePath => routePath !== `/${id}`).map(routePath => ({ path: routePath }));
+    const manifest = { id, name: id, version: '1.0.0', routes: [{ path: `/${id}` }, ...extra], entry: 'index.js', css: 'index.css' };
     await fs.writeFile(path.join(directory, 'plugin.manifest.json'), JSON.stringify(manifest));
     await fs.writeFile(path.join(directory, 'index.js'), `window.__OPENAN_PLUGIN__${id.replaceAll('-', '_')}={default:function(){}};`);
     await fs.writeFile(path.join(directory, 'index.css'), 'body{}'); return { directory, manifest };
@@ -66,9 +67,30 @@ test('all six upstream bundle registrations are preserved in the single JSON reg
     const source = await fs.readFile('portal/src/plugins.config.js', 'utf8');
     expect(source).toContain("import bundledPlugins from '../bundled-plugins.json'");
     expect(source).not.toContain('const bundledPlugins =');
-    for (const entry of registry) await artifact(entry.id);
+    for (const entry of registry) {
+        // The synthetic artifacts below carry one placeholder route each, so the
+        // native-page contract is asserted by the dedicated test further down
+        // against the manifests committed under portal/public/plugins.
+        await artifact(entry.id, entry.requiredRoutes);
+    }
     await fs.writeFile(path.join(temp, 'portal/bundled-plugins.json'), JSON.stringify(registry));
     expect((await validateArtifacts(temp)).map(entry => entry.id)).toEqual(registry.map(entry => entry.id));
+});
+
+test('registered bundles declare only routes their shipped artifact actually provides', async () => {
+    // Reads the manifests committed under portal/public/plugins instead of
+    // synthesising them from requiredRoutes: a registry entry that outruns its
+    // artifact breaks the release build and the runtime bundle loader.
+    const registry = JSON.parse(await fs.readFile('portal/bundled-plugins.json', 'utf8'));
+    for (const entry of registry) {
+        if (!entry.requiredRoutes) continue;
+        expect(Array.isArray(entry.requiredRoutes), `${entry.id} requiredRoutes must be an array`).toBe(true);
+        const manifestPath = path.join('portal/public/plugins', entry.id, 'plugin.manifest.json');
+        const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+        const provided = new Set(manifest.routes.map(route => route.path));
+        const missing = entry.requiredRoutes.filter(routePath => !provided.has(routePath));
+        expect(missing, `${entry.id} artifact is missing required pages: ${missing.join(', ')}`).toEqual([]);
+    }
 });
 test('every Docker COPY input exists and the release build is mandatory', async () => {
     const docker = await fs.readFile('Dockerfile', 'utf8');

@@ -238,6 +238,17 @@ async function loadBundle(entryCfg, signal) {
     // 1. Load manifest (json — works for both local and remote)
     const manifest = validateManifestMetadata(await fetchJson(`${base}/plugin.manifest.json`, signal));
     if (manifest.id !== entryCfg.id) throw new Error('Configured plugin id does not match its manifest');
+    const requiredRoutes = entryCfg.requiredRoutes ?? [];
+    if (!Array.isArray(requiredRoutes)) {
+        throw new Error(`Configured requiredRoutes for "${entryCfg.id}" must be an array of route paths.`);
+    }
+    const missingRoutes = requiredRoutes.filter(path => !manifest.routes.some(route => route.path === path));
+    if (missingRoutes.length) {
+        throw new Error(
+            `Plugin "${manifest.id}" artifact is missing required native pages (${missingRoutes.join(', ')}); ` +
+            'rebuild and install the component bundle.'
+        );
+    }
 
     // 2. Load styles
     if (manifest.css) {
@@ -258,16 +269,19 @@ async function loadBundle(entryCfg, signal) {
         );
     }
 
-    const Component = bundle.default || bundle;
-    if (typeof Component !== 'function' && typeof Component !== 'object') {
-        throw new Error(`Plugin "${manifest.id}" bundle did not export a component.`);
-    }
-
     // 5. Wrap manifest routes so component is already resolved
-    manifest.routes = (manifest.routes || []).map((r) => ({
-        ...r,
-        component: () => Promise.resolve({ default: Component }),
-    }));
+    manifest.routes = (manifest.routes || []).map((route) => {
+        const name = route.componentExport || 'default';
+        // Own-property lookup only: a name such as "constructor" must not
+        // resolve through the prototype chain and bypass this contract.
+        const ownExport = Object.prototype.hasOwnProperty.call(bundle, name);
+        const Component = ownExport ? bundle[name]
+            : (name === 'default' && typeof bundle === 'function' ? bundle : null);
+        if (!Component || (typeof Component !== 'function' && typeof Component !== 'object')) {
+            throw new Error(`Plugin "${manifest.id}" does not export route component "${name}".`);
+        }
+        return {...route, component: () => Promise.resolve({default: Component})};
+    });
 
     // 6. i18n fallback — bundle manifests carry no locale files, so their
     //    "namespace:key" style labelKeys (e.g. 'registry-center:registry.title')
@@ -281,6 +295,7 @@ async function loadBundle(entryCfg, signal) {
             'Registry Center': '注册中心',
             'Orchestration Center': '编排中心',
             'Execution Center': '执行中心',
+            'Skill Center': '技能中心',
             'Demo Showcase': '虚拟展厅',
             'Ontology Demo': '本体中心',
             'Ontology T-Box': '本体T-Box',
@@ -294,7 +309,7 @@ async function loadBundle(entryCfg, signal) {
         manifest.menu = manifest.menu.map((mi) => ({
             ...mi,
             labelKey: mi.labelKey && mi.labelKey.includes(':')
-                ? (manifest.name || mi.labelKey)
+                ? (mi.label || manifest.name || mi.labelKey)
                 : mi.labelKey,
         }));
         // Register every label this plugin renders (menu item labels, group
