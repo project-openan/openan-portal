@@ -84,6 +84,9 @@ export async function validateArtifacts(root = workspace) {
             throw new Error(`${plugin.id}: release validation requires local /plugins/<id> artifacts; remote delivery must be verified separately`);
         }
         const { manifest, sha256 } = await inspectArtifact(path.join(root, 'portal/public', plugin.entry), plugin.id);
+        if (plugin.requiredRoutes?.some(route => !manifest.routes.some(item => item.path === route))) {
+            throw new Error(`${plugin.id}: artifact is missing required native pages; rebuild the component`);
+        }
         if (ids.has(plugin.id) || manifest.routes.some(route => paths.has(route.path))) throw new Error('Duplicate plugin id or route');
         ids.add(plugin.id);
         manifest.routes.forEach(route => paths.add(route.path));
