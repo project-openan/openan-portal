@@ -27,6 +27,26 @@ afterEach(async () => { await act(async () => root.unmount()); node.remove(); de
 const render = async Component => { await act(async () => root.render(<PortalProvider value={{ api, theme: { isDark: true } }}><Component /></PortalProvider>)); await flush(); };
 const click = async name => { const button = [...node.querySelectorAll('button')].find(item => item.textContent === name); expect(button).toBeTruthy(); await act(async () => Simulate.click(button)); await flush(); };
 
+test('native observation view preserves its original UI in an isolated frame and labels demo data', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({ok:true, json:async () => ({appUrl:'https://replay.example.org/'})})));
+    await render(ObservationCenter);
+    await click('Native replay (demo)');
+    expect(node.querySelector('iframe').src).toBe('https://replay.example.org/');
+    expect(node.textContent).toContain('demo data');
+    expect(node.querySelector('iframe').title).toBe('Native Observation Replay');
+    await click('Back to live data');
+    expect(node.querySelector('iframe')).toBeNull();
+    expect(node.textContent).toContain('Actual workflow');
+});
+
+test('missing native replay configuration stays explicit and leaves live data reachable', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({ok:true, json:async () => ({appUrl:''})})));
+    await render(ObservationCenter); await click('Native replay (demo)');
+    expect(node.querySelector('[role=alert]').textContent).toContain('/plugins/observation-center/config.json');
+    expect(node.querySelector('iframe')).toBeNull();
+    await click('Back to live data'); expect(node.textContent).toContain('Actual workflow');
+});
+
 test('observation displays real list/detail and treats completed notification results as data, not stream termination', async () => {
     await render(ObservationCenter); await click('Actual workflow');
     expect(api.get).toHaveBeenCalledWith('/rest/v1/observe/traces/session%20A', expect.objectContaining({ signal: expect.any(AbortSignal) }));
@@ -97,7 +117,8 @@ test('native editor is embedded with download support and no host auth in the UR
     const frame = node.querySelector('iframe'); expect(frame.src).toBe('https://editor.example.org/');
     expect(frame.getAttribute('sandbox')).toContain('allow-downloads'); expect(frame.getAttribute('referrerpolicy')).toBe('no-referrer');
     expect(frame.getAttribute('sandbox')).toContain('allow-modals');
-    expect(node.textContent).toContain('download your work first');
+    expect(node.textContent).toContain('switching menus preserves the workspace');
+    expect(node.textContent).toContain('Download your work before reloading');
     expect(fetch.mock.calls[0][0]).toContain('/plugins/an-ontology/config.json');
     await act(async () => root.unmount()); expect(fetch.mock.calls[0][1].signal.aborted).toBe(true);
 });
