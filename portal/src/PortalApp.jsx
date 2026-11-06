@@ -16,7 +16,7 @@
 //    under the License.
 
 import { lazy, Suspense, useState, useEffect, useMemo, useCallback } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PortalProvider, loadEnabledPlugins, validateManifest, withPluginDeadline } from '@openan/portal-sdk';
 import { loadPluginBundle } from './bundle-loader.js';
@@ -37,6 +37,9 @@ import api, { createApi, getDisabledPlugins, setDisabledPlugins } from './servic
 import './i18n';
 
 const DISABLED_KEY = 'openan-disabled-plugins';
+// Stable lazy wrappers keyed by "<pluginId>:<path>". Recreated wrappers would be
+// new component types on every route recompute, remounting retained native pages.
+const lazyRouteCache = new Map();
 
 export function PortalApp({ pluginsConfig }) {
     return (
@@ -71,6 +74,7 @@ function PortalShell({ pluginsConfig }) {
             return new Set();
         }
     });
+    const [retainedPaths, setRetainedPaths] = useState([]);
 
     useEffect(() => {
         let active = true;
@@ -184,16 +188,31 @@ function PortalShell({ pluginsConfig }) {
         return plugins.filter((p) => !disabledIds.has(p.id));
     }, [plugins, disabledIds]);
 
+    // One lazy wrapper per plugin route: `lazy()` returns a new component type on
+    // every call, so rebuilding these on each visiblePlugins change would remount
+    // the retained native pages and drop unsaved editor state. The cache lives at
+    // module scope because render must not touch refs.
     const routes = useMemo(() => {
         if (!visiblePlugins) return [];
-        return visiblePlugins.flatMap((p) =>
-            p.routes.map((r) => ({
-                ...r,
-                pluginId: p.id,
-                Component: lazy(r.component),
-            }))
+        const live = new Set();
+        const resolved = visiblePlugins.flatMap((p) =>
+            p.routes.map((r) => {
+                const key = `${p.id}:${r.path}`;
+                live.add(key);
+                if (!lazyRouteCache.has(key)) lazyRouteCache.set(key, lazy(r.component));
+                return {...r, pluginId: p.id, Component: lazyRouteCache.get(key)};
+            })
         );
+        for (const key of lazyRouteCache.keys()) {
+            if (!live.has(key)) lazyRouteCache.delete(key);
+        }
+        return resolved;
     }, [visiblePlugins]);
+
+    useEffect(() => {
+        const current = routes.find(route => route.keepMounted && matchPath(route.path, location.pathname));
+        if (current) setRetainedPaths(previous => previous.includes(current.path) ? previous : [...previous, current.path]);
+    }, [routes, location.pathname]);
 
     const portalCtx = useMemo(() => ({
         auth: {
@@ -219,6 +238,16 @@ function PortalShell({ pluginsConfig }) {
     const pluginApis = useMemo(() => new Map((plugins || []).map(plugin =>
         [plugin.id, plugin.backend?.gateway ? createApi(plugin.backend.gateway, { authScope: plugin.backend.authScope || 'component' }) : api]
     )), [plugins]);
+
+    const renderPage = route => (
+        <PortalProvider value={{...portalCtx, api: pluginApis.get(route.pluginId)}}>
+            <ErrorBoundary key={`${route.pluginId}:${route.path}`}>
+                <Suspense fallback={<div className="h-full flex items-center justify-center text-zinc-400 text-sm animate-pulse">Loading...</div>}>
+                    <route.Component />
+                </Suspense>
+            </ErrorBoundary>
+        </PortalProvider>
+    );
 
     if (auth.isChecking) {
         return <Loading />;
@@ -270,6 +299,9 @@ function PortalShell({ pluginsConfig }) {
                     />
                     {failures}
                     <main className="flex-1 min-h-0 relative overflow-hidden">
+                        {routes.filter(route => route.keepMounted && (retainedPaths.includes(route.path) || matchPath(route.path, location.pathname)))
+                            .map(route => <div key={`${route.pluginId}:${route.path}`} className="h-full"
+                                hidden={!matchPath(route.path, location.pathname)}>{renderPage(route)}</div>)}
                         <Routes>
                             {/* Core admin route — user management (admin only) */}
                             <Route
@@ -283,27 +315,11 @@ function PortalShell({ pluginsConfig }) {
                                 }
                             />
                             {routes.map((r) => {
-                                const plugin = visiblePlugins.find((p) => p.id === r.pluginId);
-                                const pluginApi = pluginApis.get(plugin.id);
                                 return (
                                     <Route
                                         key={r.path}
                                         path={r.path}
-                                        element={
-                                            <PortalProvider value={{ ...portalCtx, api: pluginApi }}>
-                                                <ErrorBoundary key={`${r.pluginId}:${r.path}`}>
-                                                    <Suspense
-                                                        fallback={
-                                                            <div className="h-full flex items-center justify-center text-zinc-400 text-sm animate-pulse">
-                                                                Loading...
-                                                            </div>
-                                                        }
-                                                    >
-                                                        <r.Component />
-                                                    </Suspense>
-                                                </ErrorBoundary>
-                                            </PortalProvider>
-                                        }
+                                        element={r.keepMounted ? null : renderPage(r)}
                                     />
                                 );
                             })}
