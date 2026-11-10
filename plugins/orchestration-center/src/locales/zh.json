@@ -165,5 +165,8 @@
     "no_subtasks": "未配置子任务",
     "allSuccess": "全成功",
     "anySuccess": "任一成功"
+  },
+  "skills": {
+    "delete_package": "删除方案包"
   }
 }
