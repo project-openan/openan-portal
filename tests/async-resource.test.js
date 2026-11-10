@@ -1,7 +1,10 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { withPluginDeadline } from '../packages/portal-sdk/src/async-resource.js';
+import { withPluginDeadline, DEFAULT_PLUGIN_TIMEOUT_MS } from '../packages/portal-sdk/src/async-resource.js';
 
 afterEach(() => vi.useRealTimers());
+test('default deadline stays 60s: a gzipped 1.5MB bundle needs 20s+ on cross-border links', () => {
+    expect(DEFAULT_PLUGIN_TIMEOUT_MS).toBe(60000);
+});
 test('successful loads clear timers; falsy rejection remains a failure', async () => {
     vi.useFakeTimers();
     await expect(withPluginDeadline(async () => 'ready')).resolves.toBe('ready');
