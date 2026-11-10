@@ -54,7 +54,11 @@
     "packages_title": "解决方案包管理",
     "packages_upload_title": "导入新的解决方案包",
     "packages_upload_hint": "拖拽 PDF 文件到此处，或点击选择文件",
-    "packages_list_title": "已导入的解决方案包"
+    "packages_list_title": "已导入的解决方案包",
+    "packages_list_loading": "正在加载方案包…",
+    "packages_list_error": "加载方案包失败",
+    "packages_empty": "暂无导入的方案包",
+    "packages_chapters": "章节"
   },
   "workflow": {
     "title": "编排流程",
