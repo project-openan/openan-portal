@@ -1,3 +1,20 @@
+// Copyright (c) 2026 Huawei Technologies Co., Ltd.
+// All Rights Reserved.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0 (the "License"); you may
+//    not use this file except in compliance with the License. You may obtain
+//    a copy of the License at
+//
+//         http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+//    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+//    License for the specific language governing permissions and limitations
+//    under the License.
+
 (function(e,t){typeof exports==`object`&&typeof module<`u`?module.exports=t(require("react"),require("@openan/portal-sdk"),require("react-dom"),require("react-i18next")):typeof define==`function`&&define.amd?define([`react`,`@openan/portal-sdk`,`react-dom`,`react-i18next`],t):(e=typeof globalThis<`u`?globalThis:e||self,e.__OPENAN_PLUGIN__orchestration_center=t(e.React,e.OpenANPortalSDK,e.ReactDOM,e.ReactI18next))})(this,function(e,t,n,r){var i=Object.create,a=Object.defineProperty,o=Object.getOwnPropertyDescriptor,s=Object.getOwnPropertyNames,c=Object.getPrototypeOf,l=Object.prototype.hasOwnProperty,u=(e,t,n)=>()=>{if(n)throw n[0];try{return e&&(t=e(e=0)),t}catch(e){throw n=[e],e}},d=(e,t)=>()=>(t||(e((t={exports:{}}).exports,t),e=null),t.exports),f=(e,t)=>{let n={};for(var r in e)a(n,r,{get:e[r],enumerable:!0});return t||a(n,Symbol.toStringTag,{value:`Module`}),n},p=(e,t,n,r)=>{if(t&&typeof t==`object`||typeof t==`function`)for(var i=s(t),c=0,u=i.length,d;c<u;c++)d=i[c],!l.call(e,d)&&d!==n&&a(e,d,{get:(e=>t[e]).bind(null,d),enumerable:!(r=o(t,d))||r.enumerable});return e},m=(e,t,n)=>(n=e==null?{}:i(c(e)),p(t||!e||!e.__esModule||!l.call(e,`default`)?a(n,`default`,{value:e,enumerable:!0}):n,e)),h=e=>l.call(e,`module.exports`)?e[`module.exports`]:p(a({},`__esModule`,{value:!0}),e);e=m(e,1);function g(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,`default`)?e.default:e}var _={},v={},y={},b;function x(){if(b)return y;b=1;function e(e){return e==null}function t(e){return typeof e==`object`&&!!e}function n(t){return Array.isArray(t)?t:e(t)?[]:[t]}function r(e,t){if(t){let n=Object.keys(t);for(let r=0,i=n.length;r<i;r+=1){let i=n[r];e[i]=t[i]}}return e}function i(e,t){let n=``;for(let r=0;r<t;r+=1)n+=e;return n}function a(e){return e===0&&1/e==-1/0}return y.isNothing=e,y.isObject=t,y.toArray=n,y.repeat=i,y.isNegativeZero=a,y.extend=r,y}var S,C;function w(){if(C)return S;C=1;function e(e,t){let n=``,r=e.reason||`(unknown reason)`;return e.mark?(e.mark.name&&(n+=`in "`+e.mark.name+`" `),n+=`(`+(e.mark.line+1)+`:`+(e.mark.column+1)+`)`,!t&&e.mark.snippet&&(n+=`
 
 `+e.mark.snippet),r+` `+n):r}function t(t,n){Error.call(this),this.name=`YAMLException`,this.reason=t,this.mark=n,this.message=e(this,!1),Error.captureStackTrace?Error.captureStackTrace(this,this.constructor):this.stack=Error().stack||``}return t.prototype=Object.create(Error.prototype),t.prototype.constructor=t,t.prototype.toString=function(t){return this.name+`: `+e(this,t)},S=t,S}var T,E;function D(){if(E)return T;E=1;let e=x();function t(e,t,n,r,i){let a=``,o=``,s=Math.floor(i/2)-1;return r-t>s&&(a=` ... `,t=r-s+a.length),n-r>s&&(o=` ...`,n=r+s-o.length),{str:a+e.slice(t,n).replace(/\t/g,`→`)+o,pos:r-t+a.length}}function n(t,n){return e.repeat(` `,n-t.length)+t}function r(r,i){if(i=Object.create(i||null),!r.buffer)return null;i.maxLength||(i.maxLength=79),typeof i.indent!=`number`&&(i.indent=1),typeof i.linesBefore!=`number`&&(i.linesBefore=3),typeof i.linesAfter!=`number`&&(i.linesAfter=2);let a=/\r?\n|\r|\0/g,o=[0],s=[],c,l=-1;for(;c=a.exec(r.buffer);)s.push(c.index),o.push(c.index+c[0].length),r.position<=c.index&&l<0&&(l=o.length-2);l<0&&(l=o.length-1);let u=``,d=Math.min(r.line+i.linesAfter,s.length).toString().length,f=i.maxLength-(i.indent+d+3);for(let a=1;a<=i.linesBefore&&!(l-a<0);a++){let c=t(r.buffer,o[l-a],s[l-a],r.position-(o[l]-o[l-a]),f);u=e.repeat(` `,i.indent)+n((r.line-a+1).toString(),d)+` | `+c.str+`
