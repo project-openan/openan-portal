@@ -1,3 +1,20 @@
+// Copyright (c) 2026 Huawei Technologies Co., Ltd.
+// All Rights Reserved.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0 (the "License"); you may
+//    not use this file except in compliance with the License. You may obtain
+//    a copy of the License at
+//
+//         http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+//    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+//    License for the specific language governing permissions and limitations
+//    under the License.
+
 window.__SS_BUILD_V__="20261105204101";
 (function(ue,Cn){typeof exports=="object"&&typeof module<"u"?module.exports=Cn(require("react")):typeof define=="function"&&define.amd?define(["react"],Cn):(ue=typeof globalThis<"u"?globalThis:ue||self,ue.__OPENAN_PLUGIN__scenario_showcase=Cn(ue.React))})(this,function(ue){"use strict";var Fq=Object.defineProperty;var ZC=ue=>{throw TypeError(ue)};var Bq=(ue,Cn,ui)=>Cn in ue?Fq(ue,Cn,{enumerable:!0,configurable:!0,writable:!0,value:ui}):ue[Cn]=ui;var YC=(ue,Cn,ui)=>Bq(ue,typeof Cn!="symbol"?Cn+"":Cn,ui),KC=(ue,Cn,ui)=>Cn.has(ue)||ZC("Cannot "+ui);var tg=(ue,Cn,ui)=>(KC(ue,Cn,"read from private field"),ui?ui.call(ue):Cn.get(ue)),gy=(ue,Cn,ui)=>Cn.has(ue)?ZC("Cannot add the same private member more than once"):Cn instanceof WeakSet?Cn.add(ue):Cn.set(ue,ui),_y=(ue,Cn,ui,Uu)=>(KC(ue,Cn,"write to private field"),Uu?Uu.call(ue,ui):Cn.set(ue,ui),ui);var kd,Ru;var Cn=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function ui(i){return i&&i.__esModule&&Object.prototype.hasOwnProperty.call(i,"default")?i.default:i}var Uu={exports:{}},qd={};/**
  * @license React
