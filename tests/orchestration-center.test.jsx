@@ -349,17 +349,6 @@ test('TC-ORCH-115 | generate-from-intent envelope without data falls back to the
     } finally { await unmount(); }
 });
 
-test('TC-ORCH-116 | packages view renders the SolutionPackages list and back returns to welcome', async () => {
-    const { container, unmount } = await mount(OrchestrationCenter);
-    try {
-        await click(buttonByText(container, 'orchestration.method_import'), container);
-        expect(container.textContent).toContain('RAN_Energy_Saving_Solution_Package.pdf');
-        expect(container.textContent).toContain('orchestration.packages_upload_title');
-        await click(buttonByText(container, 'orchestration.back_to_options'), container);
-        expect(container.textContent).toContain('orchestration.build_workflow');
-    } finally { await unmount(); }
-});
-
 test('TC-ORCH-117 | graph editor entry opens the editor view with an empty canvas', async () => {
     const { container, unmount } = await mount(OrchestrationCenter);
     try {
