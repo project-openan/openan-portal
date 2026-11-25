@@ -13,3 +13,5 @@ integrations/dist-plugin/
 !portal/public/
 !portal/public/plugins/
 !portal/public/plugins/**
+portal/public/plugins/observation-center/mock-collab-tasks.json
+dist-plugin/mock-collab-tasks.json
