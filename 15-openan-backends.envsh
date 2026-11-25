@@ -27,3 +27,42 @@
 export REGISTRY_URL="${REGISTRY_URL:-${REGISTRY_SCHEME}://${REGISTRY_HOST}:${REGISTRY_PORT}}"
 export BACKEND_URL="${BACKEND_URL:-${BACKEND_SCHEME}://${BACKEND_HOST}:${BACKEND_PORT}}"
 export OBSERVATION_URL="${OBSERVATION_URL:-${OBSERVATION_SCHEME}://${OBSERVATION_HOST}:${OBSERVATION_PORT}}"
+
+# The observation backend is optional, so default.conf.template proxies to it
+# through a variable that nginx resolves per request. A missing backend then
+# fails only /api/observe/ (502) instead of stopping nginx at startup, which is
+# what a static proxy_pass to an unresolvable host does.
+#
+# nginx's resolver needs explicit nameservers and ignores resolv.conf search
+# domains, so take the nameservers from resolv.conf and, inside Kubernetes,
+# qualify a short service name with the pod's first search domain
+# (<namespace>.svc.cluster.local). Names with dots are used as given; use a
+# fully-qualified name for a service in another namespace.
+if [ -z "${OBSERVATION_RESOLVER:-}" ]; then
+    OBSERVATION_RESOLVER=$(awk 'BEGIN{ORS=" "} $1=="nameserver" {if ($2 ~ ":") {print "["$2"]"} else {print $2}}' /etc/resolv.conf 2>/dev/null)
+    OBSERVATION_RESOLVER="${OBSERVATION_RESOLVER% }"
+fi
+: "${OBSERVATION_RESOLVER:=127.0.0.1}"
+export OBSERVATION_RESOLVER
+
+if [ -z "${OBSERVATION_UPSTREAM:-}" ]; then
+    _obs_scheme="${OBSERVATION_URL%%://*}"
+    _obs_hostport="${OBSERVATION_URL#*://}"
+    _obs_hostport="${_obs_hostport%%/*}"
+    _obs_host="${_obs_hostport%%:*}"
+    _obs_port="${_obs_hostport#"$_obs_host"}"
+    if [ -n "${KUBERNETES_SERVICE_HOST:-}" ]; then
+        case "$_obs_host" in
+            ''|localhost|*[!A-Za-z0-9-]*) ;;
+            *)
+                _obs_search=$(awk '$1=="search" {print $2; exit}' /etc/resolv.conf 2>/dev/null)
+                [ -n "$_obs_search" ] && _obs_host="${_obs_host}.${_obs_search}"
+                ;;
+        esac
+    fi
+    # Any path in OBSERVATION_URL is dropped: the location rewrites the URI
+    # and passes the rewritten path, as the static proxy_pass did before.
+    OBSERVATION_UPSTREAM="${_obs_scheme}://${_obs_host}${_obs_port}"
+    unset _obs_scheme _obs_hostport _obs_host _obs_port _obs_search
+fi
+export OBSERVATION_UPSTREAM
