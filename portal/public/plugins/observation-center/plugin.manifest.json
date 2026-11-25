@@ -1,19 +1,34 @@
 {
   "id": "observation-center",
   "name": "Observation Center",
-  "version": "1.0.0",
+  "version": "1.19.5",
   "menu": [
     {
       "id": "metrics-observation",
       "labelKey": "Observation Center",
       "order": 7,
-      "route": "/observation"
+      "route": "/observation",
+      "iconName": "Gauge",
+      "group": "Observation Center"
+    },
+    {
+      "id": "third-party-observability",
+      "labelKey": "Third-party Observability",
+      "order": 8,
+      "route": "/observation/third-party",
+      "iconName": "Monitor",
+      "group": "Observation Center"
     }
   ],
   "routes": [
     {
       "path": "/observation",
       "menuId": "metrics-observation"
+    },
+    {
+      "path": "/observation/third-party",
+      "menuId": "third-party-observability",
+      "componentExport": "ThirdPartyObservability"
     }
   ],
   "entry": "index.js",
