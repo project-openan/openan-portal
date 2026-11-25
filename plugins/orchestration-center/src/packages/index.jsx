@@ -7,71 +7,78 @@
 //    not use this file except in compliance with the License. You may obtain
 //    a copy of the License at
 //
-//         http://www.apache.org/licenses/LICENSE-2.0
+//        http://www.apache.org/licenses/LICENSE-2.0
 //
 //    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-//    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-//    License for the specific language governing permissions and limitations
-//    under the License.
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Upload, FileText, Link2, Clock, ExternalLink, Loader2 } from 'lucide-react';
-
-const MOCK_PACKAGES = [
-    {
-        id: 'pkg-001',
-        filename: 'RAN_Energy_Saving_Solution_Package.pdf',
-        importedAt: '2026-06-10T14:30:00Z',
-        pdfUrl: '#',
-        workflowId: 'wf-energy-saving-01',
-        workflowName: 'RAN Energy Saving Workflow',
-    },
-    {
-        id: 'pkg-002',
-        filename: 'SPN_Fault_Handling_Solution_Package.pdf',
-        importedAt: '2026-06-09T09:15:00Z',
-        pdfUrl: '#',
-        workflowId: 'wf-spn-fault-01',
-        workflowName: 'SPN Fault Handling Workflow',
-    },
-    {
-        id: 'pkg-003',
-        filename: 'Home_Broadband_Complaint_Solution_Package.pdf',
-        importedAt: '2026-06-08T16:45:00Z',
-        pdfUrl: '#',
-        workflowId: 'wf-broadband-01',
-        workflowName: 'Home Broadband Complaint Workflow',
-    },
-];
+import { ArrowLeft, Upload, FileText, Link2, Clock, Loader2 } from 'lucide-react';
 
 const formatDate = (dateStr, locale) => {
     const d = new Date(dateStr);
+    if (Number.isNaN(d.getTime())) return dateStr || '';
     return d.toLocaleDateString(locale || 'zh-CN', {
         year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit'
     });
 };
 
-const SolutionPackages = ({ onBack, onImportPdf, onViewWorkflow, loading, loadingStatus, progress, t }) => {
+/**
+ * Lists the REAL imported solution packages via the orchestration backend
+ * (GET /rest/v1/orchestrate/solution-packages). The list must always come
+ * from `listPackages` — never fall back to a hardcoded/mock list, otherwise
+ * the deployed UI silently shows stale demo data (see tests/orchestration-*
+ * for the regression guards).
+ */
+const SolutionPackages = ({ onBack, onImportPdf, onViewWorkflow, listPackages, loading, loadingStatus, progress, t }) => {
     const { i18n } = useTranslation();
     const fileInput = useRef(null);
     const [dragOver, setDragOver] = useState(false);
+    const [packages, setPackages] = useState([]);
+    const [listLoading, setListLoading] = useState(true);
+    const [listError, setListError] = useState('');
+
+    const refresh = useCallback(async () => {
+        if (typeof listPackages !== 'function') return;
+        setListLoading(true);
+        setListError('');
+        try {
+            const data = await listPackages();
+            setPackages(Array.isArray(data) ? data : []);
+        } catch (e) {
+            setPackages([]);
+            setListError((e && e.message) || String(e));
+        } finally {
+            setListLoading(false);
+        }
+    }, [listPackages]);
+
+    useEffect(() => { refresh(); }, [refresh]);
+
+    // After a PDF import finishes (parent's `loading` falls back to false),
+    // re-fetch so the newly imported package shows up immediately.
+    const wasLoading = useRef(false);
+    useEffect(() => {
+        if (wasLoading.current && !loading) refresh();
+        wasLoading.current = !!loading;
+    }, [loading, refresh]);
 
     const handleDrop = (e) => {
         e.preventDefault();
         setDragOver(false);
-        const file = e.dataTransfer.files[0];
-        if (file && file.type === 'application/pdf') {
-            onImportPdf(file);
+        if (e.dataTransfer.files[0] && e.dataTransfer.files[0].type === 'application/pdf') {
+            onImportPdf(e.dataTransfer.files[0]);
         }
     };
 
     const handleFileSelect = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type === 'application/pdf') {
-            onImportPdf(file);
+        if (e.target.files[0] && e.target.files[0].type === 'application/pdf') {
+            onImportPdf(e.target.files[0]);
         }
         e.target.value = '';
     };
@@ -147,62 +154,80 @@ const SolutionPackages = ({ onBack, onImportPdf, onViewWorkflow, loading, loadin
                         {t('orchestration.packages_list_title')}
                     </h3>
                     <span className="px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black text-zinc-500 dark:text-zinc-400">
-                        {MOCK_PACKAGES.length}
+                        {packages.length}
                     </span>
                 </div>
 
-                <div className="space-y-3">
-                    {MOCK_PACKAGES.map(pkg => (
-                        <div
-                            key={pkg.id}
-                            className="group p-5 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:border-amber-200 dark:hover:border-amber-700 hover:shadow-lg transition-all duration-300"
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-4 min-w-0 flex-1">
-                                    <div className="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500 shrink-0">
-                                        <FileText size={20} />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                        <h4 className="text-sm font-black text-zinc-800 dark:text-zinc-200 truncate">
-                                            {pkg.filename}
-                                        </h4>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <Clock size={11} className="text-zinc-400" />
-                                            <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                                                {formatDate(pkg.importedAt, i18n.language)}
-                                            </span>
+                {listLoading ? (
+                    <div className="flex items-center justify-center gap-2 py-10 text-zinc-400 dark:text-zinc-500">
+                        <Loader2 size={18} className="animate-spin" />
+                        <span className="text-xs font-black uppercase tracking-widest">
+                            {t('orchestration.packages_list_loading')}
+                        </span>
+                    </div>
+                ) : listError ? (
+                    <div className="p-5 rounded-2xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10 text-red-500 text-xs font-black uppercase tracking-widest">
+                        {t('orchestration.packages_list_error')} — {listError}
+                    </div>
+                ) : packages.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-10 text-zinc-300 dark:text-zinc-600">
+                        <FileText size={40} className="mb-3 opacity-40" />
+                        <p className="text-sm font-black uppercase tracking-widest">
+                            {t('orchestration.packages_empty')}
+                        </p>
+                    </div>
+                ) : (
+                    <div className="space-y-3">
+                        {packages.map(pkg => (
+                            <div
+                                key={pkg.pdf_filename}
+                                className="group p-5 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:border-amber-200 dark:hover:border-amber-700 hover:shadow-lg transition-all duration-300"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-4 min-w-0 flex-1">
+                                        <div className="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500 shrink-0">
+                                            <FileText size={20} />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <h4 className="text-sm font-black text-zinc-800 dark:text-zinc-200 truncate" title={pkg.pdf_filename}>
+                                                {pkg.pdf_filename}
+                                            </h4>
+                                            <div className="flex items-center gap-2 mt-1 text-zinc-400 dark:text-zinc-500">
+                                                <span className="flex items-center gap-1">
+                                                    <Clock size={11} />
+                                                    <span className="text-[11px]">
+                                                        {formatDate(pkg.created_at, i18n.language)}
+                                                    </span>
+                                                </span>
+                                                {pkg.chapter_count ? (
+                                                    <span className="text-[11px]">
+                                                        · {pkg.chapter_count} {t('orchestration.packages_chapters')}
+                                                    </span>
+                                                ) : null}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center gap-3 shrink-0 ml-4">
-                                    <a
-                                        href={pkg.pdfUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-all"
-                                    >
-                                        <FileText size={13} />
-                                        PDF
-                                        <ExternalLink size={11} />
-                                    </a>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            onViewWorkflow(pkg.workflowId);
-                                        }}
-                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-wider text-white bg-blue-500 hover:bg-blue-600 shadow-sm shadow-blue-500/20 transition-all"
-                                    >
-                                        <Link2 size={13} />
-                                        Workflow
-                                        <ChevronRightIcon size={11} />
-                                    </button>
+                                    <div className="flex items-center gap-3 shrink-0 ml-4">
+                                        {pkg.workflow_id ? (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    onViewWorkflow(pkg.workflow_id);
+                                                }}
+                                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-wider text-white bg-blue-500 hover:bg-blue-600 shadow-sm shadow-blue-500/20 transition-all"
+                                            >
+                                                <Link2 size={13} />
+                                                Workflow
+                                                <ChevronRightIcon size={11} />
+                                            </button>
+                                        ) : null}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
