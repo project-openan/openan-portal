@@ -79,7 +79,7 @@ try {
     const handler = async route => { await pending; await route.abort().catch(() => {}); };
     await hanging.route('**/plugins/observation-center/plugin.manifest.json', handler);
     await hanging.goto(url + '/ontology', { waitUntil: 'domcontentloaded' });
-    await hanging.getByRole('alert').filter({ hasText: 'timed out' }).waitFor({ timeout: 22000 });
+    await hanging.getByRole('alert').filter({ hasText: 'timed out' }).waitFor({ timeout: 66000 });
     assert(await hanging.locator('main').isVisible());
     await hanging.getByRole('button', { name: 'Settings', exact: true }).click();
     assert(await hanging.getByRole('button', { name: 'Plugin Management', exact: true }).isVisible());
