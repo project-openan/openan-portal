@@ -87,13 +87,9 @@ jobs:
           git config user.email "guofei6@huawei.com"
           git checkout -b "$BR"
           git add -f portal/public/plugins portal/bundled-plugins.json
-          git commit -s -m "chore(plugins): sync $PID v$VER artifact / 同步插件发布产物" -m "Auto-synced by plugin-sync workflow from a plugin release.
-
-Signed-off-by: guofei66 <guofei6@huawei.com>"
+          git commit -s -m "chore(plugins): sync $PID v$VER artifact / 同步插件发布产物" -m "Auto-synced by plugin-sync workflow from a plugin release." -m "Signed-off-by: guofei66 <guofei6@huawei.com>"
           git push -u origin "$BR"
           gh pr create --title "chore(plugins): sync $PID v$VER artifact / 同步插件发布产物" \
-            --body "Auto-synced by plugin-sync workflow (artifact release).
-
-Signed-off-by: guofei66 <guofei6@huawei.com>" \
+            --body "$(printf 'Auto-synced by plugin-sync workflow (artifact release).\n\nSigned-off-by: guofei66 <guofei6@huawei.com>')" \
             --head "$BR" --base main
           gh pr merge --squash --delete-branch
