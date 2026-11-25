@@ -4,4 +4,6 @@
   { "id": "observation-center", "mode": "bundle", "entry": "/plugins/observation-center", "enabled": true },
   { "id": "virtual-showroom", "mode": "bundle", "entry": "/plugins/virtual-showroom", "enabled": true },
   { "id": "an-ontology", "mode": "bundle", "entry": "/plugins/an-ontology", "enabled": true }
+,
+  { "id": "scenario-showcase", "mode": "bundle", "entry": "/plugins/scenario-showcase", "enabled": true }
 ]

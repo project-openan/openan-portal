@@ -14,6 +14,7 @@ public-dir copy.
 | observation-center | 1.0.0 | 观测中心 |
 | virtual-showroom | 1.1.0 | 数字展厅（Demo Showcase） |
 | an-ontology | 1.0.0 | AN 本体 |
+| scenario-showcase | 0.1.0 | 场景展示 |
 
 ## 更新方式 / How to update
 

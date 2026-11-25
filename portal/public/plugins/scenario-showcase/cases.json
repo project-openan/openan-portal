@@ -1,0 +1,42 @@
+{
+  "$schema": "scenario-showcase-cases-v1",
+  "updatedAt": "2026-10-20",
+  "comment": [
+    "场景 Case 索引：新增演示场景只需在此登记并在 cases/ 下放同名 JSON，无需重新构建插件。",
+    "Case index: register a scenario here and drop cases/<id>.json — no plugin rebuild needed.",
+    "字段说明 / Field notes: enabled=false 隐藏; url 深链为 /scenario-showcase?case=<id>"
+  ],
+  "cases": [
+    {
+      "id": "live-assurance",
+      "enabled": true,
+      "order": 1,
+      "title": {
+        "zh": "大型赛事直播业务保障",
+        "en": "Major-event Live Broadcast Assurance"
+      },
+      "description": {
+        "zh": "城市马拉松直播保障闭环：保障订阅 → 策略生成 → 功率提升遇节能 SLA 冲突并协商 → KQI 劣化 → 关闭全部节能跨站协同 → KQI 恢复 → 恢复初始配置。",
+        "en": "City-marathon live broadcast assurance closed loop: subscription -> policy -> power boost with energy-saving SLA negotiation -> KQI degradation -> full shutdown with inter-site coordination -> recovery -> initial config restored."
+      },
+      "agents": 3,
+      "steps": 9
+    },
+    {
+      "id": "net-optimize",
+      "enabled": true,
+      "order": 2,
+      "title": {
+        "zh": "城域网节能优化",
+        "en": "Urban Network Energy Optimization"
+      },
+      "description": {
+        "zh": "mockAgent 驱动的多智能体协作：网络洞察/策略决策/策略执行三个智能体完成 话务洞察 → 节能策略 → A2A-T 执行协商 → 下发 → 反馈 → 复核 闭环，消息内容由 mockAgent 服务返回。",
+        "en": "mockAgent-driven multi-agent collaboration: insight/policy/executor agents close the loop insight -> policy -> A2A-T negotiation -> dispatch -> feedback -> review; message content is returned by the mockAgent service."
+      },
+      "agents": 3,
+      "steps": 6,
+      "driver": "mockAgent"
+    }
+  ]
+}

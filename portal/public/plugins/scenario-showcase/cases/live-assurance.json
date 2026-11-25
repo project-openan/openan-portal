@@ -1,0 +1,4272 @@
+{
+  "$schema": "scenario-showcase-case-v1",
+  "id": "live-assurance",
+  "title": {
+    "zh": "大型赛事直播业务保障",
+    "en": "Major-event Live Broadcast Assurance"
+  },
+  "description": {
+    "zh": "城市马拉松赛事直播保障闭环：业务保障智能体生成策略，无线域智能体执行功率提升时发现节能 SLA 冲突并经 A2A-T 协商裁定；KQI 劣化后关闭全部节能并跨站协同优化，恢复后回归初始配置。",
+    "en": "City-marathon live broadcast assurance closed loop: the Assurance Agent generates the policy, the RAN Agent discovers an energy-saving SLA conflict during power boost and resolves it via A2A-T negotiation; KQI degradation triggers a full energy-saving shutdown with inter-site coordination, and the initial configuration is restored after recovery."
+  },
+  "agents": [
+    {
+      "id": "crm",
+      "name": {
+        "zh": "CRM智能体",
+        "en": "CRM Agent"
+      },
+      "role": "crm",
+      "color": "rose",
+      "skills": [
+        "Customer Intent Parsing",
+        "Assurance Team Assembly"
+      ]
+    },
+    {
+      "id": "live-streaming",
+      "name": {
+        "zh": "直播域智能体",
+        "en": "Live Streaming Agent"
+      },
+      "role": "host",
+      "color": "blue",
+      "skills": [
+        "Event Info Parsing",
+        "KQI Monitoring"
+      ]
+    },
+    {
+      "id": "assurance",
+      "name": {
+        "zh": "业务保障智能体",
+        "en": "Assurance Agent"
+      },
+      "role": "domain",
+      "color": "amber",
+      "skills": [
+        "Policy Generation",
+        "Recovery Policy Dispatch"
+      ]
+    },
+    {
+      "id": "ran",
+      "name": {
+        "zh": "无线域智能体",
+        "en": "RAN Agent"
+      },
+      "role": "domain",
+      "color": "emerald",
+      "skills": [
+        "Network Policy Execution",
+        "Energy SLA Negotiation"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "crm-intent",
+      "name": {
+        "zh": "接收客户意图",
+        "en": "Receive Customer Intent"
+      },
+      "agent": "crm",
+      "skill": "Customer Intent Parsing",
+      "task": "REQ-2026-1102"
+    },
+    {
+      "id": "crm-assembly",
+      "name": {
+        "zh": "组建保障团队",
+        "en": "Assemble Assurance Team"
+      },
+      "agent": "crm",
+      "skill": "Assurance Team Assembly",
+      "task": "REQ-2026-1102",
+      "next": [
+        "live-streaming",
+        "assurance",
+        "ran"
+      ]
+    },
+    {
+      "id": "step1",
+      "name": {
+        "zh": "赛事信息解析与保障订阅",
+        "en": "Event Info Parsing & Subscription"
+      },
+      "agent": "live-streaming",
+      "type": "selfloop",
+      "skill": "Event Info Parsing",
+      "task": "task-live-001",
+      "short": {
+        "zh": "解析订阅",
+        "en": "Subscribe"
+      }
+    },
+    {
+      "id": "step2",
+      "name": {
+        "zh": "保障策略生成",
+        "en": "Assurance Policy Generation"
+      },
+      "agent": "assurance",
+      "skill": "Policy Generation",
+      "task": "task-live-002",
+      "short": {
+        "zh": "策略生成",
+        "en": "Policy"
+      }
+    },
+    {
+      "id": "step3",
+      "name": {
+        "zh": "功率提升与节能 SLA 冲突协商",
+        "en": "Power Boost & Energy SLA Negotiation"
+      },
+      "agent": "ran",
+      "skill": "Network Policy Execution",
+      "task": "task-live-003",
+      "short": {
+        "zh": "功率协商",
+        "en": "Negotiate"
+      }
+    },
+    {
+      "id": "step4",
+      "name": {
+        "zh": "KQI 监控与劣化上报",
+        "en": "KQI Monitoring & Degradation Alert"
+      },
+      "agent": "live-streaming",
+      "type": "selfloop",
+      "skill": "KQI Monitoring",
+      "task": "task-live-004",
+      "short": {
+        "zh": "KQI 监控",
+        "en": "KQI Watch"
+      }
+    },
+    {
+      "id": "step5",
+      "name": {
+        "zh": "劣化分析与保障决策",
+        "en": "Degradation Analysis & Decision"
+      },
+      "agent": "assurance",
+      "skill": "Policy Generation",
+      "task": "task-live-005",
+      "short": {
+        "zh": "劣化决策",
+        "en": "Decide"
+      }
+    },
+    {
+      "id": "step6",
+      "name": {
+        "zh": "关闭全部节能并跨站协同优化",
+        "en": "Full Shutdown & Inter-site Optimization"
+      },
+      "agent": "ran",
+      "skill": "Network Policy Execution",
+      "task": "task-live-006",
+      "short": {
+        "zh": "协同优化",
+        "en": "Coordinate"
+      }
+    },
+    {
+      "id": "step7",
+      "name": {
+        "zh": "KQI 复核确认",
+        "en": "KQI Re-check"
+      },
+      "agent": "live-streaming",
+      "type": "selfloop",
+      "skill": "KQI Monitoring",
+      "task": "task-live-007",
+      "short": {
+        "zh": "KQI 复核",
+        "en": "Re-check"
+      }
+    },
+    {
+      "id": "step8",
+      "name": {
+        "zh": "保障结果汇总与恢复策略下发",
+        "en": "Summary & Recovery Dispatch"
+      },
+      "agent": "assurance",
+      "skill": "Recovery Policy Dispatch",
+      "task": "task-live-008",
+      "short": {
+        "zh": "汇总恢复",
+        "en": "Dispatch"
+      }
+    },
+    {
+      "id": "step9",
+      "name": {
+        "zh": "初始配置恢复",
+        "en": "Initial Configuration Restoration"
+      },
+      "agent": "ran",
+      "skill": "Network Policy Execution",
+      "task": "task-live-009",
+      "short": {
+        "zh": "配置恢复",
+        "en": "Restore"
+      }
+    }
+  ],
+  "panels": [
+    {
+      "id": "route-map",
+      "type": "map",
+      "title": {
+        "zh": "活动路线保障态势",
+        "en": "Event Route Assurance"
+      },
+      "initial": {
+        "routeActive": true,
+        "siteStatus": {},
+        "loc": "shanghai",
+        "location": "shanghai",
+        "marker": {
+          "x": 8,
+          "y": 44,
+          "loc": "shanghai"
+        }
+      },
+      "config": {
+        "sites": [
+          {
+            "id": "start",
+            "x": 8,
+            "y": 44,
+            "label": {
+              "zh": "起点·外滩广场",
+              "en": "Start · Bund Plaza"
+            },
+            "status": "good"
+          },
+          {
+            "id": "bs1",
+            "x": 18,
+            "y": 36,
+            "label": {
+              "zh": "基站 BS-1",
+              "en": "BS-1"
+            },
+            "status": "good"
+          },
+          {
+            "id": "km10",
+            "x": 30,
+            "y": 24,
+            "label": {
+              "zh": "10km·老城厢",
+              "en": "10km · Old Town"
+            },
+            "status": "good"
+          },
+          {
+            "id": "bs2",
+            "x": 42,
+            "y": 18,
+            "label": {
+              "zh": "基站 BS-2",
+              "en": "BS-2"
+            },
+            "status": "good"
+          },
+          {
+            "id": "half",
+            "x": 54,
+            "y": 14,
+            "label": {
+              "zh": "21km·半程",
+              "en": "21km · Half"
+            },
+            "status": "good"
+          },
+          {
+            "id": "bs3",
+            "x": 66,
+            "y": 18,
+            "label": {
+              "zh": "基站 BS-3",
+              "en": "BS-3"
+            },
+            "status": "good"
+          },
+          {
+            "id": "km30",
+            "x": 76,
+            "y": 26,
+            "label": {
+              "zh": "30km·徐汇西岸",
+              "en": "30km · West Bund"
+            },
+            "status": "good"
+          },
+          {
+            "id": "bs4",
+            "x": 86,
+            "y": 34,
+            "label": {
+              "zh": "基站 BS-4",
+              "en": "BS-4"
+            },
+            "status": "good"
+          },
+          {
+            "id": "finish",
+            "x": 93,
+            "y": 44,
+            "label": {
+              "zh": "终点·体育场",
+              "en": "Finish · Stadium"
+            },
+            "status": "good"
+          }
+        ],
+        "route": [
+          {
+            "x": 8,
+            "y": 44
+          },
+          {
+            "x": 18,
+            "y": 36
+          },
+          {
+            "x": 30,
+            "y": 24
+          },
+          {
+            "x": 42,
+            "y": 18
+          },
+          {
+            "x": 54,
+            "y": 14
+          },
+          {
+            "x": 66,
+            "y": 18
+          },
+          {
+            "x": 76,
+            "y": 26
+          },
+          {
+            "x": 86,
+            "y": 34
+          },
+          {
+            "x": 93,
+            "y": 44
+          }
+        ],
+        "city": {
+          "blocks": [
+            {
+              "x": 1,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 37,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 49,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 61,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 73,
+              "y": 1,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 1,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 49,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 61,
+              "y": 10,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 10,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 61,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 73,
+              "y": 19,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 19,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 13,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 25,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 37,
+              "y": 29,
+              "w": 10,
+              "h": 5
+            },
+            {
+              "x": 85,
+              "y": 29,
+              "w": 9,
+              "h": 5
+            },
+            {
+              "x": 1,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 13,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 25,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 37,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 49,
+              "y": 38,
+              "w": 10,
+              "h": 6
+            },
+            {
+              "x": 85,
+              "y": 38,
+              "w": 9,
+              "h": 6
+            }
+          ],
+          "roads": [
+            {
+              "points": "0,8 100,8"
+            },
+            {
+              "points": "0,17 100,17"
+            },
+            {
+              "points": "0,27 100,27"
+            },
+            {
+              "points": "0,36 100,36"
+            },
+            {
+              "points": "0,50 58,50"
+            },
+            {
+              "points": "12,0 12,52"
+            },
+            {
+              "points": "24,0 24,52"
+            },
+            {
+              "points": "36,0 36,52"
+            },
+            {
+              "points": "48,0 48,52"
+            },
+            {
+              "points": "60,0 60,52"
+            },
+            {
+              "points": "72,0 72,52"
+            },
+            {
+              "points": "84,0 84,52"
+            },
+            {
+              "points": "55,0 68,14 82,28 96,40"
+            }
+          ],
+          "arteries": [
+            {
+              "points": "0,47 20,45 45,46 62,49 80,52",
+              "w": 2.4
+            },
+            {
+              "points": "0,22 100,22",
+              "w": 2.2
+            },
+            {
+              "points": "5,60 30,38 55,20 78,6",
+              "w": 2.2
+            }
+          ],
+          "river": {
+            "points": "0,56 18,52.5 38,55.5 58,60 80,62.5 100,63",
+            "w": 5.2,
+            "label": {
+              "zh": "黄浦江",
+              "en": "Huangpu River"
+            },
+            "lx": 30,
+            "ly": 60.5
+          },
+          "parks": [
+            {
+              "points": "38,11 48,11 48,16 38,16",
+              "label": {
+                "zh": "豫园绿地",
+                "en": "Yu Garden"
+              },
+              "lx": 43,
+              "ly": 14.3
+            },
+            {
+              "points": "37,20 49,20 49,26 37,26",
+              "label": {
+                "zh": "人民公园",
+                "en": "People's Park"
+              },
+              "lx": 43,
+              "ly": 23.6
+            },
+            {
+              "points": "0,50 18,49 24,53 10,55.5 0,55",
+              "label": {
+                "zh": "外滩滨江绿地",
+                "en": "Bund Green"
+              },
+              "lx": 11,
+              "ly": 53.4
+            }
+          ]
+        },
+        "locId": "shanghai",
+        "locLabel": {
+          "zh": "上海",
+          "en": "Shanghai"
+        },
+        "altLocations": [
+          {
+            "id": "london",
+            "label": {
+              "zh": "伦敦",
+              "en": "London"
+            },
+            "city": {
+              "blocks": [
+                {
+                  "x": 2,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 13,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 13,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                }
+              ],
+              "roads": [
+                {
+                  "points": "0,8 100,8"
+                },
+                {
+                  "points": "0,15 100,15"
+                },
+                {
+                  "points": "0,22 100,22"
+                },
+                {
+                  "points": "0,30 100,30"
+                },
+                {
+                  "points": "0,50 100,50"
+                },
+                {
+                  "points": "0,58 74,58"
+                },
+                {
+                  "points": "11,0 11,30"
+                },
+                {
+                  "points": "24,0 24,30"
+                },
+                {
+                  "points": "35,0 35,30"
+                },
+                {
+                  "points": "46,0 46,30"
+                },
+                {
+                  "points": "57,0 57,30"
+                },
+                {
+                  "points": "68,0 68,30"
+                },
+                {
+                  "points": "79,0 79,30"
+                },
+                {
+                  "points": "90,0 90,30"
+                },
+                {
+                  "points": "11,40 11,58"
+                },
+                {
+                  "points": "24,40 24,58"
+                },
+                {
+                  "points": "35,40 35,58"
+                },
+                {
+                  "points": "46,40 46,58"
+                },
+                {
+                  "points": "57,40 57,58"
+                },
+                {
+                  "points": "68,40 68,58"
+                },
+                {
+                  "points": "90,30 90,62"
+                }
+              ],
+              "arteries": [
+                {
+                  "points": "0,33 22,31 44,32 62,34 80,35 100,36",
+                  "w": 2.2
+                },
+                {
+                  "points": "40,28 40,46",
+                  "w": 2.4
+                },
+                {
+                  "points": "64,30 64,46",
+                  "w": 2.4
+                }
+              ],
+              "river": {
+                "points": "0,36 18,34 36,37 54,35 72,39 88,38 100,40",
+                "w": 5.2,
+                "label": {
+                  "zh": "泰晤士河",
+                  "en": "River Thames"
+                },
+                "lx": 52,
+                "ly": 41.5
+              },
+              "parks": [
+                {
+                  "points": "6,8 24,8 24,20 6,20",
+                  "label": {
+                    "zh": "海德公园",
+                    "en": "Hyde Park"
+                  },
+                  "lx": 15,
+                  "ly": 14.5
+                },
+                {
+                  "points": "76,48 92,48 92,56 76,56",
+                  "label": {
+                    "zh": "格林尼治公园",
+                    "en": "Greenwich Park"
+                  },
+                  "lx": 84,
+                  "ly": 52.5
+                }
+              ]
+            },
+            "sites": [
+              {
+                "id": "start",
+                "x": 80,
+                "y": 38,
+                "label": {
+                  "zh": "O2竞技场·主会场",
+                  "en": "The O2 · Main"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs1",
+                "x": 72,
+                "y": 34,
+                "label": {
+                  "zh": "基站 BS-1",
+                  "en": "BS-1"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km10",
+                "x": 62,
+                "y": 40,
+                "label": {
+                  "zh": "金丝雀码头",
+                  "en": "Canary Wharf"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs2",
+                "x": 52,
+                "y": 40,
+                "label": {
+                  "zh": "基站 BS-2",
+                  "en": "BS-2"
+                },
+                "status": "good"
+              },
+              {
+                "id": "half",
+                "x": 40,
+                "y": 32,
+                "label": {
+                  "zh": "伦敦塔桥",
+                  "en": "Tower Bridge"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs3",
+                "x": 30,
+                "y": 27,
+                "label": {
+                  "zh": "基站 BS-3",
+                  "en": "BS-3"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km30",
+                "x": 25,
+                "y": 22,
+                "label": {
+                  "zh": "圣保罗大教堂",
+                  "en": "St Paul's"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs4",
+                "x": 18,
+                "y": 24,
+                "label": {
+                  "zh": "基站 BS-4",
+                  "en": "BS-4"
+                },
+                "status": "good"
+              },
+              {
+                "id": "finish",
+                "x": 14,
+                "y": 16,
+                "label": {
+                  "zh": "海德公园·跨年场",
+                  "en": "Hyde Park · NYE"
+                },
+                "status": "good"
+              }
+            ],
+            "route": [
+              {
+                "x": 80,
+                "y": 38
+              },
+              {
+                "x": 72,
+                "y": 34
+              },
+              {
+                "x": 62,
+                "y": 40
+              },
+              {
+                "x": 52,
+                "y": 40
+              },
+              {
+                "x": 40,
+                "y": 32
+              },
+              {
+                "x": 30,
+                "y": 27
+              },
+              {
+                "x": 25,
+                "y": 22
+              },
+              {
+                "x": 18,
+                "y": 24
+              },
+              {
+                "x": 14,
+                "y": 16
+              }
+            ],
+            "geo": {
+              "center": [
+                51.506,
+                -0.08
+              ],
+              "zoom": 13,
+              "route": [
+                [
+                  51.503,
+                  0.0032
+                ],
+                [
+                  51.499,
+                  -0.004
+                ],
+                [
+                  51.4975,
+                  -0.018
+                ],
+                [
+                  51.4965,
+                  -0.035
+                ],
+                [
+                  51.4985,
+                  -0.052
+                ],
+                [
+                  51.5025,
+                  -0.066
+                ],
+                [
+                  51.5048,
+                  -0.0762
+                ],
+                [
+                  51.5062,
+                  -0.0765
+                ],
+                [
+                  51.509,
+                  -0.085
+                ],
+                [
+                  51.5138,
+                  -0.0984
+                ],
+                [
+                  51.5115,
+                  -0.115
+                ],
+                [
+                  51.511,
+                  -0.13
+                ],
+                [
+                  51.509,
+                  -0.148
+                ],
+                [
+                  51.5073,
+                  -0.1657
+                ]
+              ],
+              "sites": [
+                {
+                  "id": "start",
+                  "position": [
+                    51.503,
+                    0.0032
+                  ],
+                  "label": {
+                    "zh": "O2竞技场·主会场",
+                    "en": "The O2 · Main"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 46,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
+                },
+                {
+                  "id": "bs1",
+                  "position": [
+                    51.5,
+                    -0.006
+                  ],
+                  "label": {
+                    "zh": "基站 BS-1",
+                    "en": "BS-1"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 52,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
+                },
+                {
+                  "id": "km10",
+                  "position": [
+                    51.5054,
+                    -0.0235
+                  ],
+                  "label": {
+                    "zh": "金丝雀码头",
+                    "en": "Canary Wharf"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 43,
+                    "stall": 1.2,
+                    "kqi": 89
+                  }
+                },
+                {
+                  "id": "bs2",
+                  "position": [
+                    51.507,
+                    -0.048
+                  ],
+                  "label": {
+                    "zh": "基站 BS-2",
+                    "en": "BS-2"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 50,
+                    "stall": 0.7,
+                    "kqi": 92
+                  }
+                },
+                {
+                  "id": "half",
+                  "position": [
+                    51.5055,
+                    -0.0754
+                  ],
+                  "label": {
+                    "zh": "伦敦塔桥",
+                    "en": "Tower Bridge"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 47,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
+                },
+                {
+                  "id": "bs3",
+                  "position": [
+                    51.51,
+                    -0.09
+                  ],
+                  "label": {
+                    "zh": "基站 BS-3",
+                    "en": "BS-3"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 51,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
+                },
+                {
+                  "id": "km30",
+                  "position": [
+                    51.5138,
+                    -0.0984
+                  ],
+                  "label": {
+                    "zh": "圣保罗大教堂",
+                    "en": "St Paul's"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 44,
+                    "stall": 1.1,
+                    "kqi": 90
+                  }
+                },
+                {
+                  "id": "bs4",
+                  "position": [
+                    51.511,
+                    -0.13
+                  ],
+                  "label": {
+                    "zh": "基站 BS-4",
+                    "en": "BS-4"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 49,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
+                },
+                {
+                  "id": "finish",
+                  "position": [
+                    51.5073,
+                    -0.1657
+                  ],
+                  "label": {
+                    "zh": "海德公园·跨年场",
+                    "en": "Hyde Park · NYE"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 45,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "singapore",
+            "label": {
+              "zh": "新加坡",
+              "en": "Singapore"
+            },
+            "city": {
+              "blocks": [
+                {
+                  "x": 2,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 42,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 52,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 62,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 72,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 82,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 42,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 52,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 62,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 72,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 82,
+                  "y": 10,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 42,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 52,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 62,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 72,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 82,
+                  "y": 18,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 40,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 40,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 40,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 48,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 12,
+                  "y": 48,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 22,
+                  "y": 48,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 34,
+                  "y": 50,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 44,
+                  "y": 50,
+                  "w": 9,
+                  "h": 5
+                }
+              ],
+              "roads": [
+                {
+                  "points": "0,8 100,8"
+                },
+                {
+                  "points": "0,16 100,16"
+                },
+                {
+                  "points": "38,24 100,24"
+                },
+                {
+                  "points": "0,29 34,29"
+                },
+                {
+                  "points": "0,56 60,56"
+                },
+                {
+                  "points": "11,0 11,58"
+                },
+                {
+                  "points": "23,0 23,26"
+                },
+                {
+                  "points": "59,0 59,20"
+                },
+                {
+                  "points": "71,0 71,22"
+                },
+                {
+                  "points": "83,0 83,26"
+                },
+                {
+                  "points": "11,36 11,56"
+                },
+                {
+                  "points": "47,42 47,56"
+                },
+                {
+                  "points": "59,46 59,56"
+                }
+              ],
+              "arteries": [
+                {
+                  "points": "41,0 41,58",
+                  "w": 2.4
+                },
+                {
+                  "points": "0,56 60,56",
+                  "w": 2.4
+                },
+                {
+                  "points": "30,29 44,27 58,26 70,28 82,32 96,34",
+                  "w": 2.2
+                }
+              ],
+              "river": {
+                "points": "34,34 48,30 64,32 78,38 96,41",
+                "w": 8.5,
+                "label": {
+                  "zh": "滨海湾",
+                  "en": "Marina Bay"
+                },
+                "lx": 58,
+                "ly": 36.5
+              },
+              "parks": [
+                {
+                  "points": "50,20 60,20 60,25 50,25",
+                  "label": {
+                    "zh": "鱼尾狮公园",
+                    "en": "Merlion Park"
+                  },
+                  "lx": 55,
+                  "ly": 23.2
+                },
+                {
+                  "points": "74,42 92,42 92,54 74,54",
+                  "label": {
+                    "zh": "滨海湾花园",
+                    "en": "Gardens by the Bay"
+                  },
+                  "lx": 83,
+                  "ly": 48.5
+                }
+              ]
+            },
+            "sites": [
+              {
+                "id": "start",
+                "x": 36,
+                "y": 28,
+                "label": {
+                  "zh": "金沙会展中心·主馆",
+                  "en": "Sands Expo · Main"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs1",
+                "x": 44,
+                "y": 22,
+                "label": {
+                  "zh": "基站 BS-1",
+                  "en": "BS-1"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km10",
+                "x": 54,
+                "y": 22,
+                "label": {
+                  "zh": "鱼尾狮公园",
+                  "en": "Merlion Park"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs2",
+                "x": 64,
+                "y": 24,
+                "label": {
+                  "zh": "基站 BS-2",
+                  "en": "BS-2"
+                },
+                "status": "good"
+              },
+              {
+                "id": "half",
+                "x": 74,
+                "y": 30,
+                "label": {
+                  "zh": "滨海湾堤岸",
+                  "en": "Bayfront Ave"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs3",
+                "x": 80,
+                "y": 38,
+                "label": {
+                  "zh": "基站 BS-3",
+                  "en": "BS-3"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km30",
+                "x": 84,
+                "y": 46,
+                "label": {
+                  "zh": "花穹双馆",
+                  "en": "Conservatory Domes"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs4",
+                "x": 74,
+                "y": 50,
+                "label": {
+                  "zh": "基站 BS-4",
+                  "en": "BS-4"
+                },
+                "status": "good"
+              },
+              {
+                "id": "finish",
+                "x": 64,
+                "y": 52,
+                "label": {
+                  "zh": "螺旋桥·终点",
+                  "en": "Helix Bridge · Finish"
+                },
+                "status": "good"
+              }
+            ],
+            "route": [
+              {
+                "x": 36,
+                "y": 28
+              },
+              {
+                "x": 44,
+                "y": 22
+              },
+              {
+                "x": 54,
+                "y": 22
+              },
+              {
+                "x": 64,
+                "y": 24
+              },
+              {
+                "x": 74,
+                "y": 30
+              },
+              {
+                "x": 80,
+                "y": 38
+              },
+              {
+                "x": 84,
+                "y": 46
+              },
+              {
+                "x": 74,
+                "y": 50
+              },
+              {
+                "x": 64,
+                "y": 52
+              }
+            ],
+            "geo": {
+              "center": [
+                1.284,
+                103.86
+              ],
+              "zoom": 14,
+              "route": [
+                [
+                  1.2834,
+                  103.8607
+                ],
+                [
+                  1.2822,
+                  103.8625
+                ],
+                [
+                  1.2808,
+                  103.8665
+                ],
+                [
+                  1.2797,
+                  103.87
+                ],
+                [
+                  1.2812,
+                  103.8725
+                ],
+                [
+                  1.2838,
+                  103.8695
+                ],
+                [
+                  1.2857,
+                  103.8602
+                ],
+                [
+                  1.2872,
+                  103.857
+                ],
+                [
+                  1.2867,
+                  103.8544
+                ],
+                [
+                  1.2852,
+                  103.857
+                ]
+              ],
+              "sites": [
+                {
+                  "id": "start",
+                  "position": [
+                    1.2834,
+                    103.8607
+                  ],
+                  "label": {
+                    "zh": "金沙会展中心·主馆",
+                    "en": "Sands Expo · Main"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 46,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
+                },
+                {
+                  "id": "bs1",
+                  "position": [
+                    1.285,
+                    103.856
+                  ],
+                  "label": {
+                    "zh": "基站 BS-1",
+                    "en": "BS-1"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 52,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
+                },
+                {
+                  "id": "km10",
+                  "position": [
+                    1.2871,
+                    103.8544
+                  ],
+                  "label": {
+                    "zh": "鱼尾狮公园",
+                    "en": "Merlion Park"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 43,
+                    "stall": 1.2,
+                    "kqi": 89
+                  }
+                },
+                {
+                  "id": "bs2",
+                  "position": [
+                    1.286,
+                    103.848
+                  ],
+                  "label": {
+                    "zh": "基站 BS-2",
+                    "en": "BS-2"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 50,
+                    "stall": 0.7,
+                    "kqi": 92
+                  }
+                },
+                {
+                  "id": "half",
+                  "position": [
+                    1.2806,
+                    103.862
+                  ],
+                  "label": {
+                    "zh": "滨海湾堤岸",
+                    "en": "Bayfront Ave"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 47,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
+                },
+                {
+                  "id": "bs3",
+                  "position": [
+                    1.281,
+                    103.867
+                  ],
+                  "label": {
+                    "zh": "基站 BS-3",
+                    "en": "BS-3"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 51,
+                    "stall": 0.6,
+                    "kqi": 93
+                  }
+                },
+                {
+                  "id": "km30",
+                  "position": [
+                    1.2822,
+                    103.868
+                  ],
+                  "label": {
+                    "zh": "花穹双馆",
+                    "en": "Conservatory Domes"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 44,
+                    "stall": 1.1,
+                    "kqi": 90
+                  }
+                },
+                {
+                  "id": "bs4",
+                  "position": [
+                    1.285,
+                    103.87
+                  ],
+                  "label": {
+                    "zh": "基站 BS-4",
+                    "en": "BS-4"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 49,
+                    "stall": 0.8,
+                    "kqi": 91
+                  }
+                },
+                {
+                  "id": "finish",
+                  "position": [
+                    1.2855,
+                    103.8593
+                  ],
+                  "label": {
+                    "zh": "螺旋桥·终点",
+                    "en": "Helix Bridge · Finish"
+                  },
+                  "status": "good",
+                  "metrics": {
+                    "up": 45,
+                    "stall": 0.9,
+                    "kqi": 91
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "bangkok",
+            "label": {
+              "zh": "曼谷",
+              "en": "Bangkok"
+            },
+            "city": {
+              "blocks": [
+                {
+                  "x": 2,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 2,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 9,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 16,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 70,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 81,
+                  "y": 23,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 13,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 44,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 2,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 13,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 26,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 37,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 48,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                },
+                {
+                  "x": 59,
+                  "y": 51,
+                  "w": 9,
+                  "h": 5
+                }
+              ],
+              "roads": [
+                {
+                  "points": "0,8 100,8"
+                },
+                {
+                  "points": "0,15 100,15"
+                },
+                {
+                  "points": "0,22 100,22"
+                },
+                {
+                  "points": "0,30 100,30"
+                },
+                {
+                  "points": "0,50 100,50"
+                },
+                {
+                  "points": "0,58 74,58"
+                },
+                {
+                  "points": "11,0 11,30"
+                },
+                {
+                  "points": "24,0 24,30"
+                },
+                {
+                  "points": "35,0 35,30"
+                },
+                {
+                  "points": "46,0 46,30"
+                },
+                {
+                  "points": "57,0 57,30"
+                },
+                {
+                  "points": "68,0 68,30"
+                },
+                {
+                  "points": "79,0 79,30"
+                },
+                {
+                  "points": "90,0 90,30"
+                },
+                {
+                  "points": "11,40 11,58"
+                },
+                {
+                  "points": "24,40 24,58"
+                },
+                {
+                  "points": "35,40 35,58"
+                },
+                {
+                  "points": "46,40 46,58"
+                },
+                {
+                  "points": "57,40 57,58"
+                },
+                {
+                  "points": "68,40 68,58"
+                },
+                {
+                  "points": "90,30 90,62"
+                }
+              ],
+              "arteries": [
+                {
+                  "points": "0,33 22,31 44,32 62,34 80,35 100,36",
+                  "w": 2.2
+                },
+                {
+                  "points": "40,28 40,46",
+                  "w": 2.4
+                },
+                {
+                  "points": "64,30 64,46",
+                  "w": 2.4
+                }
+              ],
+              "river": {
+                "points": "0,36 18,34 36,37 54,35 72,39 88,38 100,40",
+                "w": 5.2,
+                "label": {
+                  "zh": "泰晤士河",
+                  "en": "River Thames"
+                },
+                "lx": 52,
+                "ly": 41.5
+              },
+              "parks": [
+                {
+                  "points": "6,8 24,8 24,20 6,20",
+                  "label": {
+                    "zh": "海德公园",
+                    "en": "Hyde Park"
+                  },
+                  "lx": 15,
+                  "ly": 14.5
+                },
+                {
+                  "points": "76,48 92,48 92,56 76,56",
+                  "label": {
+                    "zh": "格林尼治公园",
+                    "en": "Greenwich Park"
+                  },
+                  "lx": 84,
+                  "ly": 52.5
+                }
+              ]
+            },
+            "sites": [
+              {
+                "id": "start",
+                "x": 80,
+                "y": 38,
+                "label": {
+                  "zh": "O2竞技场·主会场",
+                  "en": "The O2 · Main"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs1",
+                "x": 72,
+                "y": 34,
+                "label": {
+                  "zh": "基站 BS-1",
+                  "en": "BS-1"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km10",
+                "x": 62,
+                "y": 40,
+                "label": {
+                  "zh": "金丝雀码头",
+                  "en": "Canary Wharf"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs2",
+                "x": 52,
+                "y": 40,
+                "label": {
+                  "zh": "基站 BS-2",
+                  "en": "BS-2"
+                },
+                "status": "good"
+              },
+              {
+                "id": "half",
+                "x": 40,
+                "y": 32,
+                "label": {
+                  "zh": "伦敦塔桥",
+                  "en": "Tower Bridge"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs3",
+                "x": 30,
+                "y": 27,
+                "label": {
+                  "zh": "基站 BS-3",
+                  "en": "BS-3"
+                },
+                "status": "good"
+              },
+              {
+                "id": "km30",
+                "x": 25,
+                "y": 22,
+                "label": {
+                  "zh": "圣保罗大教堂",
+                  "en": "St Paul's"
+                },
+                "status": "good"
+              },
+              {
+                "id": "bs4",
+                "x": 18,
+                "y": 24,
+                "label": {
+                  "zh": "基站 BS-4",
+                  "en": "BS-4"
+                },
+                "status": "good"
+              },
+              {
+                "id": "finish",
+                "x": 14,
+                "y": 16,
+                "label": {
+                  "zh": "海德公园·跨年场",
+                  "en": "Hyde Park · NYE"
+                },
+                "status": "good"
+              }
+            ],
+            "route": [
+              {
+                "x": 80,
+                "y": 38
+              },
+              {
+                "x": 72,
+                "y": 34
+              },
+              {
+                "x": 62,
+                "y": 40
+              },
+              {
+                "x": 52,
+                "y": 40
+              },
+              {
+                "x": 40,
+                "y": 32
+              },
+              {
+                "x": 30,
+                "y": 27
+              },
+              {
+                "x": 25,
+                "y": 22
+              },
+              {
+                "x": 18,
+                "y": 24
+              },
+              {
+                "x": 14,
+                "y": 16
+              }
+            ],
+            "geo": {
+              "center": [
+                13.737,
+                100.549
+              ],
+              "zoom": 13,
+              "route": [
+                [
+                  13.738,
+                  100.533
+                ],
+                [
+                  13.744,
+                  100.536
+                ],
+                [
+                  13.744,
+                  100.539
+                ],
+                [
+                  13.736,
+                  100.5405
+                ],
+                [
+                  13.731,
+                  100.541
+                ],
+                [
+                  13.729,
+                  100.547
+                ],
+                [
+                  13.727,
+                  100.554
+                ],
+                [
+                  13.735,
+                  100.559
+                ],
+                [
+                  13.741,
+                  100.565
+                ],
+                [
+                  13.748,
+                  100.558
+                ],
+                [
+                  13.743,
+                  100.549
+                ],
+                [
+                  13.736,
+                  100.547
+                ],
+                [
+                  13.7265,
+                  100.5495
+                ]
+              ],
+              "sites": [
+                {
+                  "id": "start",
+                  "position": [
+                    13.738,
+                    100.533
+                  ],
+                  "label": {
+                    "zh": "起点·朱拉隆功",
+                    "en": "Start · Chulalongkorn"
+                  },
+                  "metrics": {
+                    "up": 46,
+                    "stall": 0.9,
+                    "kqi": 91
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "bs1",
+                  "position": [
+                    13.744,
+                    100.537
+                  ],
+                  "label": {
+                    "zh": "基站 BS-1",
+                    "en": "BS-1"
+                  },
+                  "metrics": {
+                    "up": 52,
+                    "stall": 0.6,
+                    "kqi": 93
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "km10",
+                  "position": [
+                    13.731,
+                    100.541
+                  ],
+                  "label": {
+                    "zh": "10km·仑披尼",
+                    "en": "10km · Lumpini"
+                  },
+                  "metrics": {
+                    "up": 43,
+                    "stall": 1.2,
+                    "kqi": 89
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "bs2",
+                  "position": [
+                    13.729,
+                    100.548
+                  ],
+                  "label": {
+                    "zh": "基站 BS-2",
+                    "en": "BS-2"
+                  },
+                  "metrics": {
+                    "up": 50,
+                    "stall": 0.7,
+                    "kqi": 92
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "half",
+                  "position": [
+                    13.727,
+                    100.554
+                  ],
+                  "label": {
+                    "zh": "21km·诗丽吉会展",
+                    "en": "21km · QSNCC"
+                  },
+                  "metrics": {
+                    "up": 47,
+                    "stall": 0.8,
+                    "kqi": 91
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "bs3",
+                  "position": [
+                    13.735,
+                    100.559
+                  ],
+                  "label": {
+                    "zh": "基站 BS-3",
+                    "en": "BS-3"
+                  },
+                  "metrics": {
+                    "up": 51,
+                    "stall": 0.6,
+                    "kqi": 93
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "km30",
+                  "position": [
+                    13.741,
+                    100.565
+                  ],
+                  "label": {
+                    "zh": "30km·通罗",
+                    "en": "30km · Thonglor"
+                  },
+                  "metrics": {
+                    "up": 44,
+                    "stall": 1.1,
+                    "kqi": 90
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "bs4",
+                  "position": [
+                    13.748,
+                    100.558
+                  ],
+                  "label": {
+                    "zh": "基站 BS-4",
+                    "en": "BS-4"
+                  },
+                  "metrics": {
+                    "up": 49,
+                    "stall": 0.8,
+                    "kqi": 91
+                  },
+                  "status": "good"
+                },
+                {
+                  "id": "finish",
+                  "position": [
+                    13.7265,
+                    100.5495
+                  ],
+                  "label": {
+                    "zh": "终点·本佳奇蒂",
+                    "en": "Finish · Benchakitti"
+                  },
+                  "metrics": {
+                    "up": 45,
+                    "stall": 0.9,
+                    "kqi": 91
+                  },
+                  "status": "good"
+                }
+              ]
+            }
+          }
+        ],
+        "geo": {
+          "center": [
+            31.235,
+            121.487
+          ],
+          "zoom": 13,
+          "route": [
+            [
+              31.2336,
+              121.4903
+            ],
+            [
+              31.238,
+              121.4905
+            ],
+            [
+              31.242,
+              121.4908
+            ],
+            [
+              31.246,
+              121.491
+            ],
+            [
+              31.2495,
+              121.488
+            ],
+            [
+              31.246,
+              121.482
+            ],
+            [
+              31.242,
+              121.477
+            ],
+            [
+              31.236,
+              121.474
+            ],
+            [
+              31.229,
+              121.4745
+            ],
+            [
+              31.223,
+              121.478
+            ],
+            [
+              31.216,
+              121.47
+            ],
+            [
+              31.21,
+              121.466
+            ],
+            [
+              31.203,
+              121.456
+            ],
+            [
+              31.196,
+              121.448
+            ],
+            [
+              31.19,
+              121.442
+            ],
+            [
+              31.1852,
+              121.4396
+            ]
+          ],
+          "sites": [
+            {
+              "id": "start",
+              "position": [
+                31.2336,
+                121.4903
+              ],
+              "label": {
+                "zh": "起点·外滩广场",
+                "en": "Start · Bund Plaza"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 46,
+                "stall": 0.9,
+                "kqi": 91
+              }
+            },
+            {
+              "id": "bs1",
+              "position": [
+                31.239,
+                121.4907
+              ],
+              "label": {
+                "zh": "基站 BS-1",
+                "en": "BS-1"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 52,
+                "stall": 0.6,
+                "kqi": 93
+              }
+            },
+            {
+              "id": "km10",
+              "position": [
+                31.227,
+                121.486
+              ],
+              "label": {
+                "zh": "10km·老城厢",
+                "en": "10km · Old Town"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 43,
+                "stall": 1.2,
+                "kqi": 89
+              }
+            },
+            {
+              "id": "bs2",
+              "position": [
+                31.245,
+                121.491
+              ],
+              "label": {
+                "zh": "基站 BS-2",
+                "en": "BS-2"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 50,
+                "stall": 0.7,
+                "kqi": 92
+              }
+            },
+            {
+              "id": "half",
+              "position": [
+                31.2495,
+                121.488
+              ],
+              "label": {
+                "zh": "21km·半程",
+                "en": "21km · Half"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 47,
+                "stall": 0.8,
+                "kqi": 91
+              }
+            },
+            {
+              "id": "bs3",
+              "position": [
+                31.236,
+                121.478
+              ],
+              "label": {
+                "zh": "基站 BS-3",
+                "en": "BS-3"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 51,
+                "stall": 0.6,
+                "kqi": 93
+              }
+            },
+            {
+              "id": "km30",
+              "position": [
+                31.196,
+                121.449
+              ],
+              "label": {
+                "zh": "30km·徐汇西岸",
+                "en": "30km · West Bund"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 44,
+                "stall": 1.1,
+                "kqi": 90
+              }
+            },
+            {
+              "id": "bs4",
+              "position": [
+                31.217,
+                121.473
+              ],
+              "label": {
+                "zh": "基站 BS-4",
+                "en": "BS-4"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 49,
+                "stall": 0.8,
+                "kqi": 91
+              }
+            },
+            {
+              "id": "finish",
+              "position": [
+                31.1852,
+                121.4396
+              ],
+              "label": {
+                "zh": "终点·体育场",
+                "en": "Finish · Stadium"
+              },
+              "status": "good",
+              "metrics": {
+                "up": 45,
+                "stall": 0.9,
+                "kqi": 91
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "kqi",
+      "type": "chart",
+      "title": {
+        "zh": "KQI 实时趋势",
+        "en": "KQI Trend"
+      },
+      "initial": {
+        "points": {
+          "kqi": [
+            95
+          ],
+          "stall": [
+            0.5
+          ],
+          "bitrate": [
+            90
+          ]
+        }
+      },
+      "config": {
+        "yMin": 0,
+        "yMax": 100,
+        "series": [
+          {
+            "id": "kqi",
+            "name": {
+              "zh": "KQI",
+              "en": "KQI"
+            },
+            "color": "#3b82f6",
+            "fill": true
+          },
+          {
+            "id": "stall",
+            "name": {
+              "zh": "卡顿率%",
+              "en": "Stall %"
+            },
+            "color": "#f43f5e"
+          },
+          {
+            "id": "bitrate",
+            "name": {
+              "zh": "比特率",
+              "en": "Bitrate"
+            },
+            "color": "#f59e0b"
+          }
+        ]
+      }
+    }
+  ],
+  "script": [
+    {
+      "type": "step",
+      "id": "crm-intent",
+      "status": "active",
+      "at": 0.2
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "step": "crm-intent",
+      "text": {
+        "zh": "收到客户需求 REQ-2026-1102，正在解析客户意图并匹配保障方案。",
+        "en": "Customer request REQ-2026-1102 received; parsing intent and matching an assurance plan."
+      },
+      "intent": {
+        "reqId": "REQ-2026-1102",
+        "text": {
+          "zh": "客户要求对马拉松赛事进行体验保障，保证需求 REQ-2026-1102：赛事期间直播连续流畅、公专网协同联动。",
+          "en": "Customer requests experience assurance for the marathon event (REQ-2026-1102): continuous smooth live streaming and coordinated public-private network operation."
+        }
+      },
+      "at": 0.4
+    },
+    {
+      "type": "step",
+      "id": "crm-intent",
+      "status": "done",
+      "at": 2.0
+    },
+    {
+      "type": "step",
+      "id": "crm-assembly",
+      "status": "active",
+      "at": 2.4
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "意图解析完成：匹配「大型活动体验保障」方案，需要组建跨域保障团队协同执行。",
+        "en": "Intent parsed: matched the Large-Event Experience Assurance plan; assembling a cross-domain agent team."
+      },
+      "at": 2.6
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "live-streaming",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "团队组建 1/3：接入 直播域智能体，负责赛事直播质量监控与体验保障。",
+        "en": "Team assembly 1/3: Live Streaming Agent joined for live QoE monitoring."
+      },
+      "assembles": [
+        "live-streaming"
+      ],
+      "at": 5.2
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "assurance",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "团队组建 2/3：接入 业务保障智能体，负责保障策略生成与跨域协同裁定。",
+        "en": "Team assembly 2/3: Assurance Agent joined for strategy generation and cross-domain arbitration."
+      },
+      "assembles": [
+        "assurance"
+      ],
+      "at": 6.7
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "ran",
+      "kind": "info",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "团队组建 3/3：接入 无线域智能体，负责无线资源配置与节能协同。",
+        "en": "Team assembly 3/3: RAN Agent joined for radio resource configuration and energy coordination."
+      },
+      "assembles": [
+        "ran"
+      ],
+      "at": 8.2
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "live-streaming",
+      "kind": "request",
+      "step": "crm-assembly",
+      "text": {
+        "zh": "保障团队组建完成（3/3）。任务移交：按 REQ-2026-1102 执行马拉松赛事全程体验保障，直播域牵头。",
+        "en": "Team ready (3/3). Handing over: run full-event experience assurance per REQ-2026-1102, led by the Live Streaming Agent."
+      },
+      "at": 9.7
+    },
+    {
+      "type": "step",
+      "id": "crm-assembly",
+      "status": "done",
+      "at": 12.1
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "text": {
+        "zh": "工作流编排完成：9 个执行步骤、3 个智能体协同。请确认编排，确认后启动执行。",
+        "en": "Workflow orchestration ready: 9 execution steps across 3 agents. Please confirm to start execution."
+      },
+      "orchestration": {
+        "title": {
+          "zh": "工作流编排确认",
+          "en": "Workflow orchestration"
+        },
+        "agents": {
+          "zh": "3 个智能体协同：直播域 / 业务保障 / 无线域",
+          "en": "3 agents in coordination: Live-streaming / Assurance / RAN"
+        },
+        "steps": [
+          {
+            "name": {
+              "zh": "赛事信息解析与保障订阅",
+              "en": "Event parsing and assurance subscription"
+            },
+            "agent": {
+              "zh": "直播域智能体",
+              "en": "Live-streaming Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "保障策略生成",
+              "en": "Assurance strategy generation"
+            },
+            "agent": {
+              "zh": "业务保障智能体",
+              "en": "Assurance Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "功率提升与节能 SLA 冲突协商",
+              "en": "Power boost vs energy-SLA negotiation"
+            },
+            "agent": {
+              "zh": "无线域智能体",
+              "en": "RAN Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "KQI 监控与劣化上报",
+              "en": "KQI monitoring and degradation reporting"
+            },
+            "agent": {
+              "zh": "直播域智能体",
+              "en": "Live-streaming Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "劣化分析与保障决策",
+              "en": "Degradation analysis and assurance decision"
+            },
+            "agent": {
+              "zh": "业务保障智能体",
+              "en": "Assurance Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "关闭全部节能并跨站协同优化",
+              "en": "Deactivate all energy-saving and cross-site optimization"
+            },
+            "agent": {
+              "zh": "无线域智能体",
+              "en": "RAN Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "KQI 复核确认",
+              "en": "KQI recheck and confirmation"
+            },
+            "agent": {
+              "zh": "直播域智能体",
+              "en": "Live-streaming Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "保障结果汇总与恢复策略下发",
+              "en": "Result summary and restore strategy"
+            },
+            "agent": {
+              "zh": "业务保障智能体",
+              "en": "Assurance Agent"
+            }
+          },
+          {
+            "name": {
+              "zh": "初始配置恢复",
+              "en": "Baseline configuration restore"
+            },
+            "agent": {
+              "zh": "无线域智能体",
+              "en": "RAN Agent"
+            }
+          }
+        ]
+      },
+      "at": 13.6
+    },
+    {
+      "at": 12.5,
+      "type": "step",
+      "id": "step1",
+      "status": "active"
+    },
+    {
+      "at": 13.0,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "request",
+      "step": "step1",
+      "text": {
+        "zh": "收到大型马拉松赛事直播保障订阅：主会场 + 赛道沿线 4 个小区，直播时长约 3 小时，要求卡顿率 < 1%。",
+        "en": "Received the marathon live broadcast assurance subscription: venue + 4 cells along the course, ~3 hours on air, stall rate must stay below 1%."
+      },
+      "attachments": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "icon": "users",
+              "label": {
+                "zh": "现场观众",
+                "en": "Audience"
+              },
+              "value": {
+                "zh": "5.2万",
+                "en": "52K"
+              }
+            },
+            {
+              "icon": "clock",
+              "label": {
+                "zh": "直播时长",
+                "en": "Duration"
+              },
+              "value": "3h"
+            },
+            {
+              "icon": "tower",
+              "label": {
+                "zh": "赛道小区",
+                "en": "Course cells"
+              },
+              "value": "4"
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 15.5,
+      "type": "step",
+      "id": "step1",
+      "status": "done"
+    },
+    {
+      "at": 16.0,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "response",
+      "step": "step1",
+      "text": {
+        "zh": "本地解析完成：产出保障任务清单，并注册赛道小区 KQI 监控订阅。",
+        "en": "Local parsing done: assurance task list produced, KQI monitoring subscriptions registered for the course cells."
+      },
+      "attachments": [
+        {
+          "type": "list",
+          "items": [
+            {
+              "icon": "tower",
+              "text": {
+                "zh": "主会场 — 上行保障订阅",
+                "en": "Venue — uplink assurance subscription"
+              }
+            },
+            {
+              "icon": "wifi",
+              "text": {
+                "zh": "Cell-1 ~ Cell-4 — KQI 巡检订阅",
+                "en": "Cell-1 ~ Cell-4 — KQI patrol subscription"
+              }
+            },
+            {
+              "icon": "video",
+              "text": {
+                "zh": "直播流 SLA: 卡顿率 < 1%",
+                "en": "Stream SLA: stall rate < 1%"
+              }
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 18.5,
+      "type": "step",
+      "id": "step2",
+      "status": "active"
+    },
+    {
+      "at": 19.0,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "step": "step2",
+      "text": {
+        "zh": "接收保障任务，开始生成保障策略：资源核查、带宽保障与功率提升预案。",
+        "en": "Assurance task accepted, generating the policy: resource inventory, bandwidth assurance and a power boost plan."
+      },
+      "attachments": [
+        {
+          "type": "table",
+          "title": {
+            "zh": "保障预案（节选）",
+            "en": "Assurance plan (excerpt)"
+          },
+          "headers": [
+            {
+              "zh": "小区",
+              "en": "Cell"
+            },
+            {
+              "zh": "保障动作",
+              "en": "Action"
+            },
+            {
+              "zh": "上行保障",
+              "en": "Uplink"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "zh": "主会场",
+                "en": "Venue"
+              },
+              {
+                "zh": "功率提升 +3dB",
+                "en": "Power boost +3dB"
+              },
+              "380Mbps"
+            ],
+            [
+              {
+                "zh": "Cell-1/2",
+                "en": "Cell-1/2"
+              },
+              {
+                "zh": "载波扩容",
+                "en": "Carrier expansion"
+              },
+              "220Mbps"
+            ],
+            [
+              {
+                "zh": "Cell-3/4",
+                "en": "Cell-3/4"
+              },
+              {
+                "zh": "覆盖增强",
+                "en": "Coverage boost"
+              },
+              "180Mbps"
+            ]
+          ]
+        }
+      ],
+      "to": "ran"
+    },
+    {
+      "at": 25.5,
+      "type": "step",
+      "id": "step2",
+      "status": "done"
+    },
+    {
+      "at": 26.5,
+      "type": "step",
+      "id": "step3",
+      "status": "active"
+    },
+    {
+      "at": 27.0,
+      "type": "message",
+      "from": "assurance",
+      "kind": "request",
+      "step": "step3",
+      "text": {
+        "zh": "下发功率提升任务：主会场及沿线小区射频功率提升 +3dB，保障上行直播带宽。",
+        "en": "Dispatching the power boost task: +3dB radio power on the venue and course cells to secure uplink bandwidth."
+      },
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "title": {
+          "zh": "射频功率提升配置下发",
+          "en": "RF power boost configuration push"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "主会场及沿线小区射频功率",
+              "en": "Cell RF power (main venue + track cells)"
+            },
+            "from": {
+              "zh": "保障前基线",
+              "en": "pre-assurance baseline"
+            },
+            "to": {
+              "zh": "提升 +3dB",
+              "en": "+3 dB boost"
+            }
+          }
+        ],
+        "why": {
+          "zh": "直播上行卡顿率升至 2.1%，超过保障目标 1%；根因是主会场上行带宽不足。",
+          "en": "Uplink live-stream stall rate rose to 2.1%, above the 1% target; the root cause is insufficient uplink bandwidth at the main venue."
+        },
+        "action": {
+          "zh": "向无线域下发任务：将主会场及沿线小区射频功率提升 +3dB。",
+          "en": "Dispatch a task to the RAN domain: boost cell RF power (main venue + track cells) by +3 dB."
+        },
+        "impact": {
+          "zh": "覆盖电平与上行速率改善；相邻小区干扰略增，需观察周边小区 KPI，必要时联动回退。",
+          "en": "Better coverage and uplink throughput; slightly higher adjacent-cell interference — monitor neighbor KPIs and roll back if needed."
+        }
+      }
+    },
+    {
+      "at": 32.5,
+      "type": "message",
+      "from": "ran",
+      "kind": "alert",
+      "step": "step3",
+      "text": {
+        "zh": "发现冲突：功率提升与在网节能 SLA 冲突（Cell-3 处于深度节能）。发起 A2A-T 协商请求。",
+        "en": "Conflict discovered: the power boost clashes with the in-service energy-saving SLA (Cell-3 is in deep sleep). Raising an A2A-T negotiation request."
+      },
+      "attachments": [
+        {
+          "type": "spark",
+          "series": [
+            {
+              "name": {
+                "zh": "功率需求",
+                "en": "Power demand"
+              },
+              "color": "#3b82f6",
+              "points": [
+                58,
+                62,
+                71,
+                86
+              ]
+            },
+            {
+              "name": {
+                "zh": "节能余量",
+                "en": "ES headroom"
+              },
+              "color": "#10b981",
+              "points": [
+                42,
+                38,
+                26,
+                15
+              ]
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 32.9,
+      "type": "message",
+      "from": "ran",
+      "kind": "a2at",
+      "step": "step3",
+      "text": {
+        "zh": "A2A-T 协商请求：申请裁定节能任务让功率部分，以完成赛事保障。",
+        "en": "A2A-T negotiation request: asking the Assurance Agent to arbitrate energy-saving vs power headroom."
+      },
+      "a2at": {
+        "verb": "NEGOTIATE_REQUEST",
+        "session": "a2at-sess-20261020-003",
+        "clauses": [
+          {
+            "k": {
+              "zh": "协商标的",
+              "en": "Subject"
+            },
+            "v": {
+              "zh": "Cell-3 深度节能任务 (SLA-ES-019)",
+              "en": "Cell-3 deep energy-saving task (SLA-ES-019)"
+            }
+          },
+          {
+            "k": {
+              "zh": "发起方",
+              "en": "Initiator"
+            },
+            "v": {
+              "zh": "RAN Agent → Assurance Agent",
+              "en": "RAN Agent → Assurance Agent"
+            }
+          },
+          {
+            "k": {
+              "zh": "提案",
+              "en": "Proposal"
+            },
+            "v": {
+              "zh": "关闭 50% 节能任务，释放功率余量",
+              "en": "Close 50% of energy-saving tasks to release power headroom"
+            }
+          },
+          {
+            "k": {
+              "zh": "SLA 影响",
+              "en": "SLA impact"
+            },
+            "v": {
+              "zh": "节能率 31% → 18%（高于承诺下限 15%）",
+              "en": "Energy saving 31% → 18% (floor is 15%)"
+            }
+          }
+        ]
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 36.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "response",
+      "step": "step3",
+      "text": {
+        "zh": "协商裁定：本次赛事保障优先 —— 关闭 Cell-3 节能任务（约 50% 节能站点），其余站点节能保留。",
+        "en": "Negotiation resolved: the event takes priority — Cell-3 exits energy saving (~50% of sleeping sites); the rest keep sleeping."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 36.9,
+      "type": "message",
+      "from": "assurance",
+      "kind": "a2at",
+      "step": "step3",
+      "text": {
+        "zh": "A2A-T 协商裁定：接受提案，授权关闭 50% 节能任务。",
+        "en": "A2A-T negotiation result: proposal accepted, closing 50% of the energy-saving tasks is authorized."
+      },
+      "a2at": {
+        "verb": "NEGOTIATE_RESULT",
+        "session": "a2at-sess-20261020-003",
+        "decision": "ACCEPTED",
+        "clauses": [
+          {
+            "k": {
+              "zh": "裁定",
+              "en": "Decision"
+            },
+            "v": {
+              "zh": "赛事保障优先，接受让功率提案",
+              "en": "Event assurance first — power-headroom proposal accepted"
+            }
+          },
+          {
+            "k": {
+              "zh": "授权范围",
+              "en": "Scope"
+            },
+            "v": {
+              "zh": "关闭约 50% 节能站点（含 Cell-3）",
+              "en": "Close ~50% of sleeping sites (incl. Cell-3)"
+            }
+          },
+          {
+            "k": {
+              "zh": "约束",
+              "en": "Constraint"
+            },
+            "v": {
+              "zh": "节能率不得低于 15%，赛事结束后复核",
+              "en": "Energy saving must stay above 15%; re-audit after the event"
+            }
+          }
+        ]
+      },
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "via": {
+          "zh": "经 A2A-T 协商裁定",
+          "en": "via A2A-T negotiation decision"
+        },
+        "title": {
+          "zh": "关闭 Cell-3 节能任务（50% 站点）",
+          "en": "Deactivate Cell-3 energy-saving task (50% of sites)"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "Cell-3 节能任务",
+              "en": "Cell-3 energy-saving task"
+            },
+            "from": {
+              "zh": "运行中（深度节能）",
+              "en": "running (deep energy-saving)"
+            },
+            "to": {
+              "zh": "关闭",
+              "en": "deactivated"
+            }
+          }
+        ],
+        "why": {
+          "zh": "功率提升后仍有个别卡顿，容量不足；A2A-T 协商裁定采用节能任务关闭提案补充容量。",
+          "en": "Stalls persist after the power boost due to limited capacity; the A2A-T negotiation adopted the energy-task-off proposal to add capacity."
+        },
+        "action": {
+          "zh": "关闭 Cell-3 区域 50% 站点的节能任务（深度节能 → 运行态）。",
+          "en": "Deactivate energy-saving tasks on 50% of Cell-3 sites (deep energy-saving → running)."
+        },
+        "impact": {
+          "zh": "小区容量与用户体验提升；站点能耗上升（预估 +5%），保障结束后需恢复。",
+          "en": "Higher cell capacity and user experience; site energy consumption rises (est. +5%) and must be restored after the event."
+        }
+      }
+    },
+    {
+      "at": 40.5,
+      "type": "message",
+      "from": "ran",
+      "kind": "response",
+      "step": "step3",
+      "text": {
+        "zh": "协商结果已执行：Cell-3 退出节能，功率提升生效，赛道覆盖电平提升。",
+        "en": "Negotiation executed: Cell-3 woke up, power boost is live, course coverage level improved."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 42.5,
+      "type": "step",
+      "id": "step3",
+      "status": "done"
+    },
+    {
+      "at": 43.5,
+      "type": "step",
+      "id": "step4",
+      "status": "active"
+    },
+    {
+      "at": 43.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 92
+      }
+    },
+    {
+      "at": 43.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 0.6
+      }
+    },
+    {
+      "at": 43.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 88
+      }
+    },
+    {
+      "at": 46.5,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "info",
+      "step": "step4",
+      "text": {
+        "zh": "KQI 监控中：卡顿率 0.6%，满足 SLA 要求，持续巡检赛道小区。",
+        "en": "KQI nominal: stall rate 0.6%, within SLA. Continuing patrols over the course cells."
+      },
+      "to": "live-streaming"
+    },
+    {
+      "at": 52.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 90
+      }
+    },
+    {
+      "at": 52.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 1.0
+      }
+    },
+    {
+      "at": 52.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 86
+      }
+    },
+    {
+      "at": 58.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 87
+      }
+    },
+    {
+      "at": 58.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 1.8
+      }
+    },
+    {
+      "at": 58.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 78
+      }
+    },
+    {
+      "at": 62.5,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "alert",
+      "step": "step4",
+      "text": {
+        "zh": "KQI 告警：Cell-3 覆盖段卡顿率升至 4.2%，观众反馈直播卡顿，立即上报。",
+        "en": "KQI alert: stall rate on the Cell-3 segment spiked to 4.2%, viewers report buffering. Reporting upstream."
+      },
+      "attachments": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "icon": "gauge",
+              "label": {
+                "zh": "卡顿率",
+                "en": "Stall rate"
+              },
+              "value": "4.2%",
+              "trend": "up"
+            },
+            {
+              "icon": "trend",
+              "label": {
+                "zh": "KQI",
+                "en": "KQI"
+              },
+              "value": "58",
+              "trend": "down"
+            }
+          ]
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 62.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 58
+      }
+    },
+    {
+      "at": 62.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 4.2
+      }
+    },
+    {
+      "at": 62.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 54
+      }
+    },
+    {
+      "at": 64.5,
+      "type": "step",
+      "id": "step4",
+      "status": "done"
+    },
+    {
+      "at": 65.5,
+      "type": "step",
+      "id": "step5",
+      "status": "active"
+    },
+    {
+      "at": 66.0,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "step": "step5",
+      "text": {
+        "zh": "收到劣化上报，启动劣化分析：初判为 Cell-3 负载激增与节能策略残留冲突叠加。",
+        "en": "Degradation report received, analysis started: preliminary — a Cell-3 load surge amplified by residual energy-saving conflicts."
+      },
+      "to": "ran"
+    },
+    {
+      "at": 74.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "request",
+      "step": "step5",
+      "text": {
+        "zh": "保障决策：关闭全部节能站点，启动跨站协同优化，优先恢复直播体验。",
+        "en": "Decision: shut down ALL energy-saving sites and start inter-site coordinated optimization — viewer experience first."
+      },
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "title": {
+          "zh": "关闭全部节能站点并启动跨站协同优化",
+          "en": "Deactivate ALL energy-saving sites and start cross-site coordination"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "节能站点",
+              "en": "Energy-saving sites"
+            },
+            "from": {
+              "zh": "50% 关闭",
+              "en": "50% off"
+            },
+            "to": {
+              "zh": "全部关闭",
+              "en": "all off"
+            }
+          },
+          {
+            "label": {
+              "zh": "邻区载波均衡",
+              "en": "Neighbor-carrier load balancing"
+            },
+            "from": {
+              "zh": "未启用",
+              "en": "off"
+            },
+            "to": {
+              "zh": "启动",
+              "en": "on"
+            }
+          },
+          {
+            "label": {
+              "zh": "迁移参数",
+              "en": "Mobility parameters"
+            },
+            "from": {
+              "zh": "基线",
+              "en": "baseline"
+            },
+            "to": {
+              "zh": "协同调整",
+              "en": "coordinated"
+            }
+          }
+        ],
+        "why": {
+          "zh": "赛事人流峰值到来，直播体验再次劣化（卡顿率 1.8%），50% 关闭仍不足。",
+          "en": "Crowd peak degrades the live experience again (stall rate 1.8%); deactivating 50% is no longer enough."
+        },
+        "action": {
+          "zh": "关闭全部节能站点，并启动邻区载波均衡与迁移参数协同调整。",
+          "en": "Deactivate ALL energy-saving sites and start neighbor-carrier balancing with coordinated mobility parameters."
+        },
+        "impact": {
+          "zh": "全网容量最大化、直播体验恢复；能耗进一步上升，参数调整范围扩大至全区域，恢复需分批执行避免网络冲击。",
+          "en": "Maximizes network capacity and restores the live experience; energy use rises further and the parameter scope spans the whole area — restore in batches to avoid network shocks."
+        }
+      }
+    },
+    {
+      "at": 78.5,
+      "type": "step",
+      "id": "step5",
+      "status": "done"
+    },
+    {
+      "at": 79.5,
+      "type": "step",
+      "id": "step6",
+      "status": "active"
+    },
+    {
+      "at": 80.0,
+      "type": "message",
+      "from": "ran",
+      "kind": "request",
+      "step": "step6",
+      "text": {
+        "zh": "执行中：关闭全部节能任务，邻区载波均衡与迁移参数协同调整。",
+        "en": "Executing: all energy-saving tasks shutting down; neighbor carrier balancing and mobility parameters being tuned together."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 88.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 78
+      }
+    },
+    {
+      "at": 88.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 2.1
+      }
+    },
+    {
+      "at": 88.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 72
+      }
+    },
+    {
+      "at": 92.5,
+      "type": "message",
+      "from": "ran",
+      "kind": "response",
+      "step": "step6",
+      "text": {
+        "zh": "全部节能任务已关闭，跨站协同优化完成，Cell-3 负载已回落至安全水位。",
+        "en": "All energy-saving tasks are off, inter-site coordination finished, Cell-3 load is back to a safe level."
+      },
+      "attachments": [
+        {
+          "type": "image",
+          "src": "data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27260%27 height=%27110%27><rect width=%27260%27 height=%27110%27 rx=%278%27 fill=%27%2309090b%27/><text x=%2710%27 y=%2716%27 fill=%27%2394a3b8%27 font-size=%279%27 font-family=%27monospace%27>Coverage restored - inter-site coordination</text><g stroke=%27%2310b981%27 stroke-width=%271.5%27 fill=%27none%27><path d=%27M50 78 L62 42 L74 78%27/><path d=%27M118 78 L130 38 L142 78%27/><path d=%27M186 78 L198 42 L210 78%27/></g><g stroke=%27%2334d399%27 fill=%27none%27 opacity=%270.85%27><path d=%27M46 66 Q62 52 78 66%27/><path d=%27M114 60 Q130 44 146 60%27/><path d=%27M182 66 Q198 52 214 66%27/></g><text x=%2746%27 y=%2792%27 fill=%27%2371717a%27 font-size=%278%27 font-family=%27monospace%27>Cell-1</text><text x=%27114%27 y=%2792%27 fill=%27%2371717a%27 font-size=%278%27 font-family=%27monospace%27>Cell-3</text><text x=%27182%27 y=%2792%27 fill=%27%2371717a%27 font-size=%278%27 font-family=%27monospace%27>Cell-4</text></svg>",
+          "caption": {
+            "zh": "跨站协同覆盖恢复示意（Cell-1/3/4）",
+            "en": "Coverage recovery via inter-site coordination (Cell-1/3/4)"
+          }
+        }
+      ],
+      "to": "assurance"
+    },
+    {
+      "at": 94.5,
+      "type": "step",
+      "id": "step6",
+      "status": "done"
+    },
+    {
+      "at": 95.5,
+      "type": "step",
+      "id": "step7",
+      "status": "active"
+    },
+    {
+      "at": 96.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 93
+      }
+    },
+    {
+      "at": 96.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "stall",
+        "value": 0.7
+      }
+    },
+    {
+      "at": 96.5,
+      "type": "panel",
+      "panel": "kqi",
+      "action": "push",
+      "data": {
+        "series": "bitrate",
+        "value": 90
+      }
+    },
+    {
+      "at": 98.5,
+      "type": "message",
+      "from": "live-streaming",
+      "kind": "info",
+      "step": "step7",
+      "text": {
+        "zh": "KQI 复核通过：卡顿率回落至 0.7%，KQI 恢复达标，直播恢复流畅。",
+        "en": "Re-check passed: stall rate back to 0.7%, KQI within SLA, the stream is smooth again."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 100.5,
+      "type": "step",
+      "id": "step7",
+      "status": "done"
+    },
+    {
+      "at": 101.5,
+      "type": "step",
+      "id": "step8",
+      "status": "active"
+    },
+    {
+      "at": 102.0,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "step": "step8",
+      "text": {
+        "zh": "汇总保障结果：故障历时 38 秒，全程 SLA 最终达成，输出保障报告并下发恢复策略。",
+        "en": "Summary: the incident lasted 38s, SLA ultimately met. Assurance report produced and the recovery policy dispatched."
+      },
+      "attachments": [
+        {
+          "type": "table",
+          "title": {
+            "zh": "保障报告摘要",
+            "en": "Assurance report summary"
+          },
+          "headers": [
+            {
+              "zh": "指标",
+              "en": "Metric"
+            },
+            {
+              "zh": "结果",
+              "en": "Result"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "zh": "故障历时",
+                "en": "Incident duration"
+              },
+              "38s"
+            ],
+            [
+              {
+                "zh": "SLA 达成",
+                "en": "SLA met"
+              },
+              {
+                "zh": "是（全程）",
+                "en": "Yes (end-to-end)"
+              }
+            ],
+            [
+              {
+                "zh": "恢复策略",
+                "en": "Recovery"
+              },
+              {
+                "zh": "分批恢复节能",
+                "en": "Staged ES restoration"
+              }
+            ]
+          ]
+        }
+      ],
+      "to": "ran"
+    },
+    {
+      "at": 108.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "response",
+      "step": "step8",
+      "text": {
+        "zh": "恢复策略已下发至无线域：按预案分批恢复节能配置，避免二次冲击。",
+        "en": "Recovery policy dispatched to the RAN domain: staged energy-saving restoration to avoid a second disturbance."
+      },
+      "to": "ran",
+      "auth": {
+        "required": true,
+        "source": "业务保障智能体",
+        "title": {
+          "zh": "节能配置分批恢复下发",
+          "en": "Batched restore of energy-saving configuration"
+        },
+        "changes": [
+          {
+            "label": {
+              "zh": "节能策略",
+              "en": "Energy-saving policy"
+            },
+            "from": {
+              "zh": "全部关闭",
+              "en": "all off"
+            },
+            "to": {
+              "zh": "分批恢复至基线",
+              "en": "batched restore to baseline"
+            }
+          }
+        ],
+        "why": {
+          "zh": "保障目标已达成（KQI 达标、卡顿率 < 1%），保障结束，需将网络恢复至保障前基线。",
+          "en": "The assurance target is met (KQI on target, stall rate < 1%) and the event has ended — restore the network to its pre-assurance baseline."
+        },
+        "action": {
+          "zh": "按预案分批恢复节能策略与功率配置至保障前基线。",
+          "en": "Batch-restore the energy-saving policy and power configuration to the pre-assurance baseline."
+        },
+        "impact": {
+          "zh": "恢复节能、降低能耗；分批执行避免二次网络冲击，期间用户体验波动可控。",
+          "en": "Energy-saving resumes and consumption drops; batched execution avoids a second network shock with controlled user-experience fluctuation."
+        }
+      }
+    },
+    {
+      "at": 110.5,
+      "type": "step",
+      "id": "step8",
+      "status": "done"
+    },
+    {
+      "at": 111.5,
+      "type": "step",
+      "id": "step9",
+      "status": "active"
+    },
+    {
+      "at": 112.0,
+      "type": "message",
+      "from": "ran",
+      "kind": "response",
+      "step": "step9",
+      "text": {
+        "zh": "初始配置恢复完成：节能策略、功率参数均已回归保障前基线。",
+        "en": "Initial configuration restored: energy-saving policies and power parameters are back to the pre-event baseline."
+      },
+      "to": "assurance"
+    },
+    {
+      "at": 118.5,
+      "type": "step",
+      "id": "step9",
+      "status": "done"
+    },
+    {
+      "at": 119.5,
+      "type": "message",
+      "from": "assurance",
+      "kind": "info",
+      "text": {
+        "zh": "保障闭环完成：直播全程 SLA 达成，保障工单归档。",
+        "en": "Closed loop complete: SLA met for the whole broadcast, the assurance ticket is archived."
+      },
+      "to": "live-streaming"
+    },
+    {
+      "type": "message",
+      "from": "crm",
+      "to": "crm",
+      "kind": "info",
+      "text": {
+        "zh": "本次保障服务已全流程闭环，服务总结如下。",
+        "en": "The assurance service is fully closed-loop. Summary below."
+      },
+      "summary": {
+        "title": {
+          "zh": "服务总结",
+          "en": "Service Summary"
+        },
+        "rows": [
+          {
+            "label": {
+              "zh": "需求受理",
+              "en": "Request"
+            },
+            "value": {
+              "zh": "REQ-2026-1102 大型活动体验保障需求已全流程闭环",
+              "en": "The large-event assurance request is fully closed-loop"
+            }
+          },
+          {
+            "label": {
+              "zh": "保障团队",
+              "en": "Team"
+            },
+            "value": {
+              "zh": "CRM组建 直播域/业务保障/无线域 3 智能体协同保障",
+              "en": "CRM assembled a 3-agent team (live-streaming / assurance / RAN)"
+            }
+          },
+          {
+            "label": {
+              "zh": "配置变更",
+              "en": "Config changes"
+            },
+            "value": {
+              "zh": "4 项配置变更全部经您授权后执行：功率提升、A2A-T 裁定关节能、关闭全部节能站点、分批恢复",
+              "en": "All 4 config changes executed under your authorization (power boost, A2A-T decision, energy sites off, batched restore)"
+            }
+          },
+          {
+            "label": {
+              "zh": "保障结果",
+              "en": "Result"
+            },
+            "value": {
+              "zh": "KQI 全程达标，直播卡顿率 < 1%，业务零中断，节能策略已恢复基线",
+              "en": "KQI on target throughout, stall rate < 1%, zero service interruption, energy policy restored"
+            }
+          }
+        ]
+      },
+      "at": 122.0
+    }
+  ],
+  "history": [],
+  "driver": "mockAgent",
+  "mockAgent": {
+    "endpoint": "/mockagent",
+    "caseKey": "live-assurance",
+    "turnDelayMs": 1500,
+    "agentCalls": {
+      "endpoint": "/openan-playground/api/v1/mock-instances",
+      "roles": {
+        "live-streaming": {
+          "instance": "an-l4-live-streaming-agent",
+          "template": "Task-T/network-layer/live-stream-quality/v1"
+        },
+        "assurance": {
+          "instance": "an-l4-assurance-agent",
+          "template": "Task-T/network-layer/private-line-complaint/v1"
+        },
+        "ran": {
+          "instance": "an-l4-ran-agent",
+          "template": "Task-T/network-layer/ran-energy-saving/v1"
+        }
+      }
+    }
+  },
+  "layout": {
+    "teamBar": false,
+    "conversation": "byAgent"
+  }
+}
