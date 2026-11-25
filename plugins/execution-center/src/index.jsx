@@ -38,7 +38,6 @@ import {
     MessageSquare,
     BarChart3,
     SlidersHorizontal,
-    LayoutList,
     X,
     FileText,
     ChevronUp,
@@ -532,13 +531,10 @@ const ExecutionCenter = () => {
     const [selectedAgent, setSelectedAgent] = useState('');
     const [isDispatching, setIsDispatching] = useState(false);
 
-    // Search mode: 'all' | 'fuzzy' | 'exact'
+    // Search mode: 'fuzzy' | 'exact'
     const [searchMode, setSearchMode] = useState(() => {
         return localStorage.getItem('execution_search_mode') || 'fuzzy';
     });
-
-    // 'all' mode manual reload trigger
-    const [allReloadKey, setAllReloadKey] = useState(0);
 
     // Exact search filters
     const [exactFilters, setExactFilters] = useState({
@@ -774,42 +770,6 @@ const ExecutionCenter = () => {
             setIsMatching(false);
         }
     }, [exactFilters, searchMode, handleExactSearch]);
-
-    // Load all workflows (browse-all mode)
-    const handleLoadAllWorkflows = useCallback(async (signal) => {
-        try {
-            setIsMatching(true);
-            setNodes([]);
-            setEdges([]);
-            setSelectedId(null);
-            setPsopStatus(null);
-            setError(null);
-            setMatchedWorkflows([]);
-            const workflows = await listWorkflows(api, signal);
-            setMatchedWorkflows(workflows.map(item => ({
-                workflow_id: item.workflow_id,
-                name: item.name || 'Untitled',
-                tags: item.tags || [],
-                description: item.description,
-                created_at: item.created_at,
-                status: item.status || 'unknown'
-            })));
-        } catch (err) {
-            if (signal?.aborted) return;
-            console.error("Failed to load all workflows:", err);
-            setError(t('execution.match_failed'));
-        } finally {
-            if (!signal?.aborted) setIsMatching(false);
-        }
-    }, [api, t]);
-
-    // Auto-load all workflows when entering 'all' mode or on manual refresh
-    useEffect(() => {
-        if (searchMode !== 'all') return;
-        const controller = new AbortController();
-        handleLoadAllWorkflows(controller.signal);
-        return () => controller.abort();
-    }, [searchMode, allReloadKey, handleLoadAllWorkflows]);
 
     // Load available tags on mount
     useEffect(() => {
@@ -1127,16 +1087,6 @@ const ExecutionCenter = () => {
                 <div className="flex items-center gap-3 mb-4">
                     <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg">
                         <button
-                            onClick={() => handleSearchModeChange('all')}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all
-                                ${searchMode === 'all'
-                                    ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
-                                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}
-                        >
-                            <LayoutList size={13} />
-                            {t('execution.search_all')}
-                        </button>
-                        <button
                             onClick={() => handleSearchModeChange('fuzzy')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all
                                 ${searchMode === 'fuzzy'
@@ -1173,52 +1123,30 @@ const ExecutionCenter = () => {
 
                 {/* Search Input Row */}
                 <div className="flex items-center gap-3">
-                    {searchMode === 'all' ? (
-                        <div className={`flex-1 h-11 px-4 rounded-xl border text-sm font-medium flex items-center gap-2 ${theme.input}`}>
-                            <LayoutList size={16} className="text-zinc-400 shrink-0" />
-                            <span className="truncate">{t('execution.all_hint')}</span>
-                            {matchedWorkflows.length > 0 && (
-                                <span className="ml-auto shrink-0 text-xs text-zinc-400 dark:text-zinc-500">
-                                    {t('execution.all_count', { count: matchedWorkflows.length })}
-                                </span>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="flex-1 relative group">
-                            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-blue-500 transition-colors" />
-                            <input
-                                type="text"
-                                value={searchMode === 'fuzzy' ? userIntent : exactFilters.name}
-                                onChange={(e) => {
-                                    if (searchMode === 'fuzzy') {
-                                        setUserIntent(e.target.value);
-                                    } else {
-                                        updateFilter('name', e.target.value);
-                                    }
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && searchMode === 'fuzzy') {
-                                        handleMatchIntent();
-                                    }
-                                }}
-                                placeholder={searchMode === 'fuzzy' ? t('execution.intent_placeholder') : t('execution.search_by_name')}
-                                className={`w-full h-11 pl-11 pr-4 rounded-xl border text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${theme.input}`}
-                            />
-                        </div>
-                    )}
+                    <div className="flex-1 relative group">
+                        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-blue-500 transition-colors" />
+                        <input
+                            type="text"
+                            value={searchMode === 'fuzzy' ? userIntent : exactFilters.name}
+                            onChange={(e) => {
+                                if (searchMode === 'fuzzy') {
+                                    setUserIntent(e.target.value);
+                                } else {
+                                    updateFilter('name', e.target.value);
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && searchMode === 'fuzzy') {
+                                    handleMatchIntent();
+                                }
+                            }}
+                            placeholder={searchMode === 'fuzzy' ? t('execution.intent_placeholder') : t('execution.search_by_name')}
+                            className={`w-full h-11 pl-11 pr-4 rounded-xl border text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${theme.input}`}
+                        />
+                    </div>
 
                     {/* Action Buttons */}
-                    {searchMode === 'all' && (
-                        <button
-                            onClick={() => setAllReloadKey(key => key + 1)}
-                            disabled={isMatching}
-                            className="flex items-center gap-2 px-5 h-11 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-blue-500/20"
-                        >
-                            <RotateCcw size={15} className={isMatching ? 'animate-spin' : ''} />
-                            {isMatching ? t('execution.loading') : t('execution.all_refresh')}
-                        </button>
-                    )}
-                    {searchMode === 'fuzzy' && (
+                    {searchMode === 'fuzzy' ? (
                         <>
                             <button
                                 onClick={handleMatchIntent}
@@ -1230,9 +1158,29 @@ const ExecutionCenter = () => {
                             </button>
 
                             <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-700" />
+
+                            <select
+                                value={selectedAgent}
+                                onChange={(e) => setSelectedAgent(e.target.value)}
+                                className={`h-11 px-3 rounded-xl border text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${theme.input} min-w-[160px]`}
+                            >
+                                <option value="">{t('execution.select_agent') || 'Select Agent'}</option>
+                                {agentCards.map(agent => (
+                                    <option key={agent.name} value={agent.name}>
+                                        {agent.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                onClick={handleDispatch}
+                                disabled={isDispatching || !userIntent.trim() || !selectedAgent}
+                                className="flex items-center gap-2 px-5 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-emerald-500/20"
+                            >
+                                <Bot size={15} />
+                                {isDispatching ? (t('execution.dispatching') || 'Dispatching...') : (t('execution.dispatch') || 'Dispatch')}
+                            </button>
                         </>
-                    )}
-                    {searchMode === 'exact' && (
+                    ) : (
                         <button
                             onClick={clearFilters}
                             className="flex items-center gap-2 px-5 h-11 bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-300 rounded-xl text-sm font-medium transition-all active:scale-95"
@@ -1241,39 +1189,6 @@ const ExecutionCenter = () => {
                             {t('execution.clear_filters')}
                         </button>
                     )}
-
-                    {/* LeaderAgent select + dispatch — visible in every mode */}
-                    <select
-                        value={selectedAgent}
-                        onChange={(e) => setSelectedAgent(e.target.value)}
-                        className={`h-11 px-3 rounded-xl border text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${theme.input} min-w-[160px]`}
-                    >
-                        <option value="">{t('execution.select_agent') || 'Select Agent'}</option>
-                        {agentCards.map(agent => (
-                            <option key={agent.name} value={agent.name}>
-                                {agent.name}
-                            </option>
-                        ))}
-                    </select>
-                    <button
-                        onClick={() => {
-                            if (searchMode === 'fuzzy') {
-                                handleDispatch();
-                            } else if (selectedId && selectedId !== 'dispatch') {
-                                startExecution(selectedId);
-                            }
-                        }}
-                        disabled={searchMode === 'fuzzy'
-                            ? (isDispatching || !userIntent.trim() || !selectedAgent)
-                            : (!selectedId || selectedId === 'dispatch' || !selectedAgent)}
-                        title={searchMode === 'fuzzy' || selectedId ? undefined : t('execution.no_selection')}
-                        className="flex items-center gap-2 px-5 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-emerald-500/20"
-                    >
-                        <Bot size={15} />
-                        {searchMode === 'fuzzy' && isDispatching
-                            ? (t('execution.dispatching') || 'Dispatching...')
-                            : (t('execution.dispatch') || 'Dispatch')}
-                    </button>
 
                     {/* Status Indicator */}
                     <div className="flex items-center gap-2 pl-3 border-l border-zinc-200 dark:border-zinc-700">
@@ -1375,7 +1290,7 @@ const ExecutionCenter = () => {
                                                 : 'text-zinc-500 dark:text-zinc-400 border-transparent hover:text-zinc-700 dark:hover:text-zinc-300'}`}
                                     >
                                         <Search size={14} />
-                                        {searchMode === 'all' ? t('execution.all_tab') : t('execution.match_tab')}
+                                        {t('execution.match_tab')}
                                     </button>
                                     <button
                                         onClick={() => { setActiveTab('history'); loadHistoryRecords(); }}
@@ -1404,14 +1319,10 @@ const ExecutionCenter = () => {
                             {matchedWorkflows.length === 0 ? (
                                 <div className="h-full flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 py-12">
                                     <div className="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
-                                        {searchMode === 'all' ? <LayoutList size={28} strokeWidth={1.5} /> : <Search size={28} strokeWidth={1.5} />}
+                                        <Search size={28} strokeWidth={1.5} />
                                     </div>
-                                    <p className="text-sm font-medium">
-                                        {searchMode === 'all' ? (isMatching ? t('execution.loading') : t('execution.no_match')) : t('execution.no_match_yet')}
-                                    </p>
-                                    <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
-                                        {searchMode === 'all' ? t('execution.all_empty_hint') : '输入意图开始搜索'}
-                                    </p>
+                                    <p className="text-sm font-medium">{t('execution.no_match_yet')}</p>
+                                    <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">输入意图开始搜索</p>
                                 </div>
                             ) : (
                                 matchedWorkflows.map(wf => (
@@ -1815,5 +1726,3 @@ const ExecutionCenter = () => {
 
 
 export default ExecutionCenter;
-
-export { parseProtobufText, parseLogData, renderInlineMarkdown, MarkdownRenderer, LogEntry };

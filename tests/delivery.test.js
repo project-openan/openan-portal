@@ -58,10 +58,10 @@ test.each(['.env', 'private.key', 'credentials.pem'])('non-public artifact %s is
     await expect(installArtifact(directory, 'registry-center', path.join(temp, 'installed'))).rejects.toThrow(/artifact/i);
     expect(existsSync(path.join(temp, 'installed'))).toBe(false);
 });
-test('all five upstream bundle registrations are preserved in the single JSON registry', async () => {
+test('all six upstream bundle registrations are preserved in the single JSON registry', async () => {
     const registry = JSON.parse(await fs.readFile('portal/bundled-plugins.json', 'utf8'));
     expect(registry.filter(entry => entry.enabled !== false).map(entry => entry.id)).toEqual([
-        'registry-center', 'orchestration-center', 'observation-center', 'virtual-showroom', 'an-ontology',
+        'registry-center', 'orchestration-center', 'observation-center', 'virtual-showroom', 'an-ontology', 'scenario-showcase',
     ]);
     expect(registry.some(entry => entry.id === 'ontology-demo')).toBe(false);
     const source = await fs.readFile('portal/src/plugins.config.js', 'utf8');

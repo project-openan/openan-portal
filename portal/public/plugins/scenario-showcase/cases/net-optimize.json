@@ -1,0 +1,608 @@
+{
+  "$schema": "scenario-showcase-case-v2",
+  "id": "net-optimize",
+  "driver": "mockAgent",
+  "mockAgent": {
+    "endpoint": "http://47.236.98.226:9015/mockagent",
+    "caseKey": "net-optimize",
+    "turnDelayMs": 1600
+  },
+  "title": {
+    "zh": "城域网节能优化",
+    "en": "Urban Network Energy Optimization"
+  },
+  "description": {
+    "zh": "多智能体协作的城域网节能优化闭环：话务洞察 → 节能策略生成 → A2A-T 执行协商 → 策略下发 → 执行反馈 → 优化复核。全部消息由 mockAgent 服务返回。",
+    "en": "Multi-agent urban network energy optimization loop: traffic insight -> energy policy -> A2A-T negotiation -> dispatch -> feedback -> review. All messages are returned by the mockAgent service."
+  },
+  "agents": [
+    {
+      "id": "insight",
+      "name": {
+        "zh": "网络洞察智能体",
+        "en": "Network Insight Agent"
+      },
+      "role": "host",
+      "color": "cyan",
+      "skills": [
+        "Traffic Analysis",
+        "KQI Diagnosis"
+      ]
+    },
+    {
+      "id": "policy",
+      "name": {
+        "zh": "策略决策智能体",
+        "en": "Policy Decision Agent"
+      },
+      "role": "domain",
+      "color": "violet",
+      "skills": [
+        "Energy Policy Generation",
+        "SLA Negotiation"
+      ]
+    },
+    {
+      "id": "executor",
+      "name": {
+        "zh": "策略执行智能体",
+        "en": "Policy Execution Agent"
+      },
+      "role": "domain",
+      "color": "amber",
+      "skills": [
+        "Config Delivery",
+        "Device Control"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "t1",
+      "name": {
+        "zh": "话务洞察与能耗画像",
+        "en": "Traffic Insight & Energy Profile"
+      },
+      "agent": "insight",
+      "type": "selfloop",
+      "skill": "Traffic Analysis",
+      "task": "task-net-001",
+      "short": {
+        "zh": "话务洞察",
+        "en": "Insight"
+      }
+    },
+    {
+      "id": "t2",
+      "name": {
+        "zh": "节能策略生成",
+        "en": "Energy Policy Generation"
+      },
+      "agent": "policy",
+      "type": "allsuccess",
+      "skill": "Energy Policy Generation",
+      "task": "task-net-002",
+      "short": {
+        "zh": "节能策略",
+        "en": "Policy"
+      }
+    },
+    {
+      "id": "t3",
+      "name": {
+        "zh": "A2A-T 执行协商",
+        "en": "A2A-T Execution Negotiation"
+      },
+      "agent": "policy",
+      "type": "allsuccess",
+      "skill": "SLA Negotiation",
+      "task": "task-net-003",
+      "short": {
+        "zh": "执行协商",
+        "en": "Negotiate"
+      }
+    },
+    {
+      "id": "t4",
+      "name": {
+        "zh": "节能策略下发",
+        "en": "Policy Dispatch"
+      },
+      "agent": "executor",
+      "type": "allsuccess",
+      "skill": "Config Delivery",
+      "task": "task-net-004",
+      "short": {
+        "zh": "策略下发",
+        "en": "Dispatch"
+      }
+    },
+    {
+      "id": "t5",
+      "name": {
+        "zh": "执行反馈与监控",
+        "en": "Execution Feedback & Monitoring"
+      },
+      "agent": "executor",
+      "type": "selfloop",
+      "skill": "Device Control",
+      "task": "task-net-005",
+      "short": {
+        "zh": "执行反馈",
+        "en": "Feedback"
+      }
+    },
+    {
+      "id": "t6",
+      "name": {
+        "zh": "优化效果复核",
+        "en": "Optimization Review"
+      },
+      "agent": "insight",
+      "type": "allsuccess",
+      "skill": "KQI Diagnosis",
+      "task": "task-net-006",
+      "short": {
+        "zh": "优化复核",
+        "en": "Review"
+      }
+    }
+  ],
+  "panels": [
+    {
+      "id": "energy-kqi",
+      "type": "chart",
+      "title": {
+        "zh": "能耗与 KQI 趋势",
+        "en": "Energy & KQI Trend"
+      },
+      "initial": {
+        "points": {
+          "power": [
+            86
+          ],
+          "kqi": [
+            92
+          ]
+        }
+      },
+      "config": {
+        "series": [
+          {
+            "id": "power",
+            "name": {
+              "zh": "基站能耗指数",
+              "en": "Power index"
+            },
+            "color": "#f59e0b",
+            "fill": true
+          },
+          {
+            "id": "kqi",
+            "name": {
+              "zh": "KQI",
+              "en": "KQI"
+            },
+            "color": "#22d3ee",
+            "fill": false
+          }
+        ],
+        "yMin": 0,
+        "yMax": 100,
+        "unit": "%"
+      }
+    }
+  ],
+  "history": [
+    {
+      "id": "run-20261019-n1",
+      "time": "2026-10-19 23:05",
+      "title": {
+        "zh": "凌晨低谷节能优化（全网 320 站）",
+        "en": "Night-valley energy optimization (320 sites)"
+      },
+      "result": "success",
+      "duration": "18m 40s",
+      "mode": "agent"
+    },
+    {
+      "id": "run-20261018-n2",
+      "time": "2026-10-18 23:05",
+      "title": {
+        "zh": "节假日话务模型修正",
+        "en": "Holiday traffic model correction"
+      },
+      "result": "success",
+      "duration": "21m 02s",
+      "mode": "agent"
+    },
+    {
+      "id": "run-20261017-n3",
+      "time": "2026-10-17 23:05",
+      "title": {
+        "zh": "新增 5G 站点纳入节能域",
+        "en": "Onboard new 5G sites into energy domain"
+      },
+      "result": "partial",
+      "duration": "25m 17s",
+      "mode": "agent"
+    },
+    {
+      "id": "run-no-demo-01",
+      "title": {
+        "zh": "纯 Demo 时间线回放",
+        "en": "Pure demo timeline replay"
+      },
+      "time": "2026-10-19 15:08",
+      "duration": "41秒",
+      "result": "success",
+      "mode": "demo"
+    }
+  ],
+  "script": [
+    {
+      "type": "step",
+      "id": "t1",
+      "status": "active",
+      "at": 0.8
+    },
+    {
+      "type": "message",
+      "from": "insight",
+      "to": "policy",
+      "kind": "info",
+      "step": "t1",
+      "text": {
+        "zh": "全网话务洞察完成：320 个 5G 基站进入深夜低谷，忙时负荷 72% → 谷时 18%，具备深度节能窗口。",
+        "en": "Network-wide traffic insight done: 320 5G sites enter the night valley, busy-hour load 72% -> 18%, deep energy-saving window available."
+      },
+      "attachments": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "icon": "tower",
+              "label": {
+                "zh": "在网站点",
+                "en": "Sites"
+              },
+              "value": "320"
+            },
+            {
+              "icon": "trend",
+              "label": {
+                "zh": "谷时负荷",
+                "en": "Valley load"
+              },
+              "value": {
+                "zh": "18%",
+                "en": "18%"
+              }
+            },
+            {
+              "icon": "battery",
+              "label": {
+                "zh": "节能潜力",
+                "en": "Saving potential"
+              },
+              "value": {
+                "zh": "21%",
+                "en": "21%"
+              }
+            }
+          ]
+        }
+      ],
+      "at": 2.8
+    },
+    {
+      "type": "step",
+      "id": "t1",
+      "status": "done",
+      "at": 3.7
+    },
+    {
+      "type": "step",
+      "id": "t2",
+      "status": "active",
+      "at": 4.4
+    },
+    {
+      "type": "message",
+      "from": "policy",
+      "to": "executor",
+      "kind": "request",
+      "step": "t2",
+      "text": {
+        "zh": "节能策略已生成：分三批对低谷小区执行载波关断与深度休眠，预计全网能耗下降 21%，KQI 影响受控。",
+        "en": "Energy policy generated: carrier shutdown and deep sleep in three batches for valley cells, expected 21% network power reduction with bounded KQI impact."
+      },
+      "attachments": [
+        {
+          "type": "table",
+          "title": {
+            "zh": "节能策略（节选）",
+            "en": "Energy policy (excerpt)"
+          },
+          "headers": [
+            {
+              "zh": "批次",
+              "en": "Batch"
+            },
+            {
+              "zh": "动作",
+              "en": "Action"
+            },
+            {
+              "zh": "预计节能",
+              "en": "Saving"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "zh": "第 1 批 · 120 站",
+                "en": "Batch 1 · 120 sites"
+              },
+              {
+                "zh": "载波关断",
+                "en": "Carrier shutdown"
+              },
+              "9%"
+            ],
+            [
+              {
+                "zh": "第 2 批 · 140 站",
+                "en": "Batch 2 · 140 sites"
+              },
+              {
+                "zh": "通道静默",
+                "en": "Channel mute"
+              },
+              "8%"
+            ],
+            [
+              {
+                "zh": "第 3 批 · 60 站",
+                "en": "Batch 3 · 60 sites"
+              },
+              {
+                "zh": "深度休眠",
+                "en": "Deep sleep"
+              },
+              "4%"
+            ]
+          ]
+        }
+      ],
+      "at": 6.6
+    },
+    {
+      "type": "step",
+      "id": "t2",
+      "status": "done",
+      "at": 7.5
+    },
+    {
+      "type": "step",
+      "id": "t3",
+      "status": "active",
+      "at": 8.2
+    },
+    {
+      "type": "message",
+      "from": "policy",
+      "to": "executor",
+      "kind": "a2at",
+      "step": "t3",
+      "text": {
+        "zh": "策略批量执行前发起 A2A-T 协商：请求确认第 3 批深度休眠的授权范围与回退约束。",
+        "en": "Initiating A2A-T negotiation before batch execution: requesting the authorized scope and rollback constraints for batch-3 deep sleep."
+      },
+      "a2at": {
+        "verb": "NEGOTIATE_REQUEST",
+        "session": "a2at-sess-20261020-017",
+        "clauses": [
+          {
+            "k": {
+              "zh": "协商标的",
+              "en": "Subject"
+            },
+            "v": {
+              "zh": "第 3 批深度休眠（60 站）",
+              "en": "Batch-3 deep sleep (60 sites)"
+            }
+          },
+          {
+            "k": {
+              "zh": "发起方",
+              "en": "Initiator"
+            },
+            "v": {
+              "zh": "策略决策智能体",
+              "en": "Policy Decision Agent"
+            }
+          },
+          {
+            "k": {
+              "zh": "提案",
+              "en": "Proposal"
+            },
+            "v": {
+              "zh": "00:30 - 05:30 深度休眠",
+              "en": "Deep sleep 00:30 - 05:30"
+            }
+          },
+          {
+            "k": {
+              "zh": "约束",
+              "en": "Constraint"
+            },
+            "v": {
+              "zh": "KQI 告警 5 分钟内自动唤醒",
+              "en": "Auto wake-up within 5 min on KQI alert"
+            }
+          }
+        ]
+      },
+      "at": 10.6
+    },
+    {
+      "type": "message",
+      "from": "executor",
+      "to": "policy",
+      "kind": "a2at",
+      "step": "t3",
+      "text": {
+        "zh": "执行侧确认：授权范围内可执行，接受协商提案并锁定回退预案。",
+        "en": "Executor confirms: executable within the authorized scope, proposal accepted with a locked rollback plan."
+      },
+      "a2at": {
+        "verb": "NEGOTIATE_RESULT",
+        "session": "a2at-sess-20261020-017",
+        "decision": "ACCEPTED",
+        "clauses": [
+          {
+            "k": {
+              "zh": "裁定",
+              "en": "Decision"
+            },
+            "v": {
+              "zh": "接受提案",
+              "en": "Accepted"
+            }
+          },
+          {
+            "k": {
+              "zh": "授权范围",
+              "en": "Scope"
+            },
+            "v": {
+              "zh": "60 站 · 深度休眠",
+              "en": "60 sites · deep sleep"
+            }
+          },
+          {
+            "k": {
+              "zh": "回退",
+              "en": "Rollback"
+            },
+            "v": {
+              "zh": "一键唤醒预案 R-117",
+              "en": "One-shot wake-up plan R-117"
+            }
+          }
+        ]
+      },
+      "at": 13.0
+    },
+    {
+      "type": "step",
+      "id": "t3",
+      "status": "done",
+      "at": 13.9
+    },
+    {
+      "type": "step",
+      "id": "t4",
+      "status": "active",
+      "at": 14.6
+    },
+    {
+      "type": "message",
+      "from": "executor",
+      "to": "policy",
+      "kind": "info",
+      "step": "t4",
+      "text": {
+        "zh": "三批节能策略已全部下发成功：320 站配置生效，深度休眠按窗口执行。",
+        "en": "All three policy batches delivered: configs active on 320 sites, deep sleep executes within the window."
+      },
+      "at": 16.6
+    },
+    {
+      "type": "step",
+      "id": "t4",
+      "status": "done",
+      "at": 17.5
+    },
+    {
+      "type": "step",
+      "id": "t5",
+      "status": "active",
+      "at": 18.2
+    },
+    {
+      "type": "message",
+      "from": "executor",
+      "to": "insight",
+      "kind": "info",
+      "step": "t5",
+      "text": {
+        "zh": "执行监控回报：全网功率指数由 86% 降至 65%，无 KQI 劣化告警。",
+        "en": "Execution monitoring report: network power index down from 86% to 65%, no KQI degradation alerts."
+      },
+      "at": 20.4
+    },
+    {
+      "type": "panel",
+      "panel": "energy-kqi",
+      "action": "push",
+      "data": {
+        "series": "power",
+        "value": 74
+      },
+      "at": 21.6
+    },
+    {
+      "type": "panel",
+      "panel": "energy-kqi",
+      "action": "push",
+      "data": {
+        "series": "kqi",
+        "value": 91
+      },
+      "at": 22.8
+    },
+    {
+      "type": "panel",
+      "panel": "energy-kqi",
+      "action": "push",
+      "data": {
+        "series": "power",
+        "value": 65
+      },
+      "at": 24.0
+    },
+    {
+      "type": "step",
+      "id": "t5",
+      "status": "done",
+      "at": 24.9
+    },
+    {
+      "type": "step",
+      "id": "t6",
+      "status": "active",
+      "at": 25.6
+    },
+    {
+      "type": "message",
+      "from": "insight",
+      "to": "policy",
+      "kind": "response",
+      "step": "t6",
+      "text": {
+        "zh": "优化复核通过：实测节能 19.6%（目标 21% 以内），KQI 全程无劣化，策略模型将沉淀为今晚默认方案。",
+        "en": "Optimization review passed: measured saving 19.6% (within the 21% target), no KQI degradation throughout; the policy model becomes tonight's default."
+      },
+      "at": 27.8
+    },
+    {
+      "type": "step",
+      "id": "t6",
+      "status": "done",
+      "at": 28.7
+    }
+  ]
+}
