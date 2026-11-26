@@ -25,6 +25,7 @@ export default {
         './src/**/*.{js,jsx}',
         '../plugins/*/src/**/*.{js,jsx}',
         '../packages/portal-sdk/src/**/*.{js,jsx}',
+        '../packages/shared-workflow/src/**/*.{js,jsx}',
     ],
     theme: {
         extend: {},

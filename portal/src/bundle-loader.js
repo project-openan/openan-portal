@@ -293,6 +293,11 @@ async function loadBundle(entryCfg, signal) {
         const i18n = (await import('./i18n/index.js')).default;
         const zhNames = {
             'Registry Center': '注册中心',
+            'Heartbeat Monitor': '心跳监控',
+            'Workflow Management': '工作流管理',
+            'Workflow Builder': '工作流构建',
+            'Workflow Execution': '工作流执行',
+            'Execution Statistics': '执行统计',
             'Orchestration Center': '编排中心',
             'Execution Center': '执行中心',
             'Skill Center': '技能中心',
