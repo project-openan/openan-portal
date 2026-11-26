@@ -184,7 +184,7 @@ const AgentNode = ({ data, selected }) => {
                                 `}
                             >
                                 <div className="flex justify-between items-center">
-                                    <span className={`text-[9px] font-bold uppercase tracking-tight opacity-80 break-words whitespace-normal ${isDark ? agentTheme.dark : agentTheme.light}`}>
+                                    <span className={`text-[9px] font-bold tracking-tight opacity-80 break-words whitespace-normal ${isDark ? agentTheme.dark : agentTheme.light}`}>
                                         {task.agent || 'Agent'}
                                     </span>
                                     <div className={`h-1.5 w-1.5 rounded-full ${getStatusColor(task.status)} opacity-60`} />
