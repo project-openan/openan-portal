@@ -70,16 +70,11 @@
     "empty": "暂无用户"
   },
   "password_change": {
-    "title": "修改密码",
-    "required": "请先修改密码，再访问业务应用。",
-    "old": "当前密码",
-    "new": "新密码",
-    "confirm": "确认新密码",
-    "submit": "修改密码",
-    "mismatch": "两次输入的新密码不一致。",
+    "title": "修改密码", "required": "请先修改密码，再访问业务应用。",
+    "old": "当前密码", "new": "新密码", "confirm": "确认新密码",
+    "submit": "修改密码", "mismatch": "两次输入的新密码不一致。",
     "same": "新密码不能与当前密码相同。",
-    "failed": "密码修改失败。",
-    "relogin": "密码已修改，请重新登录。"
+    "failed": "密码修改失败。", "relogin": "密码已修改，请重新登录。"
   },
   "portal": {
     "plugin_failed": "部分插件加载失败：",
@@ -117,13 +112,5 @@
     "copied": "已复制！",
     "copy_raw_json": "复制原始 JSON",
     "chars": "字符"
-  },
-  "Execution Center": "执行中心",
-  "Orchestration Center": "编排中心",
-  "Registry Center": "注册中心",
-  "Workflow Management": "工作流管理",
-  "Workflow Builder": "工作流构建",
-  "Workflow Execution": "工作流执行",
-  "Execution Statistics": "执行统计",
-  "Heartbeat Monitor": "心跳监控"
+  }
 }

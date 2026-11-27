@@ -15,7 +15,7 @@
 //    License for the specific language governing permissions and limitations
 //    under the License.
 
-import { BarChart3, PlayCircle } from 'lucide-react';
+import { PlayCircle } from 'lucide-react';
 
 export default {
     id: 'execution-center',
@@ -25,24 +25,15 @@ export default {
     menu: [{
         id: 'execution',
         labelKey: 'execution-center:execution.title',
-        label: 'Workflow Execution',
         icon: PlayCircle,
         order: 3,
         route: '/execution',
-        group: 'Execution Center',
-    }, {
-        id: 'execution-stats',
-        labelKey: 'execution-center:execution.sub_menu_statistics',
-        label: 'Execution Statistics',
-        icon: BarChart3,
-        order: 4,
-        route: '/execution-stats',
-        group: 'Execution Center',
     }],
-    routes: [
-        { path: '/execution', component: () => import('./src/index.jsx'), menuId: 'execution' },
-        { path: '/execution-stats', component: () => import('./src/index.jsx'), menuId: 'execution-stats' },
-    ],
+    routes: [{
+        path: '/execution',
+        component: () => import('./src/index.jsx'),
+        menuId: 'execution',
+    }],
     i18n: {
         namespace: 'execution-center',
         resources: {

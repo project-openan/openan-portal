@@ -54,7 +54,11 @@
     "packages_title": "Solution Packages",
     "packages_upload_title": "Import New SolutionPackage",
     "packages_upload_hint": "Drag & drop a PDF file here, or click to select",
-    "packages_list_title": "Imported Solution Packages"
+    "packages_list_title": "Imported Solution Packages",
+    "packages_list_loading": "Loading solution packages…",
+    "packages_list_error": "Failed to load solution packages",
+    "packages_empty": "No imported solution packages yet",
+    "packages_chapters": "chapters"
   },
   "workflow": {
     "title": "WORKFLOW PROGRESSION",

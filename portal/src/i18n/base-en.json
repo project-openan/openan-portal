@@ -70,16 +70,11 @@
     "empty": "No users"
   },
   "password_change": {
-    "title": "Change password",
-    "required": "Change your password before accessing applications.",
-    "old": "Current password",
-    "new": "New password",
-    "confirm": "Confirm new password",
-    "submit": "Change password",
-    "mismatch": "New passwords do not match.",
+    "title": "Change password", "required": "Change your password before accessing applications.",
+    "old": "Current password", "new": "New password", "confirm": "Confirm new password",
+    "submit": "Change password", "mismatch": "New passwords do not match.",
     "same": "New password must differ from the current password.",
-    "failed": "Password change failed.",
-    "relogin": "Password changed. Please sign in again."
+    "failed": "Password change failed.", "relogin": "Password changed. Please sign in again."
   },
   "portal": {
     "plugin_failed": "Some plugins could not be loaded:",
@@ -117,13 +112,5 @@
     "copied": "Copied!",
     "copy_raw_json": "Copy Raw JSON",
     "chars": "chars"
-  },
-  "Execution Center": "Execution Center",
-  "Orchestration Center": "Orchestration Center",
-  "Registry Center": "Registry Center",
-  "Workflow Management": "Workflow Management",
-  "Workflow Builder": "Workflow Builder",
-  "Workflow Execution": "Workflow Execution",
-  "Execution Statistics": "Execution Statistics",
-  "Heartbeat Monitor": "Heartbeat Monitor"
+  }
 }
