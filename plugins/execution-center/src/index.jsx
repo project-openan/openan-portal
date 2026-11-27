@@ -1610,18 +1610,6 @@ const ExecutionCenter = () => {
                                     {t('execution.interaction_tab')}
                                 </button>
                             </div>
-                            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                                {isMatching ? t('execution.processing_input') : (nodes.length > 0 ? (workflowSource === 'generated' ? t('execution.ai_planned') : t('execution.workflow_label')) : t('execution.interface_label'))}
-                            </h2>
-                            {workflowSource && (
-                                <span className={`px-2 py-0.5 rounded-md text-[10px] font-medium ${
-                                    workflowSource === 'generated' 
-                                        ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' 
-                                        : 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                                }`}>
-                                    {workflowSource === 'generated' ? t('execution.ai_gen') : t('execution.native')}
-                                </span>
-                            )}
                         </div>
                     </div>
 
