@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Huawei Technologies Co., Ltd.
+﻿// Copyright (c) 2026 Huawei Technologies Co., Ltd.
 // All Rights Reserved.
 //
 // SPDX-License-Identifier: Apache-2.0
@@ -18,7 +18,11 @@
 import { useMemo, useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sun, Moon, LogOut, Puzzle, ChevronDown, Settings, Users, KeyRound } from 'lucide-react';
+import {
+    Sun, Moon, LogOut, Puzzle, ChevronDown, ChevronRight, Settings, Users, KeyRound,
+    LayoutDashboard, LayoutList, HeartPulse, Bot, Workflow, Gauge, Presentation,
+    Monitor, Network, Box, Play, BarChart3,
+} from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext.jsx';
 import { useTheme } from '../../theme/ThemeContext.jsx';
 import logo from '../../assets/openan-logo.png';
@@ -98,6 +102,17 @@ export default function Header({ plugins, disabledIds, onManagePlugins, onLogin,
 
     const groupActive = (group) =>
         group.children.some((c) => location.pathname.startsWith(c.route));
+
+    // Breadcrumb context: when the active route belongs to a grouped
+    // (second-level) menu item, the page shows "Parent > Child" above it.
+    const activeGroupInfo = useMemo(() => {
+        for (const g of groups) {
+            const child = g.children.find((c) => c.route === location.pathname)
+                || g.children.find((c) => location.pathname.startsWith(c.route));
+            if (child) return { group: g, child };
+        }
+        return null;
+    }, [groups, location.pathname]);
 
     const handleLangChange = (lng) => {
         i18n.changeLanguage(lng);
@@ -180,6 +195,7 @@ export default function Header({ plugins, disabledIds, onManagePlugins, onLogin,
     }, [flatItems, groups]);
 
     return (
+        <>
         <nav className="h-16 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 px-8 flex justify-between items-center shrink-0 z-20 transition-all">
             {/* Brand — logo mark (matches openan.dev navbar: 40px white rounded box) + wordmark */}
             <div className="flex items-center gap-3">
@@ -344,5 +360,20 @@ export default function Header({ plugins, disabledIds, onManagePlugins, onLogin,
                 </div>
             </div>
         </nav>
+        {activeGroupInfo && (
+            <div className="px-4 sm:px-6 py-2 bg-white/90 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-1.5 text-xs shrink-0 transition-colors">
+                <button
+                    onClick={() => navigate(activeGroupInfo.group.children[0].route)}
+                    className="font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+                >
+                    {t(activeGroupInfo.group.label)}
+                </button>
+                <ChevronRight size={12} className="text-zinc-400" />
+                <span className="font-bold text-zinc-700 dark:text-zinc-200">
+                    {t(activeGroupInfo.child.labelKey)}
+                </span>
+            </div>
+        )}
+        </>
     );
 }

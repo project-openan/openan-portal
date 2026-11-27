@@ -75,6 +75,12 @@
     "no_data": "No data available",
     "search_fuzzy": "Fuzzy",
     "search_exact": "Exact",
+    "search_all": "All",
+    "all_refresh": "Refresh",
+    "all_hint": "Showing all workflows — pick a LeaderAgent, then execute or dispatch",
+    "all_empty_hint": "No workflows in the orchestration center yet",
+    "all_tab": "All Workflows",
+    "all_count": "{{count}} total",
     "filters": "Filters",
     "search_by_name": "Search by workflow name...",
     "clear_filters": "Clear",
@@ -105,6 +111,10 @@
     "status_sub": "Success {{success}} · Failed {{failed}} · Running {{running}}, {{total}} in total",
     "trend_sub": "Monthly executions of {{workflow}} (last 12 months)",
     "peak_month": " · Peak month {{month}} with {{count}} executions",
-    "report_footer": "Methodology: statistics based on workflow execution records; status distribution by record status field; monthly trend grouped by execution start time"
+    "report_footer": "Methodology: statistics based on workflow execution records; status distribution by record status field; monthly trend grouped by execution start time",
+    "interaction_tab": "Interaction",
+    "interaction_hub": "Interaction Hub",
+    "interaction_messages": "{{count}} messages",
+    "interaction_hint": "All agent messages route through the Interaction Hub"
   }
 }
