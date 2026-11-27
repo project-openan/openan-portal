@@ -109,6 +109,12 @@
     "interaction_tab": "交互预览",
     "interaction_hub": "交互中心",
     "interaction_messages": "{{count}} 条消息",
-    "interaction_hint": "所有智能体的消息都经交互中心转发"
+    "interaction_hint": "所有智能体的消息都经交互中心转发",
+    "search_all": "全部工作流",
+    "all_refresh": "刷新",
+    "all_hint": "展示编排中心全部工作流，选择 LeaderAgent 后执行或派发",
+    "all_empty_hint": "编排中心暂无工作流",
+    "all_tab": "全部工作流",
+    "all_count": "共 {{count}} 个"
   }
 }

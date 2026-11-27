@@ -109,6 +109,12 @@
     "interaction_tab": "Interaction",
     "interaction_hub": "Interaction Hub",
     "interaction_messages": "{{count}} messages",
-    "interaction_hint": "All agent messages route through the Interaction Hub"
+    "interaction_hint": "All agent messages route through the Interaction Hub",
+    "search_all": "All",
+    "all_refresh": "Refresh",
+    "all_hint": "Showing all workflows — pick a LeaderAgent, then execute or dispatch",
+    "all_empty_hint": "No workflows in the orchestration center yet",
+    "all_tab": "All Workflows",
+    "all_count": "{{count}} total"
   }
 }
