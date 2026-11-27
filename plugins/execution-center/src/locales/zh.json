@@ -105,6 +105,10 @@
     "status_sub": "成功 {{success}} · 失败 {{failed}} · 运行中 {{running}}，合计 {{total}} 次",
     "trend_sub": "{{workflow}} 按月执行次数（近 12 个月）",
     "peak_month": " · 峰值月 {{month}} 共 {{count}} 次",
-    "report_footer": "口径说明：统计基于工作流执行记录；状态分布按记录状态字段划分；月度趋势按执行开始时间归月统计"
+    "report_footer": "口径说明：统计基于工作流执行记录；状态分布按记录状态字段划分；月度趋势按执行开始时间归月统计",
+    "interaction_tab": "交互预览",
+    "interaction_hub": "交互中心",
+    "interaction_messages": "{{count}} 条消息",
+    "interaction_hint": "所有智能体的消息都经交互中心转发"
   }
 }
