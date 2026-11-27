@@ -20,7 +20,7 @@ import { BarChart3, PlayCircle } from 'lucide-react';
 export default {
     id: 'execution-center',
     name: 'Execution Center',
-    version: '0.2.3',
+    version: '0.2.4',
     backend: { gateway: '/api/orchestrate', authScope: 'host' },
     menu: [{
         id: 'execution',

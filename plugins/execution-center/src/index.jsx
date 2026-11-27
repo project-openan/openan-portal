@@ -1086,48 +1086,6 @@ const ExecutionCenter = () => {
 
     return (
         <div className="h-full flex flex-col w-full overflow-hidden">
-            {/* Header (仅执行视图; 统计视图使用组件自带标题) */}
-            {activeSubMenu === 'execution' && (
-            <div className="shrink-0 px-8 pt-6 pb-4">
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <Play size={18} className="text-white" fill="white" />
-                        </div>
-                        <div>
-                            <h1 className="text-xl font-bold text-zinc-900 dark:text-white">
-                                {t('execution.title')}
-                            </h1>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                                {activeSubMenu === 'execution' ? t('execution.sub_menu_execution') : t('execution.sub_menu_statistics')}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => setActiveSubMenu('execution')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                activeSubMenu === 'execution'
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-                            }`}
-                        >
-                            {t('execution.sub_menu_execution')}
-                        </button>
-                        <button
-                            onClick={() => setActiveSubMenu('statistics')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                activeSubMenu === 'statistics'
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-                            }`}
-                        >
-                            {t('execution.sub_menu_statistics')}
-                        </button>
-                    </div>
-                </div>
-            </div>
-            )}
 
             <div className="flex-1 min-h-0 overflow-hidden">
                 {activeSubMenu === 'execution' ? (
