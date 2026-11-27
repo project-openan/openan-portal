@@ -19,9 +19,9 @@
     "@openan-plugins/execution-center": "*",
     "@openan-plugins/orchestration-center": "*",
     "@openan/portal-sdk": "*",
-    "axios": "^1.16.0",
+    "axios": "^1.20.0",
     "framer-motion": "^12.38.0",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^4.3.2",
     "lucide-react": "^0.577.0",
     "prop-types": "^15.8.1",
     "recharts": "^3.8.1"
